@@ -1,7 +1,7 @@
 using GraphQL.Types;
-public class HelloWorldQuery : ObjectGraphType
+public class ContactQuery : ObjectGraphType
 {
-    public HelloWorldQuery()
+    public ContactQuery()
     {
         Field<StringGraphType>(
             name: "name",
