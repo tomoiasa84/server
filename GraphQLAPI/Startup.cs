@@ -17,6 +17,12 @@ namespace GraphQLAPI
 {
     public class Startup
     {
+        private readonly IContactRepository _contactRepository;
+
+        public Startup()
+        {
+            _contactRepository = new ContactRepository();
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -28,7 +34,7 @@ namespace GraphQLAPI
         {
             app.Run(async (context) =>
             {
-                if (context.Request.Path.StartsWithSegments("/api/graphql") && string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
+                if (context.Request.Path.StartsWithSegments("/api/contacts") && string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
                 {
                     string body;
                     using (var streamReader = new StreamReader(context.Request.Body))
@@ -36,7 +42,7 @@ namespace GraphQLAPI
                         body = await streamReader.ReadToEndAsync();
 
                         var request = JsonConvert.DeserializeObject<GraphQLRequest>(body);
-                        var schema = new Schema { Query = new ContactQuery() };
+                        var schema = new Schema { Query = new ContactsQuery(_contactRepository) };
 
                         var result = await new DocumentExecuter().ExecuteAsync(doc =>
                         {
