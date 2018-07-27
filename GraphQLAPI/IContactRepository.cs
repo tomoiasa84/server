@@ -9,6 +9,6 @@ namespace GraphQLAPI
     {
         Contact ContactByPhone(string phone);
         IEnumerable<Contact> AllContacts();
-
+        object Add(Contact contact);
     }
 }

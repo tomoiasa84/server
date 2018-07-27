@@ -42,7 +42,8 @@ namespace GraphQLAPI
                         body = await streamReader.ReadToEndAsync();
 
                         var request = JsonConvert.DeserializeObject<GraphQLRequest>(body);
-                        var schema = new Schema { Query = new ContactsQuery(_contactRepository) };
+                        var schema = new Schema { Query = new ContactsQuery(_contactRepository), Mutation = new ContactsMutation(_contactRepository) };
+
 
                         var result = await new DocumentExecuter().ExecuteAsync(doc =>
                         {

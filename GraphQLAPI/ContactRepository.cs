@@ -15,6 +15,11 @@ namespace GraphQLAPI
             _contacts = A.ListOf<Contact>();
         }
 
+        public object Add(Contact contact)
+        {
+            return "not implemented yet";
+        }
+
         public IEnumerable<Contact> AllContacts()
         {
             return _contacts;
@@ -24,5 +29,6 @@ namespace GraphQLAPI
         {
             throw new NotImplementedException();
         }
+
     }
 }
