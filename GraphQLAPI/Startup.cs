@@ -35,8 +35,8 @@ namespace GraphQLAPI
             app.UseGraphiQl();
             app.Run(async (context) =>
             {
-                if (context.Request.Path.StartsWithSegments("/api/contacts") && string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
-                {
+               // if (context.Request.Path.StartsWithSegments("/") && string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
+               // {
                     string body;
                     using (var streamReader = new StreamReader(context.Request.Body))
                     {
@@ -55,7 +55,7 @@ namespace GraphQLAPI
                         var json = new DocumentWriter(indent: true).Write(result);
                         await context.Response.WriteAsync(json);
                     }
-                }
+              //  }
             });
         }
     }
