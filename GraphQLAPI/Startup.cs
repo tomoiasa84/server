@@ -32,6 +32,7 @@ namespace GraphQLAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseGraphiQl();
             app.Run(async (context) =>
             {
                 if (context.Request.Path.StartsWithSegments("/api/contacts") && string.Equals(context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase))
