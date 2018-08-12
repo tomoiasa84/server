@@ -10,7 +10,7 @@ namespace GraphQLAPI
     {
         public ContactsQuery(IContactRepository contactRepository)
         {
-            
+            Name = "Query";
 
             Field<ListGraphType<ContactType>>("contacts",
                                            resolve: context =>

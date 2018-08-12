@@ -6,10 +6,10 @@ namespace GraphQLAPI
         public ContactInputType()
         {
             Name = "ContactInput";
-            Field<NonNullGraphType<StringGraphType>>("FirstName");
+            Field<StringGraphType>("FirstName");
             Field<StringGraphType>("LastName");
             Field<StringGraphType>("EmailAddress");
-            Field<IntGraphType>("PhoneNumber");            
+            Field<StringGraphType>("PhoneNumber");            
         }
     }
     
