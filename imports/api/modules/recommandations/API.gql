@@ -1,0 +1,26 @@
+type Query {
+  recommandations(filters: JSON, options: JSON): [Recommandation]
+}
+
+type Mutation {
+  recommandationCreate(data: RecommandationCreateInput): Recommandation
+  recommandationEdit(recommandationId: String, data: RecommandationCreateInput): Recommandation
+  recommandationDelete(recommandationId: String): String
+}
+
+type Subscription {
+  recommandations: RecommandationEvent
+}
+
+type RecommandationEvent {
+  event: String,
+  doc: Recommandation
+}
+
+input RecommandationCreateInput {
+  tags: [String],
+  text: String
+}
+
+
+

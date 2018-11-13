@@ -1,0 +1,15 @@
+type Mutation {
+  commentRecomandationCreate(
+    recommandationId: String!,
+    contactId: String!
+  ): Comment
+
+  commentRecomandationUpdate(
+  	recommandationId: String!,
+    contactId: String!
+  	): String!
+
+  commentRecomandationDelete(
+   recommandationId: String!
+   ): String!
+}
