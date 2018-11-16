@@ -1,0 +1,11 @@
+type User @mongo(name: "users") {
+  _id: String!
+  username: String
+  profile: UserProfile
+  contacts: [Contact] @link(to: "user")
+  recommandations: [Recommandation] @link(to: "user")
+}
+
+type UserProfile {
+ name: String
+}

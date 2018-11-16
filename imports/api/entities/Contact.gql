@@ -1,0 +1,44 @@
+type Contact @mongo(name: "contacts") {
+  _id: String!,
+  userId: String,
+  user: User @link(field: "userId"),
+  emailAddresses: [EmailAddresses],
+  company: String,
+  familyName: String,
+  givenName: String,
+  jobTitle: String,
+  middleName: String,
+  phoneNumbers: [PhoneNumber],
+  hasThumbnail: Boolean,
+  thumbnailPath: String,
+  postalAddresses: [PostalAddresses],
+  birthday: Birthday,
+  tags: [String],
+  createdAt: Date 
+}
+
+type PhoneNumber {
+  label: String
+  number: String
+}
+
+type EmailAddresses {
+  label: String
+  email: String
+}
+
+type PostalAddresses {
+  street: String
+  city: String
+  state: String
+  region: String
+  postCode: String
+  country: String
+  label: String
+}
+
+type Birthday {
+  year: Float
+  month: Float
+  day: Float
+}
