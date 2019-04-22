@@ -1,12 +1,14 @@
 import { load } from 'graphql-load';
-import Entities from './entities';
-import ContactsModule from './modules/contacts';
-import RecomandationsModule from './modules/recommandations'
-import CommentsModule from './modules/comments';
+import UserxType from './entities/Userx';
 
-load([
-    Entities,
-    ContactsModule,
-    RecomandationsModule,
-    CommentsModule
-]);
+
+load({
+    //Entities,
+    typeDefs: [UserxType],
+    resolvers: {
+        Query: {
+            users: () => {return [{"id":"1", "name":"A"}] }
+        }
+    }
+
+});
