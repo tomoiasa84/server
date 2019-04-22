@@ -1,10 +1,10 @@
 import { load } from 'graphql-load';
-import UserxType from './entities/Userx';
+import UserType from './User';
 
 
 load({
     //Entities,
-    typeDefs: [UserxType],
+    typeDefs: [UserType],
     resolvers: {
         Query: {
             users: () => {return [{"id":"1", "name":"A"}] }

@@ -1,9 +1,0 @@
-type Recommandation @mongo(name: "recommandations") {
-  _id: String!,
-  tags: [String],
-  text: String,
-  commentIds: [String],
-  userId: String,
-  user: User @link(field: "userId"),
-  comments: [Comment] @link(field: "commentIds")
-}

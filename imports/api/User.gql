@@ -1,9 +1,9 @@
-type Userx {
+type User {
     id: ID!
     name: String
 }
 
 type Query {
-    users: [Userx]
+    users: [User]
 }
 

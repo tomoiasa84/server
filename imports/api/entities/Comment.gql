@@ -1,7 +1,0 @@
-type Comment @mongo(name: "comments") {
-  _id: String!,
-  recommandationId: String!,
-  contactId: String!,
-  comment: Contact @link(field: "contactId"),
-  createdAt: String!
-}
