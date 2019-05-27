@@ -1,4 +1,9 @@
 module.exports =  require('knex')({
     client: 'pg',
-    connection: 'postgres://postgres@localhost:5432/xfriend'
+    connection: {
+      host : '127.0.0.1',
+      user : 'postgres',
+      password : '1234qwer!',
+      database : 'xfriend'
+    }
   })
