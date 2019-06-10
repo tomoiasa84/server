@@ -1,6 +1,6 @@
 const knex = require('../../db/pgAdaptop');
 
-const userResolver = {
+const userResolvers = {
     Query: {
       users: async (_, args, ctx) => {
         const users = await knex('userx').select()
@@ -8,4 +8,4 @@ const userResolver = {
        }
     }
   };
-module.exports = userResolver;
+module.exports = userResolvers;
