@@ -25,6 +25,7 @@
     "graphql-tools": "^4.0.4",
     "graphql-type-json": "^0.2.1",
     "knex": "^0.16.5",
+    "knex-migrate-sql-file": "^1.0.3",
     "meteor-node-stubs": "^0.4.1",
     "pg": "^7.10.0",
     "pg-hstore": "^2.3.2",
