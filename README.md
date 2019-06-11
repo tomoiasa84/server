@@ -11,6 +11,7 @@ What things you need to install the software and how to install them
 ```
 npm install knex -g
 npm install knex-migrate-sql-file --save
+npm install romanian-cities --save
 npm install nodemon -g
 npm install
 ```
