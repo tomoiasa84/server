@@ -10,6 +10,7 @@ What things you need to install the software and how to install them
 
 ```
 npm install knex -g
+npm install knex-migrate-sql-file --save
 npm install nodemon -g
 npm install
 ```
@@ -41,6 +42,9 @@ knex seed:run
 ```
 
 To run server:
+
+Change directory back to root
+
 ```
 nodemon index.js
 
