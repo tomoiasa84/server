@@ -21,9 +21,7 @@ CREATE TABLE "userx" (
   "notification1" boolean,
   "notification2" boolean,
   "notification3" boolean,
-  "privacy1" int REFERENCES "privacy" ("id"),
-  "privacy2" int REFERENCES "privacy" ("id"),
-  "privacy3" int REFERENCES "privacy" ("id")
+  "privacy" int REFERENCES "privacy" ("id")
 );
 
 CREATE TABLE "userfriend" (

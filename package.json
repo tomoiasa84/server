@@ -11,7 +11,14 @@
   "dependencies": {
     "apollo-server": "^2.6.2",
     "apollo-server-express": "^2.6.2",
+    "faker": "^4.1.0",
     "graphql": "^14.3.1",
-    "knex": "^0.17.5"
+    "knex": "^0.17.5",
+    "knex-migrate-sql-file": "^1.0.3",
+    "moment": "^2.24.0",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "romanian-cities": "^1.0.2"
   }
 }
