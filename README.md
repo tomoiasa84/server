@@ -13,7 +13,7 @@ What things you need to install the software and how to install them
 ```
 npm install knex -g
 npm install nodemon -g
-npm init
+npm install
 ```
 ### Installing
 
