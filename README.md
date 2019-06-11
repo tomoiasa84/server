@@ -29,7 +29,7 @@ development: {
 ```
 Same configuration for db/pgAdaptor.js.
 
-To create data base:
+To create data base move to knex_migration/ folder and run, after configuring db connection in knexfile.js:
 
 ```
 knex migrate:latest
