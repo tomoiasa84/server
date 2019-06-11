@@ -1,6 +1,4 @@
-# Project Title
-
-xFriends Apollo Server
+# xFriends Apollo Server
 
 ## Getting Started
 
