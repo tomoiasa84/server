@@ -1,4 +1,4 @@
-# serv# Project Title
+# Project Title
 
 xFriends Apollo Server
 
@@ -46,4 +46,4 @@ To run server:
 ```
 nodemon index.js
 
-```er
+```
