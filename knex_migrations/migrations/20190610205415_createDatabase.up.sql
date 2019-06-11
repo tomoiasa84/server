@@ -1,126 +1,84 @@
-CREATE TABLE "userx" (
-  "id" int PRIMARY KEY,
-  "name" varchar,
-  "location" int,
-  "hasAccount" boolean,
-  "notification1" boolean,
-  "notification2" boolean,
-  "notification3" boolean,
-  "privacy1" int,
-  "privacy2" int,
-  "privacy3" int
-);
-
 CREATE TABLE "privacy" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "setting" varchar
 );
 
 CREATE TABLE "location" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "city" varchar
 );
 
+CREATE TABLE "tag" (
+  "id" SERIAL PRIMARY KEY,
+  "name" varchar
+);
+
+CREATE TABLE "userx" (
+  "id" SERIAL PRIMARY KEY,
+  "name" varchar,
+  "location" int REFERENCES "location" ("id"),
+  "hasAccount" boolean,
+  "notification1" boolean,
+  "notification2" boolean,
+  "notification3" boolean,
+  "privacy1" int REFERENCES "privacy" ("id"),
+  "privacy2" int REFERENCES "privacy" ("id"),
+  "privacy3" int REFERENCES "privacy" ("id")
+);
+
 CREATE TABLE "userfriend" (
-  "id" int PRIMARY KEY,
-  "userOrigin" int,
-  "userTarget" int,
+  "id" SERIAL PRIMARY KEY,
+  "userOrigin" int REFERENCES "userx" ("id"),
+  "userTarget" int REFERENCES "userx" ("id"),
   "acceptedFlag" boolean,
   "blockFlag" boolean
 );
 
 CREATE TABLE "card" (
-  "id" int PRIMARY KEY,
-  "postedBy" int,
-  "searchFor" int,
+  "id" SERIAL PRIMARY KEY,
+  "postedBy" int REFERENCES "userx" ("id"),
+  "searchFor" int REFERENCES "tag" ("id"),
   "created_at" varchar,
   "message" varchar
 );
 
 CREATE TABLE "userrecomcard" (
-  "id" int PRIMARY KEY,
-  "cardId" int,
-  "userAsk" int,
-  "userRecommender" int,
-  "userRecommended" int,
+  "id" SERIAL PRIMARY KEY,
+  "cardId" int REFERENCES "card" ("id"),
+  "userAsk" int REFERENCES "userx" ("id"),
+  "userRecommender" int REFERENCES "userx" ("id"),
+  "userRecommended" int REFERENCES "userx" ("id"),
   "acceptedFlag" boolean
 );
 
-CREATE TABLE "tag" (
-  "id" int PRIMARY KEY,
-  "name" varchar
-);
-
 CREATE TABLE "usertag" (
-  "id" int PRIMARY KEY,
-  "user_id" int,
-  "tag_id" int,
+  "id" SERIAL PRIMARY KEY,
+  "user_id" int REFERENCES "userx" ("id"),
+  "tag_id" int REFERENCES "tag" ("id"),
   "default" boolean
 );
 
 CREATE TABLE "usertagreview" (
-  "id" int PRIMARY KEY,
-  "recommendationBy" int,
-  "recommendationFor" int,
+  "id" SERIAL PRIMARY KEY,
+  "recommendationBy" int REFERENCES "userx" ("id"),
+  "recommendationFor" int REFERENCES "usertag" ("id"),
   "stars" int,
   "text" varchar
 );
 
 CREATE TABLE "messageThread" (
-  "id" int PRIMARY KEY,
-  "userrecomcard" int
+  "id" SERIAL PRIMARY KEY,
+  "userrecomcard" int REFERENCES "userrecomcard" ("id")
 );
 
 CREATE TABLE "message" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "text" varchar,
-  "messageThread" int,
-  "messageFrom" int
+  "messageThread" int REFERENCES "messageThread" ("id"),
+  "messageFrom" int REFERENCES "userx" ("id")
 );
 
 CREATE TABLE "messageThreadUser" (
-  "thread" int,
-  "user" int
+  "thread" int REFERENCES "messageThread" ("id"),
+  "user" int REFERENCES "userx" ("id")
 );
-
-ALTER TABLE "userx" ADD FOREIGN KEY ("location") REFERENCES "location" ("id");
-
-ALTER TABLE "userx" ADD FOREIGN KEY ("privacy1") REFERENCES "privacy" ("id");
-
-ALTER TABLE "userx" ADD FOREIGN KEY ("privacy2") REFERENCES "privacy" ("id");
-
-ALTER TABLE "userx" ADD FOREIGN KEY ("privacy3") REFERENCES "privacy" ("id");
-
-ALTER TABLE "userfriend" ADD FOREIGN KEY ("userOrigin") REFERENCES "userx" ("id");
-
-ALTER TABLE "userfriend" ADD FOREIGN KEY ("userTarget") REFERENCES "userx" ("id");
-
-ALTER TABLE "card" ADD FOREIGN KEY ("postedBy") REFERENCES "userx" ("id");
-
-ALTER TABLE "card" ADD FOREIGN KEY ("searchFor") REFERENCES "tag" ("id");
-
-ALTER TABLE "userrecomcard" ADD FOREIGN KEY ("cardId") REFERENCES "card" ("id");
-
-ALTER TABLE "userrecomcard" ADD FOREIGN KEY ("userAsk") REFERENCES "userx" ("id");
-
-ALTER TABLE "userrecomcard" ADD FOREIGN KEY ("userRecommender") REFERENCES "userx" ("id");
-
-ALTER TABLE "userrecomcard" ADD FOREIGN KEY ("userRecommended") REFERENCES "userx" ("id");
-
-ALTER TABLE "usertag" ADD FOREIGN KEY ("user_id") REFERENCES "userx" ("id");
-
-ALTER TABLE "usertag" ADD FOREIGN KEY ("tag_id") REFERENCES "tag" ("id");
-
-ALTER TABLE "usertagreview" ADD FOREIGN KEY ("recommendationBy") REFERENCES "userx" ("id");
-
-ALTER TABLE "usertagreview" ADD FOREIGN KEY ("recommendationFor") REFERENCES "usertag" ("id");
-
-ALTER TABLE "messageThread" ADD FOREIGN KEY ("userrecomcard") REFERENCES "userrecomcard" ("id");
-
-ALTER TABLE "message" ADD FOREIGN KEY ("messageThread") REFERENCES "messageThread" ("id");
-
-ALTER TABLE "message" ADD FOREIGN KEY ("messageFrom") REFERENCES "userx" ("id");
-
-ALTER TABLE "messageThreadUser" ADD FOREIGN KEY ("thread") REFERENCES "messageThread" ("id");
-
-ALTER TABLE "messageThreadUser" ADD FOREIGN KEY ("user") REFERENCES "userx" ("id");
