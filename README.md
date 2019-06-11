@@ -35,7 +35,7 @@ To create data base move to knex_migration/ folder and run, after configuring db
 ```
 knex migrate:latest
 ```
-To populate database:(not yet available)
+To populate database:
 
 ```
 knex seed:run
@@ -48,4 +48,13 @@ Change directory back to root
 ```
 nodemon index.js
 
+Go to http://localhost:4000/
+
+Run: 
+{
+	users{
+    id
+    name
+  }
+}
 ```
