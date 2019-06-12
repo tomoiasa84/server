@@ -5,6 +5,7 @@ type Query {
     "Query type"
     hello: String
     users: [User]
+    locations: [Location]
   }`
 
 module.exports = query;
