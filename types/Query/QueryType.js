@@ -2,10 +2,16 @@ const { gql } = require('apollo-server');
 const query = gql`
 
 type Query {
-    "Query type"
-    hello: String
-    users: [User]
-    locations: [Location]
-  }`
+  "Query type"
+  users: [User]
+  locations: [Location]
+  privacies: [Privacy]
+}
+
+type Mutation{
+
+  createConnection(id1:String!,id2:String!): Response
+}
+`
 
 module.exports = query;

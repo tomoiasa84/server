@@ -7,7 +7,8 @@ type User {
     name: String
     location: Location
     hasAccount: Boolean
-    
+    privacy: Privacy
+    connections: [User]
   }`
 
 module.exports = user;
