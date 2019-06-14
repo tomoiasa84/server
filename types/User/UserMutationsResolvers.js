@@ -32,69 +32,33 @@ const userMutationsResolvers = {
         },
         create_user: (root, {
             name,
-            cityName,
+            cityId,
             phone
         }) => {
 
-            return knex('userx').where({
-                    name: name,
-                }).first()
-                .then((data) => {
+            return knex('userx').insert({
+                name: name,
+                location: cityId,
+                hasAccount: true,
+                notification1: true,
+                notification2: true,
+                notification3: true,
+                privacy: 1
+            })
+            .then((data) => {
 
-                    if (data) {
-                        return {
-                            status: 'bad',
-                            message: 'User already exists.'
-                        }
-                    }
-                    return knex('location').where('city', cityName).first()
-                        .then((data) => {
+                return {
+                    status: 'ok',
+                    message: 'User created.'
+                }
+            })
+            .catch((err) => {
 
-                            if (!data) {
-
-                                return {
-                                    status: 'bad',
-                                    message: 'Location does not exist.'
-                                }
-                            }
-
-                            return knex('userx').insert({
-                                    name: name,
-                                    location: data.id,
-                                    hasAccount: true,
-                                    notification1: true,
-                                    notification2: true,
-                                    notification3: true,
-                                    privacy: 1
-                                })
-                                .then((data) => {
-
-                                    console.log(data);
-                                    return {
-                                        status: 'ok',
-                                        message: 'User created.'
-                                    }
-                                })
-                                .catch((err) => {
-
-                                    console.log(err);
-
-                                    return {
-                                        status: 'bad',
-                                        message: err.error
-                                    }
-                                })
-                        })
-                        .catch((err) => {
-
-                            return {
-                                status: 'ok',
-                                message: err.error
-                            }
-                        })
-
-
-                })
+                return {
+                    status: 'bad',
+                    message: 'Eroare la insert'
+                }
+            })
         },
         refuse_connection: (root, {
             idUser

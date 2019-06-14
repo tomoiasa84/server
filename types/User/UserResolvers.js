@@ -36,7 +36,7 @@ const userResolvers = {
     connections(user) {
 
       //Find friends of current user
-      return knex('userfriend').where('userTarget', user.id)
+      return knex('userfriend').where('userOrigin', user.id)
         .then((friendsRec) => {
 
           if (friendsRec) {
