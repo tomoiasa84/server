@@ -9,6 +9,7 @@ type User {
     hasAccount: Boolean
     privacy: Privacy
     connections: [User]
+    cards: [Card]
   }`
 
 module.exports = user;

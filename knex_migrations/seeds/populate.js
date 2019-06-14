@@ -41,11 +41,11 @@ function createCard(knex,user)
     ORDER BY random()
     LIMIT 1;`)
   .then((tagRec) => {
-
+    
     return knex('card').insert({
 
       postedBy:user.id,
-      searchFor:tagRec.id,
+      searchFor:tagRec.rows[0].id,
       created_at:`${moment().format('MMMM Do YYYY, h:mm:ss a')}`,
       message:`${faker.lorem.sentence()}`
     });

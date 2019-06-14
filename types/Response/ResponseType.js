@@ -4,6 +4,7 @@ const response = gql`
 type Response {
 
     status: String!
+    message: String!
   }`
 
 module.exports = response;

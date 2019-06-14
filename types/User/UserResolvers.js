@@ -2,7 +2,7 @@ const knex = require('../../db/pgAdaptop');
 
 const userResolvers = {
   Query: {
-    users: (root, args, ctx) => {
+    get_users: (root, args, ctx) => {
 
       //Return all users
       return knex('userx').select()
@@ -10,20 +10,19 @@ const userResolvers = {
 
           return users;
         });
+    },
+    get_user:(root,{id},context)=>{
+
+      return knex('userx').where('id',id).first()
+
     }
   },
-  Mutation: {
-
-    createConnection(obj, { id1,id2 }, context) {
-
-      console.log(id1,id2);
-      return {
-        status: 'ok'
-      }
-    }
-  },
+  
   User: {
+    cards:(user)=>{
 
+      return knex('card').where('postedBy',user.id);
+    },
     location(user) {
 
       //Resolve Location relation
@@ -41,6 +40,7 @@ const userResolvers = {
         .then((friendsRec) => {
 
           if (friendsRec) {
+            
             let users = [];
             friendsRec.forEach(friendRow => {
 

@@ -3,6 +3,7 @@ const User = require('./types/User/UserType');
 const Location = require('./types/Location/LocationType');
 const Privacy = require('./types/Privacy/PrivacyType');
 const Response = require('./types/Response/ResponseType');
-
-const typeDefs = [Query,User,Location,Privacy,Response];
+const Card = require('./types/Card/CardType');
+const Tag = require('./types/Tag/TagType');
+const typeDefs = [Tag,Query,User,Location,Privacy,Response,Card];
 module.exports = typeDefs;
