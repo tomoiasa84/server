@@ -11,9 +11,9 @@ const userResolvers = {
           return users;
         });
     },
-    get_user:(root,{id},context)=>{
+    get_user:(root,{userId},context)=>{
 
-      return knex('userx').where('id',id).first()
+      return knex('userx').where('id',userId).first()
 
     }
   },

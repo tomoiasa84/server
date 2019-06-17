@@ -16,6 +16,7 @@ CREATE TABLE "tag" (
 CREATE TABLE "userx" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar,
+  "phone" varchar UNIQUE,
   "location" int REFERENCES "location" ("id"),
   "hasAccount" boolean,
   "notification1" boolean,

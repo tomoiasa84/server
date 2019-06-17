@@ -3,6 +3,31 @@ const moment  = require('moment');
 
 const cardMutationsResolver = {
     Mutation:{
+        delete_card: (root,{cardId},context) => {
+
+            return knex('card').where('id',cardId).del()
+            .then((data) => {
+
+                if(data){
+
+                    return {
+                        status: 'ok',
+                        message: 'Card deleted.'
+                    }
+                }
+                return {
+                    status: 'bad',
+                    message: 'Card does not exist.'
+                }
+            })
+            .catch((err) => {
+
+                return {
+                    status: 'bad',
+                    message: `Code: ${err.code} Detail: ${err.detail}.`
+                }
+            })
+        },
         update_card:(root,{
             cardId,
             tag,
@@ -12,7 +37,7 @@ const cardMutationsResolver = {
             return knex('card').where('id',cardId)
             .update({
                 searchFor:tag,
-                message: message
+                message: message,
             })
             .then((result) => {
 
@@ -36,79 +61,36 @@ const cardMutationsResolver = {
                     message: err.error
                 }
             })
-            // .then((data) => {
-
-            //     if(data){
-
-            //         return knex('card').where('id',data.id)
-            //         .update({
-            //             searchFor: tag,
-            //             message: message
-            //         })
-            //         .then((result) =>{
-
-            //             console.log(result);
-            //             return {
-            //                 status: 'ok',
-            //                 message: 'updated'
-            //             }
-                        
-            //         })
-            //     }
-            //     return {
-            //         status:'bad',
-            //         message:'Card does not exist'
-            //     }
-            // })
-            // .catch((err) => {
-            //     return {
-            //         status:'bad',
-            //         message:err.error
-            //     }
-            // })
         },
-        create_card(root,{postedBy,
+        create_card(root,{
+            postedBy,
             searchFor,
-            message},context){
-                //console.log('hit this');
+            message
+        },context){
                 
-                return knex('card').where({
+                return knex('card').insert({
                     postedBy: postedBy,
                     searchFor: searchFor,
-                    message: message
+                    message: message,
+                    created_at: `${moment()}`
                 })
-                .first()
-                .then((card)=>{
+                .then((data) => {
 
-                    if(card){
-
-                        return {
-                            status: 'bad',
-                            message: 'Card already exists.'
-                        }
-                    }
-                    return knex('card').insert({
-
+                    return knex('card').where({
                         postedBy: postedBy,
                         searchFor: searchFor,
-                        created_at: `${moment()}`,
                         message: message
-                    })
-                    .then((data)=>{
-                        //console.log(data);
-                        return {
-                            status: 'ok',
-                            message: 'Card created'
-                        }
-                    })
-                    .catch((err)=>{
-
-                        return{
-                            status:'bad',
-                            message: err.error
-                        }
-                    })
+                    }).first();
                 })
+                .catch((err) => {
+    
+                    return knex('card').where({
+                        postedBy: postedBy,
+                        searchFor: searchFor,
+                        message: message
+                    }).first();
+                })
+                
             }
     }
 }

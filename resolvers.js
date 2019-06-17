@@ -6,6 +6,7 @@ const CardResolvers = require('./types/Card/CardResolvers');
 const TagResolvers = require('./types/Tag/TagResolvers');
 const UserMutationsResolvers = require('./types/User/UserMutationsResolvers');
 const CardMutationsResolvers = require('./types/Card/CardMutationsResolvers');
+const TagMutationsResolvers = require('./types/Tag/TagMutationsResolvers');
 
 const resolvers = [
     TagResolvers,
@@ -16,5 +17,6 @@ const resolvers = [
     PrivacyResolvers,
     UserMutationsResolvers,
     CardMutationsResolvers,
+    TagMutationsResolvers,
 ];
 module.exports = resolvers;  

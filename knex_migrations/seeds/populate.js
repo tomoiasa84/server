@@ -13,6 +13,7 @@ function createUser(knex,location)
     return knex('userx').insert({
       name: userName,
       location: locationRecord.id,
+      phone:`${faker.phone.phoneNumber()}`,
       hasAccount: true,
       notification1: true,
       notification2: true,

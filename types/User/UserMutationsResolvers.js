@@ -10,6 +10,8 @@ const userMutationsResolvers = {
             .del()
             .then((data)=>{
 
+                console.log(data);
+                
                 if(data){
 
                     return {
@@ -26,7 +28,7 @@ const userMutationsResolvers = {
 
                 return {
                     status: 'bad',
-                    message: err.error
+                    message: `Code: ${err.code} Detail: ${err.detail}`
                 }
             })
         },
@@ -39,6 +41,7 @@ const userMutationsResolvers = {
             return knex('userx').insert({
                 name: name,
                 location: cityId,
+                phone: phone,
                 hasAccount: true,
                 notification1: true,
                 notification2: true,
@@ -47,17 +50,15 @@ const userMutationsResolvers = {
             })
             .then((data) => {
 
-                return {
-                    status: 'ok',
-                    message: 'User created.'
-                }
+                return knex('userx').where({
+                    name: name,
+                    location: cityId,
+                    phone: phone
+                }).first();
             })
             .catch((err) => {
 
-                return {
-                    status: 'bad',
-                    message: 'Eroare la insert'
-                }
+                return knex('userx').where('phone',phone).first();
             })
         },
         refuse_connection: (root, {
@@ -113,66 +114,37 @@ const userMutationsResolvers = {
                 });
         },
         update_user(obj, {
-            id,
+            userId,
             name,
             location,
             phone
         }, context) {
 
-            //console.log(id,name,phone,location);
-            let promesies = [];
-            if (name) {
-                promesies.push(knex('userx')
-                    .where({
-                        id: id
-                    })
-                    .update({
-                        name: name
-                    }))
-            }
-            if (location) {
-                promesies.push(
-                    knex('location')
-                    .where({
-                        city: location
-                    })
-                    .first()
-                    .then((data) => {
-                        return knex('userx')
-                            .where({
-                                id: id
-                            })
-                            .update({
-                                location: data.id
-                            })
-                    })
-                )
-            }
-            return Promise.all(promesies)
-                .then(() => {
-                    return knex('userx').where('id', id).first()
-                        .then((user) => {
-                            if (!user) {
-                                return {
-                                    status: 'bad',
-                                    message: 'User doen\'t exist'
-                                }
-                            } else {
-                                return {
-                                    status: 'good',
-                                    message: 'User updated successfully'
-                                }
-                            }
+            return knex('userx').where('id',userId).update(
+                {
+                    name:name,
+                    location: location,
+                    phone:phone
+                }
+            )
+            .then((data) => {
 
-                        })
-                })
-                .catch((err) => {
-
-                    return {
-                        status: 'bad',
-                        message: 'Error, could not update user'
-                    }
-                });
+                console.log(data);
+                
+                return {
+                    status: 'ok',
+                    message: 'updated'
+                }
+            })
+            .catch((err) => {
+                 
+                console.log(err);
+                
+                return {
+                    status: 'bad',
+                    message: 'no update'
+                }
+            })
         },
         create_connection(obj, {
             id1,

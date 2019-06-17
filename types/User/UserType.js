@@ -6,10 +6,12 @@ type User {
     id: String!
     name: String
     location: Location
+    phone: String
     hasAccount: Boolean
     privacy: Privacy
     connections: [User]
     cards: [Card]
+    tags: [Tag]
   }`
 
 module.exports = user;
