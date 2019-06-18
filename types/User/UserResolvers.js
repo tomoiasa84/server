@@ -19,6 +19,25 @@ const userResolvers = {
   },
   
   User: {
+    tags:(user) => {
+
+      return knex('usertag').where('user_id',user.id)
+      .then((data) => {
+
+        let tags = [];
+        
+        if(data.length){
+
+          data.forEach(userTag => {
+
+            tags.push(knex('tag').where('id',userTag.tag_id).first())
+          })
+        }
+        return Promise.all(tags);
+        
+      })
+      
+    },
     cards:(user)=>{
 
       return knex('card').where('postedBy',user.id);

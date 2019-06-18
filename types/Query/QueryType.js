@@ -11,11 +11,23 @@ type Query {
   get_card(cardId:String!): Card
   get_tags: [Tag]
   get_tag(tagId:String!): Tag
+  get_reviews:[Review]
+  get_review(reviewId:String!):Review
   
 }
 
 type Mutation{
 
+  edit_review(reviewId:String!,
+            stars:String,
+            text:String):Response
+
+  add_review(userId:String!,
+            tagReview:String!,
+            stars:String!,
+            text:String!):Response
+
+  default_tag(usertagId:String!):Response
   remove_usertag(usertagId:String!):Response
   add_usertag(userId:String!,tagId:String!):String
 
