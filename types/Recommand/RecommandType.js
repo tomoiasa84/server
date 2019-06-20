@@ -1,9 +1,9 @@
 const { gql } = require('apollo-server');
-const tag = gql`
+const recommand = gql`
 
-type Tag {
+type Recommand {
     id: Int!
     name: String
-  }`
+  }`;
 
-module.exports = tag;
+module.exports = recommand;

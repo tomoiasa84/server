@@ -3,7 +3,7 @@ const user = gql`
 
 type User {
     "Type of user with id, name"
-    id: String!
+    id: Int!
     name: String
     location: Location
     phone: String

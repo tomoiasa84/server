@@ -4,47 +4,52 @@ const query = gql`
 type Query {
   "Query type"
   get_users: [User]
-  get_user(userId:String!):User
-  locations: [Location]
+  get_user(userId:Int!):User
+  get_locations: [Location]
+  get_location(locationId:Int!):Location
   privacies: [Privacy]
   get_cards: [Card]
-  get_card(cardId:String!): Card
+  get_card(cardId:Int!): Card
   get_tags: [Tag]
-  get_tag(tagId:String!): Tag
+  get_tag(tagId:Int!): Tag
   get_reviews:[Review]
-  get_review(reviewId:String!):Review
+  get_review(reviewId:Int!):Review
   
 }
 
 type Mutation{
-
-  edit_review(reviewId:String!,
-            stars:String,
+  recommend_card(cardId:Int!,
+            userAsk:Int!,
+            userSend:Int!,
+            userRec:Int!):Recommand
+  add_location(city:String!):Response
+  edit_review(reviewId:Int!,
+            stars:Int,
             text:String):Response
 
-  add_review(userId:String!,
-            tagReview:String!,
-            stars:String!,
+  add_review(userId:Int!,
+            tagReview:Int!,
+            stars:Int!,
             text:String!):Response
 
-  default_tag(usertagId:String!):Response
-  remove_usertag(usertagId:String!):Response
-  add_usertag(userId:String!,tagId:String!):String
+  default_tag(usertagId:Int!):Response
+  remove_usertag(usertagId:Int!):Response
+  add_usertag(userId:Int!,tagId:Int!):String
 
-  delete_tag(tagId:String!):Response
+  delete_tag(tagId:Int!):Response
   create_tag(name:String!):Tag
 
-  create_card(postedBy:String!,searchFor:String!,message:String):Card
-  update_card(cardId:String!,tag:String,message:String):Response
-  delete_card(cardId:String!):Response
+  create_card(postedBy:Int!,searchFor:Int!,message:String):Card
+  update_card(cardId:Int!,tag:Int,message:String):Response
+  delete_card(cardId:Int!):Response
 
-  delete_user(userId:String!):Response
-  create_user(name:String!,cityId:String!,phone:String!):User
-  update_user(userId:String!,name:String,location:String,phone:String):Response
+  delete_user(userId:Int!):Response
+  create_user(name:String!,cityId:Int!,phone:String!):User
+  update_user(userId:Int!,name:String,location:Int,phone:String):Response
 
-  accept_connection(idUser:String!):Response
-  refuse_connection(idUser:String!):Response
-  create_connection(id1:String!,id2:String!): Response
+  accept_connection(idUser:Int!):Response
+  refuse_connection(idUser:Int!):Response
+  create_connection(id1:Int!,id2:Int!): Response
 }
 `
 

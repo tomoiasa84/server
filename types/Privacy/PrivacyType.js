@@ -3,7 +3,7 @@ const privacy = gql`
 
 type Privacy {
 
-    id: String!
+    id: Int!
     setting: String
   }`
 

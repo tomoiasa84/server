@@ -9,8 +9,11 @@ const CardMutationsResolvers = require('./types/Card/CardMutationsResolvers');
 const TagMutationsResolvers = require('./types/Tag/TagMutationsResolvers');
 const ReviewResolvers = require('./types/Review/ReviewResolvers');
 const ReviewMutationsResolvers = require('./types/Review/ReviewMutationsResolvers');
-
+const LocationMutationsResolvers = require('./types/Location/LocationMutationsResolvers');
+const RecommandMutationsResolvers = require('./types/Recommand/RecommandMutationsResolvers');
 const resolvers = [
+    RecommandMutationsResolvers,
+    LocationMutationsResolvers,
     TagResolvers,
     CardResolvers,
     QueryResolvers,

@@ -2,8 +2,8 @@ const { gql } = require('apollo-server');
 const location = gql`
 
 type Location {
-    id: String!
-    city: String
+    id: Int!
+    city: String!
   }`
 
 module.exports = location;
