@@ -1,8 +1,6 @@
-const knex = require('../../db/pgAdaptop');
-
 const userResolvers = {
   Query: {
-    get_users: (root, args, ctx) => {
+    get_users: (root, args, { knex }) => {
 
       //Return all users
       return knex('userx').select()
@@ -11,7 +9,7 @@ const userResolvers = {
           return users;
         });
     },
-    get_user:(root,{userId},context)=>{
+    get_user:(root,{userId},{ knex })=>{
 
       return knex('userx').where('id',userId).first()
 

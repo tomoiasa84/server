@@ -1,9 +1,8 @@
-const knex = require('../../db/pgAdaptop');
 const moment  = require('moment');
 
 const cardMutationsResolver = {
     Mutation:{
-        delete_card: (root,{cardId},context) => {
+        delete_card: (root,{cardId},{ knex }) => {
 
             return knex('card').where('id',cardId).del()
             .then((data) => {
@@ -32,7 +31,7 @@ const cardMutationsResolver = {
             cardId,
             tag,
             message
-        },context) => {
+        },{ knex }) => {
 
             return knex('card').where('id',cardId)
             .update({
@@ -66,7 +65,7 @@ const cardMutationsResolver = {
             postedBy,
             searchFor,
             message
-        },context){
+        },{ knex }){
                 
                 return knex('card').insert({
                     postedBy: postedBy,

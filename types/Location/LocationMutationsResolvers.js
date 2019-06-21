@@ -3,7 +3,7 @@ const knex = require('../../db/pgAdaptop');
 const locationMutationsResolver = {
 
     Mutation: {
-        add_location: (root,{city},context) => {
+        add_location: (root,{city},{ knex }) => {
 
             return knex('location').insert({
                 city:city

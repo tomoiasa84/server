@@ -5,19 +5,34 @@ type Query {
   "Query type"
   get_users: [User]
   get_user(userId:Int!):User
+
   get_locations: [Location]
   get_location(locationId:Int!):Location
+
   privacies: [Privacy]
+
   get_cards: [Card]
   get_card(cardId:Int!): Card
+
   get_tags: [Tag]
   get_tag(tagId:Int!): Tag
+
   get_reviews:[Review]
   get_review(reviewId:Int!):Review
+
+  get_messages:[Message]
+  get_message(msgId:Int!):Message
+
+  get_threadmessages:[ThreadMessage]
+
+  get_recommandations:[Recommand]
   
 }
 
 type Mutation{
+  create_message(text:String!,
+            msgThread:Int!,
+            msgFrom:Int!):Message
   recommend_card(cardId:Int!,
             userAsk:Int!,
             userSend:Int!,

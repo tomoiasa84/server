@@ -54,11 +54,11 @@ function createCard(knex,user)
 }
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('messageThreadUser').del()
+  return knex('message_thread_user').del()
     .then(()=>{
       return knex('message').del()
       .then(()=>{
-        return knex('messageThread').del()
+        return knex('message_thread').del()
         .then(()=>{
           return knex('usertagreview').del()
           .then(()=>{
@@ -230,7 +230,7 @@ exports.seed = function(knex, Promise) {
     .then(()=>{
 
       //Msg thread
-      return knex('messageThread').insert([
+      return knex('message_thread').insert([
         {
           userrecomcard:1
         }
@@ -250,7 +250,7 @@ exports.seed = function(knex, Promise) {
     .then(()=>{
 
       //Create msgThreadUser
-      return knex('messageThreadUser').insert([
+      return knex('message_thread_user').insert([
         {
           thread:1,
           user:23

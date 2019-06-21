@@ -1,13 +1,11 @@
-const knex = require('../../db/pgAdaptop');
-
 const reviewResolvers = {
 
     Query: {
-        get_review: (root, {reviewId}, context) => {
+        get_review: (root, {reviewId}, { knex }) => {
 
             return knex('usertagreview').where('id',reviewId).first();
         },
-        get_reviews: (root, args, context) => {
+        get_reviews: (root, args, { knex }) => {
 
             return knex('usertagreview').select()
         }

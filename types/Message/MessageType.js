@@ -5,7 +5,7 @@ type Message {
     
     id: Int!
     text: String!
-    messageThread: Int!
+    messageThread: ThreadMessage!
     messageFrom: User!
   }`
 

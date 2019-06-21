@@ -1,8 +1,6 @@
-const knex = require('../../db/pgAdaptop');
-
 const tagResolvers = {
     Query: {
-      get_tags: (root, args, context) => {
+      get_tags: (root, args, { knex }) => {
         
         return knex('tag').select()
         .then((tags)=>{
@@ -10,7 +8,7 @@ const tagResolvers = {
           return tags;
         }) 
       },
-      get_tag: (root,{tagId},context) => {
+      get_tag: (root,{tagId},{ knex }) => {
 
         console.log(tagId);
         

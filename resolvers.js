@@ -11,7 +11,15 @@ const ReviewResolvers = require('./types/Review/ReviewResolvers');
 const ReviewMutationsResolvers = require('./types/Review/ReviewMutationsResolvers');
 const LocationMutationsResolvers = require('./types/Location/LocationMutationsResolvers');
 const RecommandMutationsResolvers = require('./types/Recommand/RecommandMutationsResolvers');
+const MessageResolvers = require('./types/Message/MessageResolvers');
+const ThreadMessageResolvers = require('./types/ThreadMessage/ThreadMessageResolvers');
+const RecommandResolvers = require('./types/Recommand/RecommandResolvers');
+const MessageMutationsResolvers = require('./types/Message/MessageMutationsResolvers');
 const resolvers = [
+    MessageMutationsResolvers,
+    RecommandResolvers,
+    ThreadMessageResolvers,
+    MessageResolvers,
     RecommandMutationsResolvers,
     LocationMutationsResolvers,
     TagResolvers,

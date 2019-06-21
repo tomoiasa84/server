@@ -1,8 +1,7 @@
-const knex = require('../../db/pgAdaptop');
 
 const cardResolvers = {
     Query: {
-      get_cards: (root, args, context) => {
+      get_cards: (root, args, { knex }) => {
         
         return knex('card').select()
         .then((cards)=>{
@@ -10,7 +9,7 @@ const cardResolvers = {
           return cards;
         }) 
        },
-       get_card: (root,{cardId},context)=>{
+       get_card: (root,{cardId},{ knex })=>{
 
         return knex('card').where('id',cardId)
         .first()

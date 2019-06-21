@@ -65,7 +65,7 @@ CREATE TABLE "usertagreview" (
   "text" varchar
 );
 
-CREATE TABLE "messageThread" (
+CREATE TABLE "message_thread" (
   "id" SERIAL PRIMARY KEY,
   "userrecomcard" int REFERENCES "userrecomcard" ("id")
 );
@@ -73,11 +73,12 @@ CREATE TABLE "messageThread" (
 CREATE TABLE "message" (
   "id" SERIAL PRIMARY KEY,
   "text" varchar,
-  "messageThread" int REFERENCES "messageThread" ("id"),
+  "messageThread" int REFERENCES "message_thread" ("id"),
   "messageFrom" int REFERENCES "userx" ("id")
 );
 
-CREATE TABLE "messageThreadUser" (
-  "thread" int REFERENCES "messageThread" ("id"),
+CREATE TABLE "message_thread_user" (
+  "id" SERIAL PRIMARY KEY, 
+  "thread" int REFERENCES "message_thread" ("id"),
   "user" int REFERENCES "userx" ("id")
 );

@@ -1,7 +1,6 @@
-const knex = require('../../db/pgAdaptop');
 const privacyResolver = {
     Query: {
-      privacies: () => {
+      privacies: (root,args,{ knex }) => {
 
         return knex('privacy').select()
       }

@@ -1,10 +1,8 @@
-const knex = require('../../db/pgAdaptop');
-
 const cardMutationsResolver = {
 
     Mutation:{
         
-        default_tag: (root,{usertagId},context) => {
+        default_tag: (root,{usertagId},{ knex }) => {
 
             return knex('usertag').where('id',usertagId).update({
 
@@ -26,7 +24,7 @@ const cardMutationsResolver = {
                 }
             })
         },
-        remove_usertag: (root,{usertagId},context) => {
+        remove_usertag: (root,{usertagId},{ knex }) => {
 
             return knex('usertag').where('id',usertagId).del()
             .then((data) => {
@@ -54,7 +52,7 @@ const cardMutationsResolver = {
                 }
             })
         },
-        add_usertag: (root,{userId,tagId},context) => {
+        add_usertag: (root,{userId,tagId},{ knex }) => {
 
             return knex('usertag').insert({
 
@@ -79,7 +77,7 @@ const cardMutationsResolver = {
                 return '0'
             })
         },
-        delete_tag: (root,{tagId},context) => {
+        delete_tag: (root,{tagId},{ knex }) => {
 
             return knex('tag').where('id',tagId).del()
             .then((data) => {
@@ -107,7 +105,7 @@ const cardMutationsResolver = {
                 }
             })
         },
-        create_tag: (root,{name},context) => {
+        create_tag: (root,{name},{ knex }) => {
             
             return knex('tag').insert({
                 name:name

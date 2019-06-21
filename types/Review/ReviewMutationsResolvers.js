@@ -1,6 +1,3 @@
-const knex = require('../../db/pgAdaptop');
-
-
 const reviewMutationsResolvers = {
 
     Mutation: {
@@ -8,7 +5,7 @@ const reviewMutationsResolvers = {
             reviewId,
             stars,
             text
-        }, context) => {
+        }, { knex }) => {
 
             return knex('usertagreview').where('id',reviewId)
             .update({

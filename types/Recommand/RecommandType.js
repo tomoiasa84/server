@@ -3,7 +3,11 @@ const recommand = gql`
 
 type Recommand {
     id: Int!
-    name: String
+    card: Card
+    userAsk: User
+    recommander: User
+    recommanded: User
+    flag: Boolean
   }`;
 
 module.exports = recommand;

@@ -1,7 +1,7 @@
 
-DROP TABLE "messageThreadUser" CASCADE;
+DROP TABLE "message_thread_user" CASCADE;
 DROP TABLE "message" CASCADE;
-DROP TABLE "messageThread" CASCADE;
+DROP TABLE "message_thread" CASCADE;
 DROP TABLE "userfriend" CASCADE;
 DROP TABLE "userrecomcard" CASCADE;
 DROP TABLE "usertag" CASCADE;

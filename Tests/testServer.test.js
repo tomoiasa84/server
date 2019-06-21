@@ -24,13 +24,13 @@ it('Testing', async () => {
         'Accept': 'application/json',
       },
       body: JSON.stringify({
-        query: "{ get_users{ id } }"
+        query: "{ get_users(userId:1){ id name} }"
       })
     })
     .then(r => r.json())
     .then(data => {
 
-      console.log(data);
+      console.log(data.data);
       
     })
     .catch(err => console.log(err))

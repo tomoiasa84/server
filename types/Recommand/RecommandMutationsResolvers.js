@@ -1,5 +1,3 @@
-const knex = require('../../db/pgAdaptop');
-
 const recommandMutationsResolvers = {
 
     Mutation:{
@@ -9,7 +7,7 @@ const recommandMutationsResolvers = {
             userAsk,
             userSend,
             userRec
-        },context) => {
+        },{ knex }) => {
         
             return knex('userrecomcard').insert({
         

@@ -1,9 +1,6 @@
-const knex = require('../../db/pgAdaptop');
-
-
 const userMutationsResolvers = {
     Mutation: {
-        delete_user: (root,{userId},context)=>{
+        delete_user: (root,{userId},{ knex })=>{
 
             return knex('userx').where('id',userId)
             .first()
@@ -63,7 +60,7 @@ const userMutationsResolvers = {
         },
         refuse_connection: (root, {
             idUser
-        }, context) => {
+        }, { knex }) => {
             return knex('userfriend').where({
                     userTarget: idUser,
                     acceptedFlag: false
@@ -92,7 +89,7 @@ const userMutationsResolvers = {
         },
         accept_connection: (root, {
             idUser
-        }, context) => {
+        }, { knex }) => {
 
             return knex('userfriend').where('userTarget', idUser)
                 .update({
@@ -118,7 +115,7 @@ const userMutationsResolvers = {
             name,
             location,
             phone
-        }, context) {
+        }, { knex }) {
 
             return knex('userx').where('id',userId).update(
                 {
@@ -149,7 +146,7 @@ const userMutationsResolvers = {
         create_connection(obj, {
             id1,
             id2
-        }, context) {
+        }, { knex }) {
 
             return knex('userfriend').insert({
                     userOrigin: id1,
