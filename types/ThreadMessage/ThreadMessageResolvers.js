@@ -1,10 +1,14 @@
-const threadMessageResolver = {
+const threadMessageResolvers = {
 
     Query:{
 
         get_threadmessages: (root,args,{ knex }) => {
 
             return knex('message_thread').select();
+        },
+        get_threadmessage: (root, { id }, { knex }) => {
+
+            return knex('message_thread').where('id',id).first();
         }
     },
     ThreadMessage: {
@@ -42,4 +46,4 @@ const threadMessageResolver = {
         }
     }
 }
-module.exports = threadMessageResolver;
+module.exports = threadMessageResolvers;

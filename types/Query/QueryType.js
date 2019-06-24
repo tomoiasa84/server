@@ -24,12 +24,16 @@ type Query {
   get_message(msgId:Int!):Message
 
   get_threadmessages:[ThreadMessage]
+  get_threadmessage:ThreadMessage
 
   get_recommandations:[Recommand]
   
 }
 
 type Mutation{
+  create_threadmessage(userRecomCard:Int,
+            originUserId:Int!,
+            targetUserId:Int!):[Int!]!
   create_message(text:String!,
             msgThread:Int!,
             msgFrom:Int!):Message
@@ -55,16 +59,21 @@ type Mutation{
   create_tag(name:String!):Tag
 
   create_card(postedBy:Int!,searchFor:Int!,message:String):Card
-  update_card(cardId:Int!,tag:Int,message:String):Response
+  update_card(cardId:Int!,tag:Int,message:String):Card
   delete_card(cardId:Int!):Response
 
   delete_user(userId:Int!):Response
   create_user(name:String!,cityId:Int!,phone:String!):User
-  update_user(userId:Int!,name:String,location:Int,phone:String):Response
+  update_user(userId:Int!,name:String,location:Int,phone:String):User
 
   accept_connection(idUser:Int!):Response
   refuse_connection(idUser:Int!):Response
   create_connection(id1:Int!,id2:Int!): Response
+}
+
+type Subscription{
+
+  cardUpdateSub(userId:Int!): Card!
 }
 `
 

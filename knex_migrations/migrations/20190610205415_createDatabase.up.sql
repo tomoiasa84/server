@@ -82,3 +82,4 @@ CREATE TABLE "message_thread_user" (
   "thread" int REFERENCES "message_thread" ("id"),
   "user" int REFERENCES "userx" ("id")
 );
+ALTER TABLE message_thread ALTER COLUMN userrecomcard DROP NOT NULL;

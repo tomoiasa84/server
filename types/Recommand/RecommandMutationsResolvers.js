@@ -9,7 +9,7 @@ const recommandMutationsResolvers = {
             userRec
         },{ knex }) => {
         
-            return knex('userrecomcard').insert({
+            return knex.insert({
         
                 cardId:cardId,
                 userAsk: userAsk,
@@ -17,23 +17,22 @@ const recommandMutationsResolvers = {
                 userRecommended: userRec,
                 acceptedFlag: false
             })
+            .returning('id')
+            .into('userrecomcard')
             .then((data) => {
 
-                if(data){
+                console.log(`Inserted new Recommandation ${data[0]}.`);
+                
+                if(data.length){
+                    //return data[0];
                     return knex('userrecomcard')
-                    .where({
-        
-                        cardId:cardId,
-                        userAsk: userAsk,
-                        userRecommender: userSend,
-                        userRecommended: userRec,
-                        acceptedFlag: false
-                    })
+                    .where('id',data[0])
                     .first();
                 }
             })
             .catch((err) => {
 
+                console.log(err);
                 return {
                     id: 0
                 }

@@ -17,7 +17,40 @@ const userResolvers = {
   },
   
   User: {
-    tags:(user) => {
+    cards_feed: (user,args,{ knex }) => {
+
+      return knex('userfriend').where('userTarget',user.id)
+      .then(connections => {
+
+        if(connections){
+
+          let cards =  [];
+          connections.forEach(record => {
+
+            cards.push(knex('card').where('postedBy',record.userOrigin).first())
+          })
+          return Promise.all(cards)
+        }
+        
+      })
+      .catch(err => {
+
+        console.log(err);
+        return [];
+      })
+    },
+    thread_messages: (user,args,{ knex }) => {
+
+      return knex('message_thread_user').where('user',user.id).first()
+      .then(userThread => {
+
+        if(userThread){
+
+          return knex('message_thread').where('id',userThread.thread);
+        }
+      })
+    },
+    tags:(user,args,{ knex }) => {
 
       return knex('usertag').where('user_id',user.id)
       .then((data) => {
@@ -36,21 +69,21 @@ const userResolvers = {
       })
       
     },
-    cards:(user)=>{
+    cards:(user,args,{ knex })=>{
 
       return knex('card').where('postedBy',user.id);
     },
-    location(user) {
+    location(user,args,{ knex }) {
 
       //Resolve Location relation
       return knex('location').where('id', user.location).first();
     },
-    privacy(user) {
+    privacy(user,args,{ knex }) {
 
       //Resolve privacy relation
       return knex('privacy').where('id', user.privacy).first();
     },
-    connections(user) {
+    connections(user,args,{ knex }) {
 
       //Find friends of current user
       return knex('userfriend').where('userOrigin', user.id)

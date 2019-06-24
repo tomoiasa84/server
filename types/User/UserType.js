@@ -12,6 +12,8 @@ type User {
     connections: [User]
     cards: [Card]
     tags: [Tag]
+    thread_messages: [ThreadMessage]
+    cards_feed:[Card]
   }`
 
 module.exports = user;

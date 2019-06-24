@@ -8,33 +8,38 @@ const messageMutationsResolvers = {
             msgFrom
         }, { knex }) => {
             
-            return knex('message').insert({
+            return knex.insert({
                 text:text,
                 messageThread:msgThread,
                 messageFrom:msgFrom
             })
-            .then(data => {
+            .returning('id')
+            .into('message')
+            .then(msgId => {
 
-                if(data){
+                console.log(msgId);
+                
+                if(msgId.length){
 
                     return knex('message').where({
-                        text:text,
-                        messageThread:msgThread,
-                        messageFrom:msgFrom
+                        id:msgId[0]
                     }).first();
                 }
+                console.log('No insert.');
+                
                 return {
-                    id: null,
-                    text: null,
+                    id: 0,
+                    text: '',
                     messageThread:null,
                     messageFrom:null
                 }
             })
             .catch(err => {
-
+                console.log(err);
+                
                 return {
-                    id: null,
-                    text: null,
+                    id: 0,
+                    text: '',
                     messageThread:null,
                     messageFrom:null
                 }

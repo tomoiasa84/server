@@ -15,7 +15,11 @@ const MessageResolvers = require('./types/Message/MessageResolvers');
 const ThreadMessageResolvers = require('./types/ThreadMessage/ThreadMessageResolvers');
 const RecommandResolvers = require('./types/Recommand/RecommandResolvers');
 const MessageMutationsResolvers = require('./types/Message/MessageMutationsResolvers');
+const ThreadMessageMutationsResolvers = require('./types/ThreadMessage/ThreadMessageMutationsResolvers');
+const CardSubscriptions = require('./types/Card/CardSubscriptions')
 const resolvers = [
+    CardSubscriptions,
+    ThreadMessageMutationsResolvers,
     MessageMutationsResolvers,
     RecommandResolvers,
     ThreadMessageResolvers,

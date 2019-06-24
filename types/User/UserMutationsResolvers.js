@@ -33,9 +33,9 @@ const userMutationsResolvers = {
             name,
             cityId,
             phone
-        }) => {
+        },{knex}) => {
 
-            return knex('userx').insert({
+            return knex.insert({
                 name: name,
                 location: cityId,
                 phone: phone,
@@ -45,17 +45,19 @@ const userMutationsResolvers = {
                 notification3: true,
                 privacy: 1
             })
-            .then((data) => {
+            .returning('id')
+            .into('userx')
+            .then((userId) => {
 
                 return knex('userx').where({
-                    name: name,
-                    location: cityId,
-                    phone: phone
+                    id:userId[0]
                 }).first();
             })
             .catch((err) => {
 
-                return knex('userx').where('phone',phone).first();
+                return {
+                    id:0
+                }
             })
         },
         refuse_connection: (root, {
@@ -126,20 +128,14 @@ const userMutationsResolvers = {
             )
             .then((data) => {
 
-                console.log(data);
-                
-                return {
-                    status: 'ok',
-                    message: 'updated'
-                }
+                console.log(userId);
+                return knex('userx').where('id',userId).first();
             })
             .catch((err) => {
                  
                 console.log(err);
-                
                 return {
-                    status: 'bad',
-                    message: 'no update'
+                    id:0
                 }
             })
         },
