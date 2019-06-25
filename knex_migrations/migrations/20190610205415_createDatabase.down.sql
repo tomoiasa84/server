@@ -1,4 +1,5 @@
 
+DROP TABLE "sharecard" CASCADE;
 DROP TABLE "message_thread_user" CASCADE;
 DROP TABLE "message" CASCADE;
 DROP TABLE "message_thread" CASCADE;

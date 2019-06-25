@@ -24,59 +24,6 @@ const cardMutationsResolver = {
                 }
             })
         },
-        remove_usertag: (root,{usertagId},{ knex }) => {
-
-            return knex('usertag').where('id',usertagId).del()
-            .then((data) => {
-
-                if(data){
-
-                    return {
-
-                        status: 'ok',
-                        message: 'Usertag deleted.'
-                    }
-                }
-                return {
-
-                    status: 'bad',
-                    message: 'Usertag does not exist.'
-                }
-
-            })
-            .catch((err) => {
-
-                return {
-                    status: 'bad',
-                    message: `Code: ${err.code} Detail: ${err.detail}.`
-                }
-            })
-        },
-        add_usertag: (root,{userId,tagId},{ knex }) => {
-
-            return knex('usertag').insert({
-
-                user_id:userId,
-                tag_id:tagId,
-                default:false
-            })
-            .then((data) => {
-
-                return knex('usertag').where({
-
-                    user_id:userId,
-                    tag_id:tagId,
-                }).first()
-                .then((usertag) => {
-
-                    return usertag.id
-                })
-            })
-            .catch((err) => {
-
-                return '0'
-            })
-        },
         delete_tag: (root,{tagId},{ knex }) => {
 
             return knex('tag').where('id',tagId).del()
@@ -84,35 +31,25 @@ const cardMutationsResolver = {
 
                 if(data){
 
-                    return {
-
-                        status:'ok',
-                        message: 'Tag deleted.'
-                    }
+                    return tagId
                 }
-                return {
-                    
-                    status:'bad',
-                    message: 'Tag does not exist.'
-                }
+                return 0;
             })
             .catch((err) => {
 
-                return {
-
-                    status: 'bad',
-                    message: `Code: ${err.code} Detail: ${err.detail}.`
-                }
+                return 0;
             })
         },
         create_tag: (root,{name},{ knex }) => {
             
-            return knex('tag').insert({
+            return knex('tag')
+            .returning('id')
+            .insert({
                 name:name
             })
-            .then((data) => {
+            .then((tagIds) => {
                 
-                return knex('tag').where('name',name).first()
+                return knex('tag').where('id',tagIds[0]).first()
             })
             .catch((err) => {
 

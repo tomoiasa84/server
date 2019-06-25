@@ -9,7 +9,9 @@ const Review = require('./types/Review/ReviewType');
 const Recommand = require('./types/Recommand/RecommandType');
 const Message = require('./types/Message/MessageType');
 const ThreadMessage = require('./types/ThreadMessage/ThreadMessageType');
+const UserTag = require('./types/UserTag/UserTagType');
 const typeDefs = [
+    UserTag,
     ThreadMessage,
     Message,
     Recommand,

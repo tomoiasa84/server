@@ -7,26 +7,12 @@ const userMutationsResolvers = {
             .del()
             .then((data)=>{
 
-                console.log(data);
-                
-                if(data){
-
-                    return {
-                        status: 'ok',
-                        message: 'User deleted.'
-                    }
-                }
-                return {
-                    status: 'bad',
-                    message: 'User does not exist.'
-                }
+                if(data) return userId;
+                return 0;
             })
             .catch((err)=>{
 
-                return {
-                    status: 'bad',
-                    message: `Code: ${err.code} Detail: ${err.detail}`
-                }
+                return 0;
             })
         },
         create_user: (root, {
@@ -60,38 +46,35 @@ const userMutationsResolvers = {
                 }
             })
         },
-        refuse_connection: (root, {
-            idUser
-        }, { knex }) => {
+        refuse_connection: (root, { idUser }, { knex }) => {
             return knex('userfriend').where({
-                    userTarget: idUser,
-                    acceptedFlag: false
-                })
-                .del()
-                .then((data) => {
-                    console.log(data);
-                    if (data) {
-                        return {
-                            status: 'ok',
-                            message: 'User deleted'
-                        }
-                    }
+                userTarget: idUser,
+                acceptedFlag: false
+            })
+            .del()
+            .then((data) => {
+                    
+                if (data) {
+                    
                     return {
-                        status: 'bad',
-                        message: 'User already deleted'
+                        status: 'ok',
+                        message: 'User deleted'
                     }
+                }
+                return {
+                    status: 'bad',
+                    message: 'User already deleted'
+                }
 
-                })
-                .catch((err) => {
-                    return {
-                        status: 'bad',
-                        message: 'Error:cannot delete user'
-                    }
-                })
+            })
+            .catch((err) => {
+                return {
+                    status: 'bad',
+                    message: 'Error:cannot delete user'
+                }
+            })
         },
-        accept_connection: (root, {
-            idUser
-        }, { knex }) => {
+        accept_connection: (root, { idUser }, { knex }) => {
 
             return knex('userfriend').where('userTarget', idUser)
                 .update({
@@ -112,12 +95,12 @@ const userMutationsResolvers = {
                     }
                 });
         },
-        update_user(obj, {
+        update_user : (root, {
             userId,
             name,
             location,
             phone
-        }, { knex }) {
+        }, { knex }) => {
 
             return knex('userx').where('id',userId).update(
                 {
@@ -128,7 +111,6 @@ const userMutationsResolvers = {
             )
             .then((data) => {
 
-                console.log(userId);
                 return knex('userx').where('id',userId).first();
             })
             .catch((err) => {
@@ -139,10 +121,10 @@ const userMutationsResolvers = {
                 }
             })
         },
-        create_connection(obj, {
+        create_connection: (obj, {
             id1,
             id2
-        }, { knex }) {
+        }, { knex }) => {
 
             return knex('userfriend').insert({
                     userOrigin: id1,

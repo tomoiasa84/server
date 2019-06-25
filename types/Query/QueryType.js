@@ -28,9 +28,13 @@ type Query {
 
   get_recommandations:[Recommand]
   
+  get_userTags:[UserTag]
+  get_userTag(userTagId:Int!):UserTag
 }
 
 type Mutation{
+
+  share_card(cardId:Int!,userIds:[Int]):[Int]
   create_threadmessage(userRecomCard:Int,
             originUserId:Int!,
             targetUserId:Int!):[Int!]!
@@ -53,16 +57,20 @@ type Mutation{
 
   default_tag(usertagId:Int!):Response
   remove_usertag(usertagId:Int!):Response
-  add_usertag(userId:Int!,tagId:Int!):String
+  add_usertag(userId:Int!,tagId:Int!):User
 
-  delete_tag(tagId:Int!):Response
+  creat_userTag(userId:Int!,tagId:Int!):UserTag
+  update_userTag(usertagId:Int!,defaultFlag:Boolean):UserTag
+  delete_userTag(usertagId:Int!):Int!
+
+  delete_tag(tagId:Int!):Int!
   create_tag(name:String!):Tag
 
   create_card(postedBy:Int!,searchFor:Int!,message:String):Card
   update_card(cardId:Int!,tag:Int,message:String):Card
-  delete_card(cardId:Int!):Response
+  delete_card(cardId:Int!):Int!
 
-  delete_user(userId:Int!):Response
+  delete_user(userId:Int!):Int!
   create_user(name:String!,cityId:Int!,phone:String!):User
   update_user(userId:Int!,name:String,location:Int,phone:String):User
 

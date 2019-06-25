@@ -2,29 +2,60 @@ const moment  = require('moment');
 
 const cardMutationsResolver = {
     Mutation:{
-        delete_card: (root,{cardId},{ knex }) => {
 
+        share_card:(root,{cardId,userIds},{knex,pubsub}) => {
+
+            
+            if(userIds.length){
+
+                let promisesAwait = [];
+                userIds.forEach(userId => {
+                
+                    promisesAwait.push(
+                        //Insert into sharecard
+                        knex('sharecard')
+                            .returning('id')
+                            .insert({
+                            
+                                cardId: cardId,
+                                sharedBy: userId,
+                            })
+                            .then(ids => {
+                                
+                                return ids[0];
+                            })
+                            .catch(err => {
+    
+                                return 0;
+                            })
+                        )
+                    });
+                return Promise.all(promisesAwait)
+                .then(shareIds => {
+    
+                    return shareIds;
+                })
+                .catch(err => {
+    
+                    console.log(err);
+                    return [];
+                })
+            }
+            return [];
+            
+        },
+        delete_card: (root,{cardId},{ knex,pubsub }) => {
+
+            
             return knex('card').where('id',cardId).del()
             .then((data) => {
 
-                if(data){
-
-                    return {
-                        status: 'ok',
-                        message: 'Card deleted.'
-                    }
-                }
-                return {
-                    status: 'bad',
-                    message: 'Card does not exist.'
-                }
+                if(data) return cardId;
+                return 0;
             })
             .catch((err) => {
 
-                return {
-                    status: 'bad',
-                    message: `Code: ${err.code} Detail: ${err.detail}.`
-                }
+                return 0;
             })
         },
         update_card:(root,{

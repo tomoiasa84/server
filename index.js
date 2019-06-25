@@ -13,6 +13,7 @@ const server = new ApolloServer({
   context:{
     pubsub,
     knex
+    
   }
 });
 

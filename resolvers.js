@@ -17,7 +17,12 @@ const RecommandResolvers = require('./types/Recommand/RecommandResolvers');
 const MessageMutationsResolvers = require('./types/Message/MessageMutationsResolvers');
 const ThreadMessageMutationsResolvers = require('./types/ThreadMessage/ThreadMessageMutationsResolvers');
 const CardSubscriptions = require('./types/Card/CardSubscriptions')
+const UserTagResolvers = require('./types/UserTag/UserTagResolvers');
+const UserTagMutationsResolvers = require('./types/UserTag/UserTagMutationsResolvers');
+
 const resolvers = [
+    UserTagMutationsResolvers,
+    UserTagResolvers,
     CardSubscriptions,
     ThreadMessageMutationsResolvers,
     MessageMutationsResolvers,
