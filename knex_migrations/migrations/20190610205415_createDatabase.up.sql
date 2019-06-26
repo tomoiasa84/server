@@ -27,9 +27,9 @@ CREATE TABLE "userx" (
 
 CREATE TABLE "userfriend" (
   "id" SERIAL PRIMARY KEY,
-  "userOrigin" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "userTarget" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "acceptedFlag" boolean,
+  "user1" int REFERENCES "userx" ("id") ON DELETE CASCADE,
+  "user2" int REFERENCES "userx" ("id") ON DELETE CASCADE,
+  "confirmation" boolean,
   "blockFlag" boolean
 );
 

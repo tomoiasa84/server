@@ -2,8 +2,20 @@ const moment  = require('moment');
 
 const cardMutationsResolver = {
     Mutation:{
+        delete_sharecard: (root, { sharecardId }, { knex }) => {
 
-        share_card:(root,{cardId,userIds},{knex,pubsub}) => {
+            return knex('sharecard').where('id',sharecardId).del()
+            .then(deleted => {
+
+                if(deleted) return sharecardId;
+                return 0;
+            })
+            .catch(err => {
+
+                return 0;
+            })
+        },
+        create_sharecard:(root,{cardId,userIds},{knex,pubsub}) => {
 
             
             if(userIds.length){

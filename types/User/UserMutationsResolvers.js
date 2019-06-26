@@ -1,80 +1,94 @@
 const userMutationsResolvers = {
     Mutation: {
-        delete_user: (root,{userId},{ knex })=>{
+        delete_user: (root, {
+            userId
+        }, {
+            knex
+        }) => {
 
-            return knex('userx').where('id',userId)
-            .first()
-            .del()
-            .then((data)=>{
+            return knex('userx').where('id', userId)
+                .first()
+                .del()
+                .then((data) => {
 
-                if(data) return userId;
-                return 0;
-            })
-            .catch((err)=>{
+                    if (data) return userId;
+                    return 0;
+                })
+                .catch((err) => {
 
-                return 0;
-            })
+                    return 0;
+                })
         },
         create_user: (root, {
             name,
             cityId,
             phone
-        },{knex}) => {
+        }, {
+            knex
+        }) => {
 
             return knex.insert({
-                name: name,
-                location: cityId,
-                phone: phone,
-                hasAccount: true,
-                notification1: true,
-                notification2: true,
-                notification3: true,
-                privacy: 1
-            })
-            .returning('id')
-            .into('userx')
-            .then((userId) => {
+                    name: name,
+                    location: cityId,
+                    phone: phone,
+                    hasAccount: true,
+                    notification1: true,
+                    notification2: true,
+                    notification3: true,
+                    privacy: 1
+                })
+                .returning('id')
+                .into('userx')
+                .then((userId) => {
 
-                return knex('userx').where({
-                    id:userId[0]
-                }).first();
-            })
-            .catch((err) => {
+                    return knex('userx').where({
+                        id: userId[0]
+                    }).first();
+                })
+                .catch((err) => {
 
-                return {
-                    id:0
-                }
-            })
-        },
-        refuse_connection: (root, { idUser }, { knex }) => {
-            return knex('userfriend').where({
-                userTarget: idUser,
-                acceptedFlag: false
-            })
-            .del()
-            .then((data) => {
-                    
-                if (data) {
-                    
                     return {
-                        status: 'ok',
-                        message: 'User deleted'
+                        id: 0
                     }
-                }
-                return {
-                    status: 'bad',
-                    message: 'User already deleted'
-                }
-
-            })
-            .catch((err) => {
-                return {
-                    status: 'bad',
-                    message: 'Error:cannot delete user'
-                }
-            })
+                })
         },
-        accept_connection: (root, { idUser }, { knex }) => {
+        delete_connection: (root, {
+            idUser
+        }, {
+            knex
+        }) => {
+            return knex('userfriend').where({
+                    userTarget: idUser,
+                    acceptedFlag: false
+                })
+                .del()
+                .then((data) => {
+
+                    if (data) {
+
+                        return {
+                            status: 'ok',
+                            message: 'User deleted'
+                        }
+                    }
+                    return {
+                        status: 'bad',
+                        message: 'User already deleted'
+                    }
+
+                })
+                .catch((err) => {
+                    return {
+                        status: 'bad',
+                        message: 'Error:cannot delete user'
+                    }
+                })
+        },
+        update_connection: (root, {
+            idUser
+        }, {
+            knex
+        }) => {
 
             return knex('userfriend').where('userTarget', idUser)
                 .update({
@@ -95,36 +109,38 @@ const userMutationsResolvers = {
                     }
                 });
         },
-        update_user : (root, {
+        update_user: (root, {
             userId,
             name,
             location,
             phone
-        }, { knex }) => {
+        }, {
+            knex
+        }) => {
 
-            return knex('userx').where('id',userId).update(
-                {
-                    name:name,
+            return knex('userx').where('id', userId).update({
+                    name: name,
                     location: location,
-                    phone:phone
-                }
-            )
-            .then((data) => {
+                    phone: phone
+                })
+                .then((data) => {
 
-                return knex('userx').where('id',userId).first();
-            })
-            .catch((err) => {
-                 
-                console.log(err);
-                return {
-                    id:0
-                }
-            })
+                    return knex('userx').where('id', userId).first();
+                })
+                .catch((err) => {
+
+                    console.log(err);
+                    return {
+                        id: 0
+                    }
+                })
         },
         create_connection: (obj, {
             id1,
             id2
-        }, { knex }) => {
+        }, {
+            knex
+        }) => {
 
             return knex('userfriend').insert({
                     userOrigin: id1,

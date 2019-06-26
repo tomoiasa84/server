@@ -37,7 +37,8 @@ type Query {
 
 type Mutation{
 
-  share_card(cardId:Int!,userIds:[Int]):[Int]
+  create_sharecard(cardId:Int!,userIds:[Int]):[Int]
+  delete_sharecard(sharecardId:Int!):Int!
 
   create_threadmessage(userRecomCard:Int,originUserId:Int!,targetUserId:Int!):ThreadMessage
   update_threadmessage(threadMessageId:Int!,userRecomCard:Int!):ThreadMessage
@@ -75,8 +76,8 @@ type Mutation{
   create_user(name:String!,cityId:Int!,phone:String!):User
   update_user(userId:Int!,name:String,location:Int,phone:String):User
 
-  accept_connection(idUser:Int!):Response
-  refuse_connection(idUser:Int!):Response
+  delete_connection(connectionId:Int!):Response
+  update_connection(connectionId:Int!,confirmation:Boolean!):Response
   create_connection(id1:Int!,id2:Int!): Response
 }
 

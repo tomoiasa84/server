@@ -9,6 +9,7 @@ type User {
     phone: String
     hasAccount: Boolean
     privacy: Privacy
+    
     connections: [User]
     cards: [Card]
     tags: [Tag]
