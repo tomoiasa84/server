@@ -1,5 +1,7 @@
-const { gql } = require('apollo-server');
-const query = gql`
+const {
+  gql
+} = require('apollo-server');
+const query = gql `
 
 type Query {
   "Query type"
@@ -24,9 +26,10 @@ type Query {
   get_message(msgId:Int!):Message
 
   get_threadmessages:[ThreadMessage]
-  get_threadmessage:ThreadMessage
+  get_threadmessage(messageThreadId:Int!):ThreadMessage
 
   get_recommandations:[Recommand]
+  get_recommandation(recommandationId:Int!):Recommand
   
   get_userTags:[UserTag]
   get_userTag(userTagId:Int!):UserTag
@@ -35,35 +38,33 @@ type Query {
 type Mutation{
 
   share_card(cardId:Int!,userIds:[Int]):[Int]
-  create_threadmessage(userRecomCard:Int,
-            originUserId:Int!,
-            targetUserId:Int!):[Int!]!
-  create_message(text:String!,
-            msgThread:Int!,
-            msgFrom:Int!):Message
-  recommend_card(cardId:Int!,
-            userAsk:Int!,
-            userSend:Int!,
-            userRec:Int!):Recommand
-  add_location(city:String!):Response
-  edit_review(reviewId:Int!,
-            stars:Int,
-            text:String):Response
 
-  add_review(userId:Int!,
-            tagReview:Int!,
-            stars:Int!,
-            text:String!):Response
+  create_threadmessage(userRecomCard:Int,originUserId:Int!,targetUserId:Int!):ThreadMessage
+  update_threadmessage(threadMessageId:Int!,userRecomCard:Int!):ThreadMessage
+  delete_threadmessage(threadMessageId:Int!):Int!
 
-  default_tag(usertagId:Int!):Response
-  remove_usertag(usertagId:Int!):Response
-  add_usertag(userId:Int!,tagId:Int!):User
+  create_message(text:String!,msgThread:Int!,msgFrom:Int!):Message
+  update_message(messageId:Int!,text:String,msgThread:Int,msgFrom:Int):Message
+  delete_message(messageId:Int!):Int!
+  
+  create_recommand(cardId:Int!,userAsk:Int!,userSend:Int!,userRec:Int!):Recommand
+  update_recommand(recommandId:Int!,cardId:Int,userAsk:Int,userSend:Int,userRec:Int):Recommand
+  delete_recommand(recommandId:Int!):Int!
+
+  create_location(city:String!):Location
+  update_location(locationId:Int!,city:String!):Location
+  delete_location(locationId:Int!):Int!
+  
+  delete_review(reviewId:Int!):Int!
+  update_review(reviewId:Int!,stars:Int,text:String):Review
+  create_review(userId:Int!,tagReview:Int!,stars:Int!,text:String):Review
 
   creat_userTag(userId:Int!,tagId:Int!):UserTag
   update_userTag(usertagId:Int!,defaultFlag:Boolean):UserTag
   delete_userTag(usertagId:Int!):Int!
 
   delete_tag(tagId:Int!):Int!
+  update_tag(tagId:Int!,name:String!):Tag
   create_tag(name:String!):Tag
 
   create_card(postedBy:Int!,searchFor:Int!,message:String):Card

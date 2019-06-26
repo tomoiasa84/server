@@ -1,11 +1,21 @@
 const reviewMutationsResolvers = {
 
     Mutation: {
-        edit_review: (root, { 
-            reviewId,
-            stars,
-            text
-        }, { knex }) => {
+        delete_review: (root,{ reviewId },{ knex }) => {
+
+            return knex('usertagreview').where('id',reviewId).del()
+            .then(deleted => {
+                
+                if(deleted) return reviewId;
+                return 0;
+            })
+            .catch(err => {
+
+                console.log(err);
+                return 0;
+            })
+        },
+        update_review: (root, { reviewId, stars, text }, { knex }) => {
 
             return knex('usertagreview').where('id',reviewId)
             .update({
@@ -15,50 +25,38 @@ const reviewMutationsResolvers = {
             })
             .then((data) => {
 
+                if(data) return knex('usertagreview').where('id',reviewId).first();
                 return {
-
-                    status: 'ok',
-                    message: 'Review edited.'
+                    id: 0
                 }
             })
             .catch((err) => {
                 
                 console.log(err);
-                
                 return {
-
-                    status: 'bad',
-                    message: 'Cannot edit review.'
+                    id:0
                 }
             })
         },
-        add_review: (root,{
-
-            userId,
-            tagReview,
-            stars,
-            text
-        }) => {
+        create_review: (root,{ userId, userTagId, stars, text }, { knex }) => {
         
-            return knex('usertagreview').insert({
-        
+            return knex('usertagreview')
+            .returning('id')
+            .insert({
                 recommendationBy:userId,
-                recommendationFor:tagReview,
+                recommendationFor:userTagId,
                 stars:stars,
                 text:text
             })
-            .then((data) => {
+            .then((reviewIds) => {
         
-                return {
-                    status:'ok',
-                    message: 'Review added'
-                }
+                return knex('usertagreview')
+                .where('id',reviewIds[0]).first();
             })
             .catch((err) => {
         
                 return {
-                    status:'bad',
-                    message: 'Cannot add review.'
+                    id: 0
                 }
             })
         },

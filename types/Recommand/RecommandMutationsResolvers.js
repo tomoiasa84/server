@@ -1,45 +1,90 @@
 const recommandMutationsResolvers = {
 
-    Mutation:{
+    Mutation: {
+        delete_recommand: (root, {
+            recommandId
+        }, {
+            knex
+        }) => {
 
-        recommend_card: (root,{
+            return knex('userrecomcard').where('id', recommandId).del()
+                .then((deleted) => {
+
+                    if (deleted) return recommandId;
+                    return 0;
+                })
+                .catch((err) => {
+
+                    return 0;
+                })
+        },
+        update_recommand: (root, {
+            recommandId,
             cardId,
             userAsk,
             userSend,
             userRec
-        },{ knex }) => {
-        
+        }, {
+            knex
+        }) => {
+
+            return knex
+                .where('id', recommandId)
+                .update({
+                    cardId: cardId,
+                    userAsk: userAsk,
+                    userRecommender: userSend,
+                    userRecommended: userRec,
+                    acceptedFlag: false
+                })
+                .then((updated) => {
+
+                    if (updated) return knex('userrecomcard').where('id', data[0]).first();
+                    return {
+                        id: 0
+                    }
+
+                })
+                .catch((err) => {
+
+                    console.log(err);
+                    return {
+                        id: 0
+                    }
+                })
+        },
+        create_recommand: (root, {
+            cardId,
+            userAsk,
+            userSend,
+            userRec
+        }, {
+            knex
+        }) => {
+
             return knex.insert({
-        
-                cardId:cardId,
-                userAsk: userAsk,
-                userRecommender: userSend,
-                userRecommended: userRec,
-                acceptedFlag: false
-            })
-            .returning('id')
-            .into('userrecomcard')
-            .then((data) => {
+                    cardId: cardId,
+                    userAsk: userAsk,
+                    userRecommender: userSend,
+                    userRecommended: userRec,
+                    acceptedFlag: false
+                })
+                .returning('id')
+                .into('userrecomcard')
+                .then((data) => {
 
-                console.log(`Inserted new Recommandation ${data[0]}.`);
-                
-                if(data.length){
-                    //return data[0];
-                    return knex('userrecomcard')
-                    .where('id',data[0])
-                    .first();
-                }
-            })
-            .catch((err) => {
+                    return knex('userrecomcard').where('id', data[0]).first();
 
-                console.log(err);
-                return {
-                    id: 0
-                }
-            })
+                })
+                .catch((err) => {
+
+                    console.log(err);
+                    return {
+                        id: 0
+                    }
+                })
         },
     }
 }
 
 module.exports = recommandMutationsResolvers;
-

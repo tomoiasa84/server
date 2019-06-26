@@ -1,26 +1,25 @@
 const cardMutationsResolver = {
 
     Mutation:{
-        
-        default_tag: (root,{usertagId},{ knex }) => {
-
-            return knex('usertag').where('id',usertagId).update({
-
-                default:true
+        update_tag: (root,{ tagId,name },{ knex }) => {
+            
+            return knex('tag')
+            .where('id',tagId)
+            .update({
+                name:name
             })
-            .then((data) => {
-
+            .then((updated) => {
+                
+                if(updated) return knex('tag').where('id',tagIds[0]).first();
                 return {
-                    
-                    status:'ok',
-                    message: 'Update success.'
+                    id:0
                 }
             })
             .catch((err) => {
 
+                console.log(err);
                 return {
-                    status:'bad',
-                    message:`Code: ${err.code} Detail: ${err.detail}`
+                    id:0
                 }
             })
         },
@@ -40,7 +39,7 @@ const cardMutationsResolver = {
                 return 0;
             })
         },
-        create_tag: (root,{name},{ knex }) => {
+        create_tag: (root,{ name },{ knex }) => {
             
             return knex('tag')
             .returning('id')
@@ -54,8 +53,7 @@ const cardMutationsResolver = {
             .catch((err) => {
 
                 return {
-
-                    id:'0'
+                    id:0
                 }
             })
         }

@@ -4,9 +4,9 @@ const message = gql`
 type Message {
     
     id: Int!
-    text: String!
-    messageThread: ThreadMessage!
-    messageFrom: User!
+    text: String
+    messageThread: ThreadMessage
+    messageFrom: User
   }`
 
 module.exports = message;

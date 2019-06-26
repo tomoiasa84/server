@@ -1,48 +1,62 @@
 const threadMessageResolvers = {
 
-    Query:{
+    Query: {
 
-        get_threadmessages: (root,args,{ knex }) => {
+        get_threadmessages: (root, args, {
+            knex
+        }) => {
 
             return knex('message_thread').select();
         },
-        get_threadmessage: (root, { id }, { knex }) => {
+        get_threadmessage: (root, {
+            threadMessageId
+        }, {
+            knex
+        }) => {
 
-            return knex('message_thread').where('id',id).first();
+            return knex('message_thread').where('id', threadMessageId).first()
+            .catch(err => {
+
+                console.log(err);
+                return {
+                    id:0
+                }
+            })
         }
     },
     ThreadMessage: {
-        recommandCard: (threadMsg,args,{ knex }) => {
+        recommandCard: (threadMsg, args, {
+            knex
+        }) => {
 
-            return knex('userrecomcard').where('id',threadMsg.userrecomcard).first();
+            return knex('userrecomcard').where('id', threadMsg.userrecomcard).first();
         },
-        messages: (threadMsg,args,{ knex }) => {
+        messages: (threadMsg, args, {
+            knex
+        }) => {
 
-            return knex('message').where('messageThread',threadMsg.id);
+            return knex('message').where('messageThread', threadMsg.id);
         },
-        users: (threadMsg,args,{ knex }) => {
+        users: (threadMsg, args, {
+            knex
+        }) => {
 
             return knex('message_thread_user').where({
 
-                thread: threadMsg.id
-            })
-            .then((userThreadsRecords) => {
+                    thread: threadMsg.id
+                })
+                .then((userThreadsRecords) => {
 
-                let users = []
-                if(userThreadsRecords.length){
+                    let users = []
+                    if (userThreadsRecords.length) {
 
-                    userThreadsRecords.forEach(element => {
-                        
-                        users.push(knex('userx').where('id',element.user).first());
-                    });
-                    return Promise.all(users);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                return [];
-                
-            })
+                        userThreadsRecords.forEach(element => {
+
+                            users.push(knex('userx').where('id', element.user).first());
+                        });
+                        return Promise.all(users);
+                    }
+                })
         }
     }
 }

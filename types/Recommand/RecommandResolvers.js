@@ -5,6 +5,10 @@ const recommandResolvers = {
         get_recommandations: (root,args,{ knex }) => {
 
             return knex('userrecomcard').select();
+        },
+        get_recommandation: (root,{ recommandationId},{ knex }) => {
+
+            return knex('userrecomcard').where('id',recommandationId).first();
         }
     },
     Recommand: {
