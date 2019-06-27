@@ -27,9 +27,9 @@ function createConnection(knex,rows)
 {
   return knex('userfriend').insert({
 
-    userOrigin:rows[0].id,
-    userTarget:rows[1].id,
-    acceptedFlag:true,
+    user1:rows[0].id,
+    user2:rows[1].id,
+    confirmation:true,
     blockFlag:false
   });
 }
