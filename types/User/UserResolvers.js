@@ -27,19 +27,36 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('userfriend').where('userTarget', user.id)
+      return knex('userfriend').select()
         .then(connections => {
 
-          if (connections) {
+          if (connections.length) {
 
             let cards = [];
-            connections.forEach(record => {
+            connections.forEach(conn => {
 
-              cards.push(knex('card').where('postedBy', record.userOrigin).first())
+              if(user.id === conn.user1){
+
+                cards.push(knex('card').where('postedBy', conn.user2).first()
+                .then(res => {
+                  console.log(res);
+                  return res
+                
+                }))
+              }
+              else if(user.id === conn.user2){
+
+                cards.push(knex('card').where('postedBy', conn.user1).first()
+                .then(res => {
+                  console.log(res);
+                  return res
+                
+                }))
+              }
             })
             return Promise.all(cards)
           }
-
+          return [];
         })
         .catch(err => {
 
@@ -106,19 +123,34 @@ const userResolvers = {
     }) => {
 
       //Find friends of current user
-      return knex('userfriend').where('userOrigin', user.id)
-        .then((friendsRec) => {
+      return knex('userfriend').select()
+        .then((connections) => {
 
-          if (friendsRec) {
+          if(connections.length){
 
-            let users = [];
-            friendsRec.forEach(friendRow => {
+            let friends = []
+            connections.forEach(conn => {
+              
+              if(conn.user1 === user.id ){
 
-              users.push(knex('userx').where('id', friendRow.userOrigin).first())
+                friends.push( knex('userx').where('id',conn.user2).first());
+              }
+              else if(conn.user2 === user.id){
+
+                friends.push( knex('userx').where('id',conn.user1).first());
+              }
             })
-            return Promise.all(users);
-          }
+            
+            return Promise.all(friends);
 
+          }
+          return [];
+        })
+        .catch(err => {
+
+          console.log(err);
+          return [];
+          
         })
     }
   }

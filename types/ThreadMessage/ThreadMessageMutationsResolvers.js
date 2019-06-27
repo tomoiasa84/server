@@ -61,14 +61,14 @@ const threadMessageMutationsResolvers = {
                 .insert({
                     userrecomcard: userRecomCard
                 })
-                .then(threadId => {
+                .then(threadIds => {
 
                     let promises = [];
                     //create origin user thread
                     promises.push(
                         knex.insert({
                             user: originUserId,
-                            thread: threadId[0]
+                            thread: threadIds[0]
                         })
                         .returning('id')
                         .into('message_thread_user')
@@ -77,7 +77,7 @@ const threadMessageMutationsResolvers = {
                     promises.push(
                         knex.insert({
                             user: targetUserId,
-                            thread: threadId[0]
+                            thread: threadIds[0]
                         })
                         .returning('id')
                         .into('message_thread_user')

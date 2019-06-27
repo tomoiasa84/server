@@ -39,14 +39,15 @@ const userMutationsResolvers = {
                 })
                 .returning('id')
                 .into('userx')
-                .then((userId) => {
+                .then((userIds) => {
 
                     return knex('userx').where({
-                        id: userId[0]
+                        id: userIds[0]
                     }).first();
                 })
                 .catch((err) => {
 
+                    console.log(err);
                     return {
                         id: 0
                     }
@@ -143,9 +144,9 @@ const userMutationsResolvers = {
         }) => {
 
             return knex('userfriend').insert({
-                    userOrigin: id1,
-                    userTarget: id2,
-                    acceptedFlag: false,
+                    user1: id1,
+                    user2: id2,
+                    confirmation: false,
                     blockFlag: false
                 })
                 .then((data) => {
@@ -156,7 +157,7 @@ const userMutationsResolvers = {
                     }
                 })
                 .catch((err) => {
-                    //console.log(err);
+                    console.log(err);
                     return {
                         status: 'bad',
                         message: 'Error at insert'

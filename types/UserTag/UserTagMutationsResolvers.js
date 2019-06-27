@@ -12,10 +12,10 @@ const userTagMutationsResolvers = {
                 tag_id:tagId,
                 default:false
             })
-            .then((userTagId) => {
-
+            .then((userTagIds) => {
+                
                 return knex('usertag').where({
-                    id:userTagId
+                    id:userTagIds[0]
                 }).first()
                 .then((usertag) => {
 

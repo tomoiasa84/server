@@ -71,9 +71,13 @@ const recommandMutationsResolvers = {
                 })
                 .returning('id')
                 .into('userrecomcard')
-                .then((data) => {
+                .then((recommandIds) => {
 
-                    return knex('userrecomcard').where('id', data[0]).first();
+                    return knex('userrecomcard').where('id', recommandIds[0]).first();
+                    // .then(recommand => {
+
+
+                    // })
 
                 })
                 .catch((err) => {

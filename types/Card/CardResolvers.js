@@ -17,11 +17,11 @@ const cardResolvers = {
     },
     Card: {
 
-      searchFor:(card)=>{
+      searchFor:(card, args, { knex })=>{
         
         return knex('tag').where('id',card.searchFor).first();
       },
-      postedBy:(card)=>{
+      postedBy:(card, args, { knex })=>{
 
         return knex('userx').where('id',card.postedBy).first();
       }
