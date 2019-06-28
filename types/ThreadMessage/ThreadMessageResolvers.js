@@ -6,7 +6,7 @@ const threadMessageResolvers = {
             knex
         }) => {
 
-            return knex('message_thread').select();
+            return knex('MessageThreads').select();
         },
         get_threadmessage: (root, {
             threadMessageId
@@ -14,7 +14,7 @@ const threadMessageResolvers = {
             knex
         }) => {
 
-            return knex('message_thread').where('id', threadMessageId).first()
+            return knex('MessageThreads').where('id', threadMessageId).first()
             .catch(err => {
 
                 console.log(err);
@@ -29,19 +29,19 @@ const threadMessageResolvers = {
             knex
         }) => {
 
-            return knex('userrecomcard').where('id', threadMsg.userrecomcard).first();
+            return knex('Recommandations').where('id', threadMsg.userrecomcard).first();
         },
         messages: (threadMsg, args, {
             knex
         }) => {
 
-            return knex('message').where('messageThread', threadMsg.id);
+            return knex('Messages').where('messageThread', threadMsg.id);
         },
         users: (threadMsg, args, {
             knex
         }) => {
 
-            return knex('message_thread_user').where({
+            return knex('UserMessageThreads').where({
 
                     thread: threadMsg.id
                 })
@@ -52,7 +52,7 @@ const threadMessageResolvers = {
 
                         userThreadsRecords.forEach(element => {
 
-                            users.push(knex('userx').where('id', element.user).first());
+                            users.push(knex('Users').where('id', element.user).first());
                         });
                         return Promise.all(users);
                     }

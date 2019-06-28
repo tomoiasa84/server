@@ -6,7 +6,7 @@ type Message {
     id: Int!
     text: String
     messageThread: ThreadMessage
-    messageFrom: User
+    from: User
   }`
 
 module.exports = message;

@@ -5,7 +5,7 @@ const userResolvers = {
     }) => {
 
       //Return all users
-      return knex('userx').select()
+      return knex('Users').select()
         .then((users) => {
 
           return users;
@@ -17,7 +17,7 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('userx').where('id', userId).first()
+      return knex('Users').where('id', userId).first()
 
     }
   },
@@ -27,34 +27,18 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('userfriend').select()
+      return knex('Connections').select()
         .then(connections => {
 
-          if (connections.length) {
+          if(connections.length){
 
-            let cards = [];
+            let cards = []
             connections.forEach(conn => {
-
-              if(user.id === conn.user1){
-
-                cards.push(knex('card').where('postedBy', conn.user2).first()
-                .then(res => {
-                  console.log(res);
-                  return res
-                
-                }))
-              }
-              else if(user.id === conn.user2){
-
-                cards.push(knex('card').where('postedBy', conn.user1).first()
-                .then(res => {
-                  console.log(res);
-                  return res
-                
-                }))
-              }
+              
+              cards.push(knex('Cards').where('postedBy',conn.targetUser).first());
+              
             })
-            return Promise.all(cards)
+            return Promise.all(cards);
           }
           return [];
         })
@@ -68,12 +52,12 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('message_thread_user').where('user', user.id).first()
+      return knex('UserMessageThreads').where('user', user.id).first()
         .then(userThread => {
 
           if (userThread) {
 
-            return knex('message_thread').where('id', userThread.thread);
+            return knex('MessageThreads').where('id', userThread.thread);
           }
         })
     },
@@ -81,7 +65,7 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('usertag').where('user_id', user.id)
+      return knex('UserTags').where('user', user.id)
         .then((data) => {
 
           let tags = [];
@@ -90,7 +74,7 @@ const userResolvers = {
 
             data.forEach(userTag => {
 
-              tags.push(knex('tag').where('id', userTag.tag_id).first())
+              tags.push(knex('Tags').where('id', userTag.tag).first())
             })
           }
           return Promise.all(tags);
@@ -102,47 +86,47 @@ const userResolvers = {
       knex
     }) => {
 
-      return knex('card').where('postedBy', user.id);
+      return knex('Cards').where('postedBy', user.id);
     },
     location: (user, args, {
       knex
     }) => {
 
       //Resolve Location relation
-      return knex('location').where('id', user.location).first();
+      return knex('Locations').where('id', user.location).first();
     },
-    privacy: (user, args, {
+    settings: (user, args, {
       knex
     }) => {
 
-      //Resolve privacy relation
-      return knex('privacy').where('id', user.privacy).first();
+      return knex('UserSettings').where('user', user.id)
+      .then((settings) => {
+
+        let settingsList = [];
+        settings.forEach(setting => {
+
+          settingsList.push(knex('Settings').where('id',setting.setting).first())
+        })
+        return Promise.all(settingsList);
+      })
     },
     connections: (user, args, {
       knex
     }) => {
 
       //Find friends of current user
-      return knex('userfriend').select()
+      return knex('Connections').where('originUser',user.id)
         .then((connections) => {
-
+          
           if(connections.length){
 
-            let friends = []
+            let usersList = []
             connections.forEach(conn => {
               
-              if(conn.user1 === user.id ){
-
-                friends.push( knex('userx').where('id',conn.user2).first());
-              }
-              else if(conn.user2 === user.id){
-
-                friends.push( knex('userx').where('id',conn.user1).first());
-              }
+              usersList.push(knex('Users').where('id',conn.targetUser).first());
+              
             })
-            
-            return Promise.all(friends);
-
+            return Promise.all(usersList);
           }
           return [];
         })

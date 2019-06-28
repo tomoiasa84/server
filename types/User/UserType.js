@@ -6,9 +6,9 @@ type User {
     id: Int!
     name: String
     location: Location
-    phone: String
-    hasAccount: Boolean
-    privacy: Privacy
+    phoneNumber: String
+    isActive: Boolean
+    settings: [Setting]
     
     
     connections: [User]

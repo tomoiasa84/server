@@ -5,8 +5,8 @@ type Card {
     id: Int!
     postedBy: User
     searchFor: Tag
-    created_at: String
-    message: String
+    createdAt: String
+    text: String
   }`
 
 module.exports = card;

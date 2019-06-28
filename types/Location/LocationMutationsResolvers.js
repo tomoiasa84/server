@@ -1,5 +1,3 @@
-const knex = require('../../db/pgAdaptop');
-
 const locationMutationsResolver = {
 
     Mutation: {
@@ -9,7 +7,7 @@ const locationMutationsResolver = {
             knex
         }) => {
 
-            return knex('location').where('id', locationId).del()
+            return knex('Locations').where('id', locationId).del()
                 .then((deleted) => {
 
                     if (deleted) return locationId;
@@ -28,14 +26,14 @@ const locationMutationsResolver = {
             knex
         }) => {
 
-            return knex('location')
+            return knex('Locations')
                 .where('id', locationId)
                 .update({
                     city: city
                 })
                 .then((updated) => {
 
-                    if (updated0) return knex('location').where('id', locationIds[0]).first();
+                    if (updated0) return knex('Locations').where('id', locationIds[0]).first();
                     return {
                         id: 0
                     }
@@ -54,14 +52,14 @@ const locationMutationsResolver = {
             knex
         }) => {
 
-            return knex('location')
+            return knex('Locations')
                 .returning('id')
                 .insert({
                     city: city
                 })
                 .then((locationIds) => {
 
-                    return knex('location').where('id', locationIds[0]).first();
+                    return knex('Locations').where('id', locationIds[0]).first();
                 })
                 .catch((err) => {
 

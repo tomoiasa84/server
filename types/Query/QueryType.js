@@ -11,7 +11,7 @@ type Query {
   get_locations: [Location]
   get_location(locationId:Int!):Location
 
-  privacies: [Privacy]
+  settings: [Setting]
 
   get_cards: [Card]
   get_card(cardId:Int!): Card
@@ -60,7 +60,7 @@ type Mutation{
   update_review(reviewId:Int!,stars:Int,text:String):Review
   create_review(userId:Int!,tagReview:Int!,stars:Int!,text:String):Review
 
-  creat_userTag(userId:Int!,tagId:Int!):UserTag
+  create_userTag(userId:Int!,tagId:Int!):UserTag
   update_userTag(usertagId:Int!,defaultFlag:Boolean):UserTag
   delete_userTag(usertagId:Int!):Int!
 
@@ -68,7 +68,7 @@ type Mutation{
   update_tag(tagId:Int!,name:String!):Tag
   create_tag(name:String!):Tag
 
-  create_card(postedBy:Int!,searchFor:Int!,message:String):Card
+  create_card(postedBy:Int!,searchFor:Int!,text:String):Card
   update_card(cardId:Int!,tag:Int,message:String):Card
   delete_card(cardId:Int!):Int!
 
@@ -78,7 +78,7 @@ type Mutation{
 
   delete_connection(connectionId:Int!):Response
   update_connection(connectionId:Int!,confirmation:Boolean!):Response
-  create_connection(id1:Int!,id2:Int!): Response
+  create_connection(origin:Int!,target:Int!): Response
 }
 
 type Subscription{

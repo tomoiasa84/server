@@ -3,7 +3,7 @@ const cardResolvers = {
     Query: {
       get_cards: (root, args, { knex }) => {
         
-        return knex('card').select()
+        return knex('Cards').select()
         .then((cards)=>{
 
           return cards;
@@ -11,7 +11,7 @@ const cardResolvers = {
        },
        get_card: (root,{cardId},{ knex })=>{
 
-        return knex('card').where('id',cardId)
+        return knex('Cards').where('id',cardId)
         .first()
        }
     },
@@ -19,11 +19,11 @@ const cardResolvers = {
 
       searchFor:(card, args, { knex })=>{
         
-        return knex('tag').where('id',card.searchFor).first();
+        return knex('Tags').where('id',card.searchFor).first();
       },
       postedBy:(card, args, { knex })=>{
 
-        return knex('userx').where('id',card.postedBy).first();
+        return knex('Users').where('id',card.postedBy).first();
       }
     }
   };

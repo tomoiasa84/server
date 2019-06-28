@@ -3,7 +3,7 @@ const reviewMutationsResolvers = {
     Mutation: {
         delete_review: (root,{ reviewId },{ knex }) => {
 
-            return knex('usertagreview').where('id',reviewId).del()
+            return knex('TagReviews').where('id',reviewId).del()
             .then(deleted => {
                 
                 if(deleted) return reviewId;
@@ -17,7 +17,7 @@ const reviewMutationsResolvers = {
         },
         update_review: (root, { reviewId, stars, text }, { knex }) => {
 
-            return knex('usertagreview').where('id',reviewId)
+            return knex('TagReviews').where('id',reviewId)
             .update({
 
                 stars: stars,
@@ -25,7 +25,7 @@ const reviewMutationsResolvers = {
             })
             .then((data) => {
 
-                if(data) return knex('usertagreview').where('id',reviewId).first();
+                if(data) return knex('TagReviews').where('id',reviewId).first();
                 return {
                     id: 0
                 }
@@ -40,17 +40,17 @@ const reviewMutationsResolvers = {
         },
         create_review: (root,{ userId, userTagId, stars, text }, { knex }) => {
         
-            return knex('usertagreview')
+            return knex('TagReviews')
             .returning('id')
             .insert({
-                recommendationBy:userId,
-                recommendationFor:userTagId,
+                user:userId,
+                userTag:userTagId,
                 stars:stars,
                 text:text
             })
             .then((reviewIds) => {
         
-                return knex('usertagreview')
+                return knex('TagReviews')
                 .where('id',reviewIds[0]).first();
             })
             .catch((err) => {

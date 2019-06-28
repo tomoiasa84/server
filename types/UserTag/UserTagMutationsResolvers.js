@@ -2,19 +2,19 @@ const userTagMutationsResolvers = {
 
     Mutation:{
 
-        creat_userTag: (root,{userId,tagId},{ knex }) => {
+        create_userTag: (root,{userId,tagId},{ knex }) => {
 
-            return knex('usertag')
+            return knex('UserTags')
             .returning('id')
             .insert({
 
-                user_id:userId,
-                tag_id:tagId,
+                user:userId,
+                tag:tagId,
                 default:false
             })
             .then((userTagIds) => {
                 
-                return knex('usertag').where({
+                return knex('UserTags').where({
                     id:userTagIds[0]
                 }).first()
                 .then((usertag) => {
@@ -34,14 +34,14 @@ const userTagMutationsResolvers = {
         },
         update_userTag: (root,{ userTagId, defaultFlag },{ knex }) => {
 
-            return knex('usertag')
+            return knex('UserTags')
                 .where('id',userTagId)
                 .update({default:defaultFlag})
                 .then((updateRows) => {
                     
                     if(updateRows){
 
-                        return knex('usertag').where('id',userTagId).first();
+                        return knex('UserTags').where('id',userTagId).first();
                     }
                     return {
                         id:0
@@ -57,7 +57,7 @@ const userTagMutationsResolvers = {
         },
         delete_userTag: (root,{ usertagId },{ knex }) => {
 
-            return knex('usertag').where('id',usertagId).del()
+            return knex('UserTags').where('id',usertagId).del()
             .then((data) => {
 
                 if(data){

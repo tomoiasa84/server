@@ -3,25 +3,25 @@ const reviewResolvers = {
     Query: {
         get_review: (root, {reviewId}, { knex }) => {
 
-            return knex('usertagreview').where('id',reviewId).first();
+            return knex('TagReviews').where('id',reviewId).first();
         },
         get_reviews: (root, args, { knex }) => {
 
-            return knex('usertagreview').select()
+            return knex('TagReviewsv').select()
         }
     },
     Review:{
 
-        recommendationBy: (review) => {
+        author: (review) => {
 
-            return knex('userx').where('id',review.recommendationBy).first();
+            return knex('Users').where('id',review.user).first();
         },
-        recommendationFor: (review) => {
+        userTag: (review) => {
 
-            return knex('usertag').where('id',review.recommendationFor).first()
+            return knex('UserTags').where('id',review.userTag).first()
             .then((usertag) => {
 
-                return knex('tag').where('id',usertag.tag_id).first();
+                return knex('Tags').where('id',usertag.tag).first();
             })
         }
     }

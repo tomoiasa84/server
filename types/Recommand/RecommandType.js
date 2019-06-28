@@ -5,9 +5,9 @@ type Recommand {
     id: Int!
     card: Card
     userAsk: User
-    recommander: User
-    recommanded: User
-    flag: Boolean
+    userSend: User
+    userRecommand: User
+    acceptedFlag: Boolean
   }`;
 
 module.exports = recommand;

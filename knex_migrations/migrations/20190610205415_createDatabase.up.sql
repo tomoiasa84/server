@@ -1,89 +1,92 @@
-CREATE TABLE "privacy" (
+CREATE TABLE "Settings" (
   "id" SERIAL PRIMARY KEY,
-  "setting" varchar
+  "name" varchar,
+  "value" varchar
 );
 
-CREATE TABLE "location" (
+CREATE TABLE "Locations" (
   "id" SERIAL PRIMARY KEY,
   "city" varchar
 );
 
-CREATE TABLE "tag" (
+CREATE TABLE "Tags" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar
 );
 
-CREATE TABLE "userx" (
+CREATE TABLE "Users" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar,
-  "phone" varchar UNIQUE,
-  "location" int REFERENCES "location" ("id") ON DELETE CASCADE,
-  "hasAccount" boolean,
-  "notification1" boolean,
-  "notification2" boolean,
-  "notification3" boolean,
-  "privacy" int REFERENCES "privacy" ("id") ON DELETE CASCADE
+  "phoneNumber" varchar UNIQUE,
+  "location" int REFERENCES "Locations" ("id") ON DELETE CASCADE,
+  "isActive" boolean
 );
 
-CREATE TABLE "userfriend" (
+CREATE TABLE "UserSettings"(
   "id" SERIAL PRIMARY KEY,
-  "user1" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "user2" int REFERENCES "userx" ("id") ON DELETE CASCADE,
+  "setting" int REFERENCES "Settings" ("id") ON DELETE CASCADE,
+  "user" int REFERENCES "Users" ("id") ON DELETE CASCADE 
+);
+
+CREATE TABLE "Connections" (
+  "id" SERIAL PRIMARY KEY,
+  "originUser" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "targetUser" int REFERENCES "Users" ("id") ON DELETE CASCADE,
   "confirmation" boolean,
   "blockFlag" boolean
 );
 
-CREATE TABLE "card" (
+CREATE TABLE "Cards" (
   "id" SERIAL PRIMARY KEY,
-  "postedBy" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "searchFor" int REFERENCES "tag" ("id") ON DELETE CASCADE,
-  "created_at" varchar,
-  "message" varchar
+  "postedBy" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "searchFor" int REFERENCES "Tags" ("id") ON DELETE CASCADE,
+  "createdAt" varchar,
+  "text" varchar
 );
-CREATE TABLE "sharecard"(
+CREATE TABLE "Shares"(
   "id" SERIAL PRIMARY KEY,
-  "cardId" int REFERENCES "card" ("id") ON DELETE CASCADE,
-  "sharedBy" int REFERENCES "userx" ("id") ON DELETE CASCADE
+  "card" int REFERENCES "Cards" ("id") ON DELETE CASCADE,
+  "sharedBy" int REFERENCES "Users" ("id") ON DELETE CASCADE
 );
-CREATE TABLE "userrecomcard" (
+CREATE TABLE "Recommandations" (
   "id" SERIAL PRIMARY KEY,
-  "cardId" int REFERENCES "card" ("id") ON DELETE CASCADE,
-  "userAsk" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "userRecommender" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "userRecommended" int REFERENCES "userx" ("id") ON DELETE CASCADE,
+  "card" int REFERENCES "Cards" ("id") ON DELETE CASCADE,
+  "userAsk" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "userSend" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "userRecommand" int REFERENCES "Users" ("id") ON DELETE CASCADE,
   "acceptedFlag" boolean
 );
 
-CREATE TABLE "usertag" (
+CREATE TABLE "UserTags" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "tag_id" int REFERENCES "tag" ("id") ON DELETE CASCADE,
+  "user" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "tag" int REFERENCES "Tags" ("id") ON DELETE CASCADE,
   "default" boolean
 );
 
-CREATE TABLE "usertagreview" (
+CREATE TABLE "TagReviews" (
   "id" SERIAL PRIMARY KEY,
-  "recommendationBy" int REFERENCES "userx" ("id") ON DELETE CASCADE,
-  "recommendationFor" int REFERENCES "usertag" ("id") ON DELETE CASCADE,
+  "user" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "userTag" int REFERENCES "UserTags" ("id") ON DELETE CASCADE,
   "stars" int,
   "text" varchar
 );
 
-CREATE TABLE "message_thread" (
+CREATE TABLE "MessageThreads" (
   "id" SERIAL PRIMARY KEY,
-  "userrecomcard" int REFERENCES "userrecomcard" ("id") ON DELETE CASCADE
+  "recommandation" int REFERENCES "Recommandations" ("id") ON DELETE CASCADE
 );
 
-CREATE TABLE "message" (
+CREATE TABLE "Messages" (
   "id" SERIAL PRIMARY KEY,
   "text" varchar,
-  "messageThread" int REFERENCES "message_thread" ("id") ON DELETE CASCADE,
-  "messageFrom" int REFERENCES "userx" ("id") ON DELETE CASCADE
+  "messageThread" int REFERENCES "MessageThreads" ("id") ON DELETE CASCADE,
+  "from" int REFERENCES "Users" ("id") ON DELETE CASCADE
 );
 
-CREATE TABLE "message_thread_user" (
+CREATE TABLE "UserMessageThreads" (
   "id" SERIAL PRIMARY KEY, 
-  "thread" int REFERENCES "message_thread" ("id") ON DELETE CASCADE,
-  "user" int REFERENCES "userx" ("id") ON DELETE CASCADE
+  "thread" int REFERENCES "MessageThreads" ("id") ON DELETE CASCADE,
+  "user" int REFERENCES "Users" ("id") ON DELETE CASCADE
 );
-ALTER TABLE message_thread ALTER COLUMN userrecomcard DROP NOT NULL;
+ALTER TABLE "MessageThreads" ALTER COLUMN "recommandation" DROP NOT NULL;

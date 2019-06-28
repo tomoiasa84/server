@@ -3,14 +3,14 @@ const cardMutationsResolver = {
     Mutation:{
         update_tag: (root,{ tagId,name },{ knex }) => {
             
-            return knex('tag')
+            return knex('Tags')
             .where('id',tagId)
             .update({
                 name:name
             })
             .then((updated) => {
                 
-                if(updated) return knex('tag').where('id',tagIds[0]).first();
+                if(updated) return knex('Tags').where('id',tagIds[0]).first();
                 return {
                     id:0
                 }
@@ -25,7 +25,7 @@ const cardMutationsResolver = {
         },
         delete_tag: (root,{tagId},{ knex }) => {
 
-            return knex('tag').where('id',tagId).del()
+            return knex('Tags').where('id',tagId).del()
             .then((data) => {
 
                 if(data){
@@ -41,14 +41,14 @@ const cardMutationsResolver = {
         },
         create_tag: (root,{ name },{ knex }) => {
             
-            return knex('tag')
+            return knex('Tags')
             .returning('id')
             .insert({
                 name:name
             })
             .then((tagIds) => {
                 
-                return knex('tag').where('id',tagIds[0]).first()
+                return knex('Tags').where('id',tagIds[0]).first()
             })
             .catch((err) => {
 

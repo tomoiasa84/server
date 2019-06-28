@@ -4,108 +4,191 @@ const moment = require('moment');
 
 let tags = [];
 
-function createUser(knex,location)
-{
-  return knex('location').where('city',location).first()
-  .then((locationRecord)=>{
+function createUser(knex, location) {
+  return knex('Locations').where('city', location).first()
+    .then((locationRecord) => {
 
-    let userName = faker.name.findName();
-    return knex('userx').insert({
-      name: userName,
-      location: locationRecord.id,
-      phone:`${faker.phone.phoneNumber()}`,
-      hasAccount: true,
-      notification1: true,
-      notification2: true,
-      notification3: true,
-      privacy: 1
-    });
-  })
+      let userName = faker.name.findName();
+      return knex('Users').returning('id').insert({
+          name: userName,
+          location: locationRecord.id,
+          phoneNumber: `${faker.phone.phoneNumber()}`,
+          isActive: true,
+        })
+        .then(userIds => {
+          //Set UserDefaultSettings
+          let defaults = [];
+          //Notification option
+          defaults.push(
+            knex('Settings').where({
+              name: 'PushNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //MsgNotifs
+          defaults.push(
+            knex('Settings').where({
+              name: 'MessageNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //Card notifs
+          defaults.push(
+            knex('Settings').where({
+              name: 'CardNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //Privacy
+          defaults.push(
+            knex('Settings').where({
+              name: 'ProfilePrivacy',
+              value: 'Connections'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+
+          return Promise.all(defaults)
+          .then(defaultsres => {
+
+            return knex('UserSettings').insert(defaultsres);
+          })
+        })
+    })
 }
 
-function createConnection(knex,rows)
-{
-  return knex('userfriend').insert({
+function createConnection(knex, rows) {
+  return knex('Connections').insert({
 
-    user1:rows[0].id,
-    user2:rows[1].id,
-    confirmation:true,
-    blockFlag:false
+    originUser: rows[0].id,
+    targetUser: rows[1].id,
+    confirmation: true,
+    blockFlag: false
   });
 }
 
-function createCard(knex,user)
-{
+function createCard(knex, user) {
 
   return knex.raw(`SELECT *
-    FROM tag
+    FROM Tags
     ORDER BY random()
     LIMIT 1;`)
-  .then((tagRec) => {
-    
-    return knex('card').insert({
+    .then((tagRec) => {
 
-      postedBy:user.id,
-      searchFor:tagRec.rows[0].id,
-      created_at:`${moment().format('MMMM Do YYYY, h:mm:ss a')}`,
-      message:`${faker.lorem.sentence()}`
-    });
-  })
+      return knex('Cards').insert({
+
+        postedBy: user.id,
+        searchFor: tagRec.rows[0].id,
+        createdAt: `${moment().format('MMMM Do YYYY, h:mm:ss a')}`,
+        message: `${faker.lorem.sentence()}`
+      })
+
+    })
 }
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-    return knex('tag').del()
-    .then(()=>{
-      return knex('location').del();
+  return knex('Tags').del()
+    .then(() => {
+      return knex('Locations').del();
     })
-    .then(()=>{
-      return knex('privacy').del();
-    })
-    .then(()=>{
-      // Inserts seed entries
-      
-      return knex('privacy').insert(
+    .then(() => {
+
+      let settings = [{
+          name: 'PushNotification',
+          value: 'true'
+        },
         {
-          setting: 'profileSetting'
+          name: 'PushNotification',
+          value: 'false'
+        },
+        {
+          name: 'MessageNotification',
+          value: 'true'
+        },
+        {
+          name: 'MessageNotification',
+          value: 'false'
+        },
+        {
+          name: 'CardNotification',
+          value: 'true'
+        },
+        {
+          name: 'CardNotification',
+          value: 'false'
+        },
+        {
+          name: 'ProfilePrivacy',
+          value: 'Nobody'
+        },
+        {
+          name: 'ProfilePrivacy',
+          value: 'Connections'
+        },
+        {
+          name: 'ProfilePrivacy',
+          value: 'Anyone'
         }
-      );
+      ];
+      return knex('Settings').insert(settings);
     })
-    .then(()=>{
-      
+    .then(() => {
+
       //Using romanian-cities library to populate the location table
       let locationsArray = [];
       romCities.all.forEach(element => {
-        
+
         locationsArray.push({
           city: element.city
         });
       });
-      return knex('location').insert(locationsArray);
+      return knex('Locations').insert(locationsArray);
     })
-    .then(()=>{
+    .then(() => {
 
       //Populate tag table
-      let tagSet =  new Set();
-      while(tagSet.size < 10)
-      {
+      let tagSet = new Set();
+      while (tagSet.size < 10) {
         tagSet.add(faker.name.jobTitle());
       }
       tagSet.forEach(el => {
-        
+
         tags.push({
-          
+
           name: el
         });
       });
-      return knex('tag').insert(tags);
+      return knex('Tags').insert(tags);
     })
-    .then(()=>{
-      
+    .then(() => {
+
       //Populate user table
       let users = [];
-      for(let i = 0; i < 10; i++)
-      {
-        users.push(createUser(knex,romCities.random().city));
+      for (let i = 0; i < 10; i++) {
+        users.push(createUser(knex, romCities.random().city));
       }
       return Promise.all(users);
     })

@@ -2,7 +2,7 @@ const tagResolvers = {
     Query: {
       get_tags: (root, args, { knex }) => {
         
-        return knex('tag').select()
+        return knex('Tags').select()
         .then((tags)=>{
 
           return tags;
@@ -12,7 +12,7 @@ const tagResolvers = {
 
         console.log(tagId);
         
-        return knex('tag').where('id',tagId).first()
+        return knex('Tags').where('id',tagId).first()
         .then((data) => {
 
           console.log(data);

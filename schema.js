@@ -1,7 +1,7 @@
 const Query = require('./types/Query/QueryType');
 const User = require('./types/User/UserType');
 const Location = require('./types/Location/LocationType');
-const Privacy = require('./types/Privacy/PrivacyType');
+const Setting = require('./types/Setting/SettingType');
 const Response = require('./types/Response/ResponseType');
 const Card = require('./types/Card/CardType');
 const Tag = require('./types/Tag/TagType');
@@ -20,7 +20,7 @@ const typeDefs = [
     Query,
     User,
     Location,
-    Privacy,
+    Setting,
     Response,
     Card
 ];

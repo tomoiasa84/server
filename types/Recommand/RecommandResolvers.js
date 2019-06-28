@@ -4,30 +4,30 @@ const recommandResolvers = {
 
         get_recommandations: (root,args,{ knex }) => {
 
-            return knex('userrecomcard').select();
+            return knex('Recommandations').select();
         },
         get_recommandation: (root,{ recommandationId},{ knex }) => {
 
-            return knex('userrecomcard').where('id',recommandationId).first();
+            return knex('Recommandations').where('id',recommandationId).first();
         }
     },
     Recommand: {
 
         card: (parent,args,{ knex }) => {
 
-            return knex('card').where('id',parent.cardId).first();
+            return knex('Cards').where('id',parent.card).first();
         },
         userAsk: (parent,args,{ knex }) => {
 
-            return knex('userx').where('id',parent.userAsk).first();
+            return knex('Users').where('id',parent.userAsk).first();
         },
-        recommander: (parent,args,{ knex }) => {
+        userSend: (parent,args,{ knex }) => {
 
-            return knex('userx').where('id',parent.userRecommender).first();
+            return knex('Users').where('id',parent.userSend).first();
         },
-        recommanded: (parent,args,{ knex }) => {
+        userRecommand: (parent,args,{ knex }) => {
 
-            return knex('userx').where('id',parent.userRecommended).first();
+            return knex('Users').where('id',parent.userRecommand).first();
         }
     }
 

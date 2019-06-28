@@ -1,7 +1,7 @@
 const QueryResolvers = require('./types/Query/QueryResolvers');
 const UserResolvers = require('./types/User/UserResolvers');
 const LocationResolvers = require('./types/Location/LocationResolvers');
-const PrivacyResolvers = require('./types/Privacy/PrivacyResolvers');
+const SettingResolvers = require('./types/Setting/SettingResolvers');
 const CardResolvers = require('./types/Card/CardResolvers');
 const TagResolvers = require('./types/Tag/TagResolvers');
 const UserMutationsResolvers = require('./types/User/UserMutationsResolvers');
@@ -36,7 +36,7 @@ const resolvers = [
     QueryResolvers,
     UserResolvers,
     LocationResolvers,
-    PrivacyResolvers,
+    SettingResolvers,
     UserMutationsResolvers,
     CardMutationsResolvers,
     TagMutationsResolvers,

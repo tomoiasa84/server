@@ -3,17 +3,17 @@ const messageResolvers = {
     Query:{
         get_message: (root,{ msgId },{ knex }) =>{
 
-            return knex('message').where('id',msgId).first();
+            return knex('Messages').where('id',msgId).first();
         },
         get_messages: (root, args, { knex }) => {
             
-            return knex('message').select();
+            return knex('Messages').select();
         }
     },
     Message:{
         messageThread: (message, args, { knex }) => {
 
-            return knex('message_thread').where('id',message.messageThread).first()
+            return knex('MessageThreads').where('id',message.messageThread).first()
             .catch(err => {
                 console.log(err);
                 return {
@@ -21,9 +21,9 @@ const messageResolvers = {
                 }
             })
         },
-        messageFrom: (message, args, { knex }) => {
+        from: (message, args, { knex }) => {
 
-            return knex('userx').where('id',message.messageFrom).first()
+            return knex('Users').where('id',message.from).first()
             .catch(err => {
                 console.log(err);
                 return {

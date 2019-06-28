@@ -1,3 +1,59 @@
+function insertDefaults(knex,userIds){
+    let defaults = [];
+          //Notification option
+          defaults.push(
+            knex('Settings').where({
+              name: 'PushNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //MsgNotifs
+          defaults.push(
+            knex('Settings').where({
+              name: 'MessageNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //Card notifs
+          defaults.push(
+            knex('Settings').where({
+              name: 'CardNotification',
+              value: 'true'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          //Privacy
+          defaults.push(
+            knex('Settings').where({
+              name: 'ProfilePrivacy',
+              value: 'Connections'
+            }).first()
+            .then(setting => {
+              return {
+                setting: setting.id,
+                user: userIds[0]
+              }
+            })
+          );
+          return defaults;
+}
 const userMutationsResolvers = {
     Mutation: {
         delete_user: (root, {
@@ -6,7 +62,7 @@ const userMutationsResolvers = {
             knex
         }) => {
 
-            return knex('userx').where('id', userId)
+            return knex('Users').where('id', userId)
                 .first()
                 .del()
                 .then((data) => {
@@ -30,20 +86,24 @@ const userMutationsResolvers = {
             return knex.insert({
                     name: name,
                     location: cityId,
-                    phone: phone,
-                    hasAccount: true,
-                    notification1: true,
-                    notification2: true,
-                    notification3: true,
-                    privacy: 1
+                    phoneNumber: phone,
+                    isActive: true,
                 })
                 .returning('id')
-                .into('userx')
+                .into('Users')
                 .then((userIds) => {
 
-                    return knex('userx').where({
-                        id: userIds[0]
-                    }).first();
+                    return Promise.all(insertDefaults(knex,userIds))
+                    .then(defaultsres => {
+
+                        return knex('UserSettings').insert(defaultsres)
+                        .then(() => {
+                        
+                            return knex('Users').where({
+                                id: userIds[0]
+                            }).first();
+                        })
+                    })
                 })
                 .catch((err) => {
 
@@ -58,7 +118,7 @@ const userMutationsResolvers = {
         }, {
             knex
         }) => {
-            return knex('userfriend').where({
+            return knex('Connections').where({
                     userTarget: idUser,
                     acceptedFlag: false
                 })
@@ -91,7 +151,7 @@ const userMutationsResolvers = {
             knex
         }) => {
 
-            return knex('userfriend').where('userTarget', idUser)
+            return knex('Connections').where('targetUser', idUser)
                 .update({
                     acceptedFlag: true
                 })
@@ -119,14 +179,14 @@ const userMutationsResolvers = {
             knex
         }) => {
 
-            return knex('userx').where('id', userId).update({
+            return knex('Users').where('id', userId).update({
                     name: name,
                     location: location,
                     phone: phone
                 })
                 .then((data) => {
 
-                    return knex('userx').where('id', userId).first();
+                    return knex('Users').where('id', userId).first();
                 })
                 .catch((err) => {
 
@@ -137,15 +197,15 @@ const userMutationsResolvers = {
                 })
         },
         create_connection: (obj, {
-            id1,
-            id2
+            origin,
+            target
         }, {
             knex
         }) => {
 
-            return knex('userfriend').insert({
-                    user1: id1,
-                    user2: id2,
+            return knex('Connections').insert({
+                    originUser: origin,
+                    targetUser: target,
                     confirmation: false,
                     blockFlag: false
                 })

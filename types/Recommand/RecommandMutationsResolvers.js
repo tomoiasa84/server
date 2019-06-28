@@ -7,7 +7,7 @@ const recommandMutationsResolvers = {
             knex
         }) => {
 
-            return knex('userrecomcard').where('id', recommandId).del()
+            return knex('Recommandations').where('id', recommandId).del()
                 .then((deleted) => {
 
                     if (deleted) return recommandId;
@@ -33,13 +33,13 @@ const recommandMutationsResolvers = {
                 .update({
                     cardId: cardId,
                     userAsk: userAsk,
-                    userRecommender: userSend,
-                    userRecommended: userRec,
+                    userSend: userSend,
+                    userRecommand: userRec,
                     acceptedFlag: false
                 })
                 .then((updated) => {
 
-                    if (updated) return knex('userrecomcard').where('id', data[0]).first();
+                    if (updated) return knex('Recommandations').where('id', data[0]).first();
                     return {
                         id: 0
                     }
@@ -63,21 +63,17 @@ const recommandMutationsResolvers = {
         }) => {
 
             return knex.insert({
-                    cardId: cardId,
+                    card: cardId,
                     userAsk: userAsk,
-                    userRecommender: userSend,
-                    userRecommended: userRec,
+                    userSend: userSend,
+                    userRecommand: userRec,
                     acceptedFlag: false
                 })
                 .returning('id')
-                .into('userrecomcard')
+                .into('Recommandations')
                 .then((recommandIds) => {
 
-                    return knex('userrecomcard').where('id', recommandIds[0]).first();
-                    // .then(recommand => {
-
-
-                    // })
+                    return knex('Recommandations').where('id', recommandIds[0]).first();
 
                 })
                 .catch((err) => {

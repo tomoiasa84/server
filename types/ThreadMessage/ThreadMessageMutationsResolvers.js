@@ -7,7 +7,7 @@ const threadMessageMutationsResolvers = {
             knex
         }) => {
 
-            return knex('message_thread').where('id', threadMessageId).del()
+            return knex('MessageThreads').where('id', threadMessageId).del()
                 .then((deleted) => {
 
                     if (deleted) return threadMessageId;
@@ -25,14 +25,14 @@ const threadMessageMutationsResolvers = {
             knex
         }) => {
             
-            return knex('message_thread')
+            return knex('MessageThreads')
             .where('id',threadMessageId)
             .update({
-                userrecomcard: userRecomCard
+                recommandation: userRecomCard
             })
             .then(updated => {
 
-                if(updated) return knex('message_thread').where('id',threadMessageId).first();
+                if(updated) return knex('MessageThreads').where('id',threadMessageId).first();
                 return {
                     id:0
                 }
@@ -56,10 +56,10 @@ const threadMessageMutationsResolvers = {
         }) => {
 
 
-            return knex('message_thread')
+            return knex('MessageThreads')
                 .returning('id')
                 .insert({
-                    userrecomcard: userRecomCard
+                    recommandation: userRecomCard
                 })
                 .then(threadIds => {
 
@@ -71,7 +71,7 @@ const threadMessageMutationsResolvers = {
                             thread: threadIds[0]
                         })
                         .returning('id')
-                        .into('message_thread_user')
+                        .into('UserMessageThreads')
                     );
                     //create target user thread
                     promises.push(
@@ -80,7 +80,7 @@ const threadMessageMutationsResolvers = {
                             thread: threadIds[0]
                         })
                         .returning('id')
-                        .into('message_thread_user')
+                        .into('UserMessageThreads')
                     );
                     return Promise.all(promises)
                         .then(done => {

@@ -4,8 +4,8 @@ const review = gql`
 type Review {
     "Type of user with id, name"
     id: Int!
-    recommendationBy: User
-    recommendationFor: Tag
+    author: User
+    userTag: Tag
     stars: Int
     text: String
   }`

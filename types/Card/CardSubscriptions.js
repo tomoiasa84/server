@@ -3,10 +3,10 @@ const cardSubscriptions = {
     Subscription:{
         cardUpdateSub: {
 
-            subscribe(root,{userId},{pubsub}){
+            subscribe(root,{ userId },{pubsub}){
 
                 
-                return pubsub.asyncIterator(`cardUpdate${userId}`)
+                return pubsub.asyncIterator(`cardUpdate ${userId}`)
             }
         }
     }

@@ -4,7 +4,7 @@ const userTagResolvers = {
 
         get_userTags: (root,args,{ knex }) => {
 
-            return knex('usertag').select()
+            return knex('UserTags').select()
                 .catch(err => {
                     console.log(err);
                     return [];
@@ -12,7 +12,7 @@ const userTagResolvers = {
         },
         get_userTag: (root,{ userTagId },{ knex }) => {
 
-            return knex('usertag')
+            return knex('UserTags')
                 .where('id',userTagId)
                 .first()
                 .catch(err => {
@@ -28,7 +28,7 @@ const userTagResolvers = {
 
         user: (userTag, args, { knex }) => {
 
-            return knex('userx')
+            return knex('Users')
                 .where('id',userTag.user_id)
                 .first()
                 .catch(err => {
@@ -40,7 +40,7 @@ const userTagResolvers = {
         },
         tag: (userTag,args,{ knex }) => {
 
-            return knex('tag')
+            return knex('Tags')
                 .where('id',userTag.tag_id)
                 .first()
                 .catch(err => {

@@ -7,7 +7,7 @@ const messageMutationsResolvers = {
             knex
         }) => {
             
-            return knex('message').where('id', messageId).del()
+            return knex('Messages').where('id', messageId).del()
                 .then((deleted) => {
 
                     if (deleted) return messageId;
@@ -27,16 +27,16 @@ const messageMutationsResolvers = {
             knex
         }) => {
 
-            return knex('message')
+            return knex('Messages')
                 .where('id',messageId)
                 .update({
                     text: text,
                     messageThread: msgThread,
-                    messageFrom: msgFrom
+                    from: msgFrom
                 })
                 .then(updated => {
 
-                    if(updated) return knex('message').where('id', messageIds[0]).first();
+                    if(updated) return knex('Messages').where('id', messageIds[0]).first();
                     return {
                         id:0
                     }
@@ -57,16 +57,16 @@ const messageMutationsResolvers = {
             knex
         }) => {
 
-            return knex('message')
+            return knex('Messages')
                 .returning('id')
                 .insert({
                     text: text,
                     messageThread: msgThread,
-                    messageFrom: msgFrom
+                    from: msgFrom
                 })
                 .then(messageIds => {
 
-                    return knex('message').where('id', messageIds[0]).first();
+                    return knex('Messages').where('id', messageIds[0]).first();
                 })
                 .catch(err => {
 
