@@ -29,7 +29,7 @@ const userTagResolvers = {
         user: (userTag, args, { knex }) => {
 
             return knex('Users')
-                .where('id',userTag.user_id)
+                .where('id',userTag.user)
                 .first()
                 .catch(err => {
                     console.log(err);
@@ -41,7 +41,7 @@ const userTagResolvers = {
         tag: (userTag,args,{ knex }) => {
 
             return knex('Tags')
-                .where('id',userTag.tag_id)
+                .where('id',userTag.tag)
                 .first()
                 .catch(err => {
                     console.log(err);

@@ -4,7 +4,12 @@
   "description": "Graphql server",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha ./Tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=12.5.0",
+    "npm": "6.x"
   },
   "author": "",
   "license": "ISC",
