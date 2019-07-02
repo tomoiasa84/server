@@ -12,7 +12,9 @@ const server = new ApolloServer({
   context: {
     pubsub,
     knex
-  }
+  },
+  playground: true,
+  introspection: true
 });
 
 server.listen().then(({ url }) => {
