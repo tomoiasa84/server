@@ -1,25 +1,15 @@
 const tagResolvers = {
-    Query: {
-      get_tags: (root, args, { knex }) => {
-        
-        return knex('Tags').select()
-        .then((tags)=>{
-
-          return tags;
-        }) 
-      },
-      get_tag: (root,{tagId},{ knex }) => {
-
-        console.log(tagId);
-        
-        return knex('Tags').where('id',tagId).first()
-        .then((data) => {
-
-          console.log(data);
-          
-          return data;
-        }) 
-      }
+  Query: {
+    get_tags: (root, args, { knexModule }) => {
+      return knexModule.getAll("Tags").catch(error => {
+        throw error;
+      });
     },
-  };
+    get_tag: (root, { tagId }, { knexModule }) => {
+      return knexModule.getById("Tags", tagId).catch(error => {
+        throw error;
+      });
+    }
+  }
+};
 module.exports = tagResolvers;

@@ -7,6 +7,9 @@ module.exports = {
       .where("id", id)
       .first()
       .del()
+      .then(() => {
+        return id;
+      })
       .catch(err => {
         throw err;
       });

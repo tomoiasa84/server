@@ -1,74 +1,28 @@
 const locationMutationsResolver = {
-
-    Mutation: {
-        update_location: (root, {
-            locationId
-        }, {
-            knex
-        }) => {
-
-            return knex('Locations').where('id', locationId).del()
-                .then((deleted) => {
-
-                    if (deleted) return locationId;
-                    return 0;
-                })
-                .catch((err) => {
-
-                    console.log(err);
-                    return 0;
-                })
-        },
-        update_location: (root, {
-            locationId,
-            city
-        }, {
-            knex
-        }) => {
-
-            return knex('Locations')
-                .where('id', locationId)
-                .update({
-                    city: city
-                })
-                .then((updated) => {
-
-                    if (updated0) return knex('Locations').where('id', locationIds[0]).first();
-                    return {
-                        id: 0
-                    }
-                })
-                .catch((err) => {
-
-                    console.log(err);
-                    return {
-                        id: 0
-                    }
-                })
-        },
-        create_location: (root, {
-            city
-        }, {
-            knex
-        }) => {
-
-            return knex('Locations')
-                .returning('id')
-                .insert({
-                    city: city
-                })
-                .then((locationIds) => {
-
-                    return knex('Locations').where('id', locationIds[0]).first();
-                })
-                .catch((err) => {
-
-                    console.log(err);
-                    return {
-                        id: 0
-                    }
-                })
-        }
+  Mutation: {
+    update_location: (root, { locationId }, { knexModule }) => {
+      return knexModule.deleteById("Locations", locationId).catch(error => {
+        throw error;
+      });
+    },
+    update_location: (root, { locationId, city }, { knexModule }) => {
+      return knexModule
+        .updateById("Locations", locationId, {
+          city: city
+        })
+        .catch(error => {
+          throw error;
+        });
+    },
+    create_location: (root, { city }, { knexModule }) => {
+      return knexModule
+        .insert("Locations", {
+          city: city
+        })
+        .catch(error => {
+          throw error;
+        });
     }
-}
+  }
+};
 module.exports = locationMutationsResolver;

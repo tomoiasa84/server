@@ -1,30 +1,26 @@
 const reviewResolvers = {
-
-    Query: {
-        get_review: (root, {reviewId}, { knex }) => {
-
-            return knex('TagReviews').where('id',reviewId).first();
-        },
-        get_reviews: (root, args, { knex }) => {
-
-            return knex('TagReviewsv').select()
-        }
+  Query: {
+    get_review: (root, { reviewId }, { knexModule }) => {
+      return knexModule.getById("TagReviews", reviewId).catch(error => {
+        throw error;
+      });
     },
-    Review:{
-
-        author: (review) => {
-
-            return knex('Users').where('id',review.user).first();
-        },
-        userTag: (review) => {
-
-            return knex('UserTags').where('id',review.userTag).first()
-            .then((usertag) => {
-
-                return knex('Tags').where('id',usertag.tag).first();
-            })
-        }
+    get_reviews: (root, args, { knexModule }) => {
+      return knexModule.select("TagReviewsv");
     }
-}
+  },
+  Review: {
+    author: (review, args, { knexModule }) => {
+      return knexModule.getById("Users", review.user).catch(error => {
+        throw error;
+      });
+    },
+    userTag: (review, args, { knexModule }) => {
+      return knexModule.getById("UserTags", review.userTag).catch(error => {
+        throw error;
+      });
+    }
+  }
+};
 
 module.exports = reviewResolvers;

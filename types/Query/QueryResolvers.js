@@ -1,7 +1,4 @@
-
 const queryResolver = {
-    Query: {
-      
-    }
-  };
+  Query: {}
+};
 module.exports = queryResolver;
