@@ -13,75 +13,68 @@ const userResolvers = {
       return knexModule.getAll("Users");
     },
     get_user: (root, { userId }, { knex, knexModule }) => {
-      return knexModule.get("Users", { id: userId }).catch(error => {
+      return knexModule.getById("Users", userId).catch(error => {
         throw error;
       });
     }
   },
 
   User: {
-    cards_feed: (user, args, { knex }) => {
-      return knex("Connections")
-        .select()
+    cards_feed: (user, args, { knexModule }) => {
+      return knexModule
+        .get("Connections", { originUser: user.id })
         .then(connections => {
           if (connections.length) {
             let cards = [];
             connections.forEach(conn => {
               cards.push(
-                knex("Cards")
-                  .where("postedBy", conn.targetUser)
-                  .first()
+                knexModule.get("Cards", { postedBy: conn.targetUser })
               );
             });
             return Promise.all(cards);
           }
           return [];
         })
-        .catch(err => {
-          console.log(err);
-          return [];
+        .catch(error => {
+          throw error;
         });
     },
-    thread_messages: (user, args, { knex }) => {
-      return knex("UserMessageThreads")
-        .where("user", user.id)
-        .first()
-        .then(userThread => {
-          if (userThread) {
-            return knex("MessageThreads").where("id", userThread.thread);
-          }
-        });
+    thread_messages: (user, args, { knexModule }) => {
+      return null;
     },
-    tags: (user, args, { knex }) => {
-      return knex("UserTags")
-        .where("user", user.id)
+    tags: (user, args, { knexModule }) => {
+      return knexModule
+        .get("UserTags", { user: user.id })
         .then(data => {
           let tags = [];
-
           if (data.length) {
             data.forEach(userTag => {
-              tags.push(
-                knex("Tags")
-                  .where("id", userTag.tag)
-                  .first()
-              );
+              tags.push(knexModule.getById("Tags", userTag.tag));
             });
           }
           return Promise.all(tags);
+        })
+        .catch(error => {
+          throw error;
         });
     },
-    cards: (user, args, { knex }) => {
-      return knex("Cards").where("postedBy", user.id);
+    cards: (user, args, { knexModule }) => {
+      return knexModule.get("Cards", { postedBy: user.id }).catch(error => {
+        throw error;
+      });
     },
-    location: (user, args, { knex }) => {
+    location: (user, args, { knexModule }) => {
       //Resolve Location relation
-      return knex("Locations")
-        .where("id", user.location)
-        .first();
+      return knexModule
+        .getById("Locations", user.location)
+        .then(data => data[0])
+        .catch(error => {
+          throw error;
+        });
     },
-    settings: (user, args, { knex }) => {
-      return knex("UserSettings")
-        .where("user", user.id)
+    settings: (user, args, { knexModule }) => {
+      return knexModule
+        .get("UserSettings", { user: user.id })
         .then(settings => {
           let settingsList = [];
           settings.forEach(setting => {
@@ -92,29 +85,27 @@ const userResolvers = {
             );
           });
           return Promise.all(settingsList);
+        })
+        .catch(error => {
+          throw error;
         });
     },
-    connections: (user, args, { knex }) => {
+    connections: (user, args, { knexModule }) => {
       //Find friends of current user
-      return knex("Connections")
-        .where("originUser", user.id)
+      return knexModule
+        .get("Connections", { originUser: user.id })
         .then(connections => {
           if (connections.length) {
             let usersList = [];
             connections.forEach(conn => {
-              usersList.push(
-                knex("Users")
-                  .where("id", conn.targetUser)
-                  .first()
-              );
+              usersList.push(knexModule.getById("Users", conn.targetUser));
             });
             return Promise.all(usersList);
           }
           return [];
         })
-        .catch(err => {
-          console.log(err);
-          return [];
+        .catch(error => {
+          throw error;
         });
     }
   }

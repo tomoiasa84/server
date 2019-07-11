@@ -34,8 +34,9 @@ const server = new ApolloServer({
       knexModule
     };
   },
-  debug: false
+  debug: true
 });
+
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);

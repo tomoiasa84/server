@@ -64,18 +64,10 @@ function insertDefaults(knex, userIds) {
 }
 const userMutationsResolvers = {
   Mutation: {
-    delete_user: (root, { userId }, { knex }) => {
-      return knex("Users")
-        .where("id", userId)
-        .first()
-        .del()
-        .then(data => {
-          if (data) return userId;
-          return 0;
-        })
-        .catch(err => {
-          return 0;
-        });
+    delete_user: (root, { userId }, { knex, knexModule }) => {
+      return knexModule.deleteById("Users", userId).catch(err => {
+        throw err;
+      });
     },
     create_user: (
       root,
@@ -85,16 +77,18 @@ const userMutationsResolvers = {
       return knexModule
         .insert("Users", { name, location, phoneNumber })
         .then(user => {
-          return Promise.all(insertDefaults(knex, user.id)).then(
-            defaultsres => {
+          return Promise.all(insertDefaults(knex, user.id))
+            .then(defaultsres => {
               return knexModule.insert("UserSettings", defaultsres).then(() => {
                 return user;
               });
-            }
-          );
+            })
+            .catch(error => {
+              throw error;
+            });
         });
     },
-    delete_connection: (root, { idUser }, { knex }) => {
+    delete_connection: (root, { idUser }, { knex, knexModule }) => {
       return knex("Connections")
         .where({
           userTarget: idUser,
@@ -145,7 +139,11 @@ const userMutationsResolvers = {
       { userId, name, location, phone },
       { knex, knexModule }
     ) => {
-      return knexModule.update("Users", userId, { name, location, phone });
+      return knexModule
+        .updateById("Users", userId, { name, location, phone })
+        .catch(error => {
+          throw error;
+        });
     },
     create_connection: (obj, { origin, target }, { knex }) => {
       return knex("Connections")

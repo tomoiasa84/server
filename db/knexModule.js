@@ -2,18 +2,35 @@ const knex = require("./pgAdaptop");
 //function KnexModule(){};
 //KnexModule.prototype.update()
 module.exports = {
-  update: (tableName, id, updateObject) => {
+  deleteById: (tableName, id) => {
+    return knex(tableName)
+      .where("id", id)
+      .first()
+      .del()
+      .catch(err => {
+        throw err;
+      });
+  },
+  delete: (tableName, whereObject) => {
+    return knex(tableName)
+      .where(whereObject)
+      .del()
+      .catch(err => {
+        throw err;
+      });
+  },
+  updateById: (tableName, id, updateObject) => {
     return knex(tableName)
       .where("id", id)
       .update(updateObject)
       .then(data => {
-        console.log(data);
-
         if (data)
           return knex(tableName)
             .where("id", id)
-            .first();
-        throw new Error("Invalid user id.");
+            .first()
+            .catch(error => {
+              throw error;
+            });
       })
       .catch(error => {
         throw error;
@@ -27,23 +44,27 @@ module.exports = {
         if (ids.length) {
           return knex(tableName)
             .where("id", ids[0])
-            .first();
+            .first()
+            .catch(error => {
+              throw error;
+            });
         }
-        throw new Error(`Cannot insert into ${tableName}`);
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
   },
   getAll: tableName => {
     return knex(tableName)
       .select()
-      .then(records => {
-        if (records.length) {
-          return records;
-        }
-        throw new Error(`Table ${tableName} is empty.`);
-      })
+      .catch(err => {
+        throw err;
+      });
+  },
+  getById: (tableName, id) => {
+    return knex(tableName)
+      .where("id", id)
+      .first()
       .catch(err => {
         throw err;
       });
@@ -51,13 +72,6 @@ module.exports = {
   get: (tableName, whereObject) => {
     return knex(tableName)
       .where(whereObject)
-      .first()
-      .then(record => {
-        if (record) {
-          return record;
-        }
-        throw new Error(`No data found in table ${tableName}.`);
-      })
       .catch(err => {
         throw err;
       });
