@@ -1,55 +1,27 @@
 const userTagResolvers = {
-
-    Query:{
-
-        get_userTags: (root,args,{ knex }) => {
-
-            return knex('UserTags').select()
-                .catch(err => {
-                    console.log(err);
-                    return [];
-                });
-        },
-        get_userTag: (root,{ userTagId },{ knex }) => {
-
-            return knex('UserTags')
-                .where('id',userTagId)
-                .first()
-                .catch(err => {
-                    console.log(err);
-                    return {
-                        id: 0
-                    }
-                });
-        }
-        
+  Query: {
+    get_userTags: (root, args, { knexModule }) => {
+      return knexModule.getAll("UserTags").catch(error => {
+        throw error;
+      });
     },
-    UserTag: {
-
-        user: (userTag, args, { knex }) => {
-
-            return knex('Users')
-                .where('id',userTag.user)
-                .first()
-                .catch(err => {
-                    console.log(err);
-                    return {
-                        id: 0
-                    }
-                })
-        },
-        tag: (userTag,args,{ knex }) => {
-
-            return knex('Tags')
-                .where('id',userTag.tag)
-                .first()
-                .catch(err => {
-                    console.log(err);
-                    return {
-                        id: 0
-                    }
-                })
-        },
+    get_userTag: (root, { userTagId }, { knexModule }) => {
+      return knexModule.getById("UserTags", userTagId).catch(error => {
+        throw error;
+      });
     }
-}
+  },
+  UserTag: {
+    user: (userTag, args, { knexModule }) => {
+      return knexModule.getById("Users", userTag.user).catch(error => {
+        throw error;
+      });
+    },
+    tag: (userTag, args, { knexModule }) => {
+      return knexModule.getById("Tags", userTag.tag).catch(error => {
+        throw error;
+      });
+    }
+  }
+};
 module.exports = userTagResolvers;

@@ -1,13 +1,12 @@
-function insertDefaults(knex, userIds) {
+function insertDefaults(knexModule, userIds) {
   let defaults = [];
   //Notification option
   defaults.push(
-    knex("Settings")
-      .where({
+    knexModule
+      .get("Settings", {
         name: "PushNotification",
         value: "true"
       })
-      .first()
       .then(setting => {
         return {
           setting: setting.id,
@@ -17,12 +16,11 @@ function insertDefaults(knex, userIds) {
   );
   //MsgNotifs
   defaults.push(
-    knex("Settings")
-      .where({
+    knexModule
+      .get("Settings", {
         name: "MessageNotification",
         value: "true"
       })
-      .first()
       .then(setting => {
         return {
           setting: setting.id,
@@ -32,12 +30,11 @@ function insertDefaults(knex, userIds) {
   );
   //Card notifs
   defaults.push(
-    knex("Settings")
-      .where({
+    knexModule
+      .get("Settings", {
         name: "CardNotification",
         value: "true"
       })
-      .first()
       .then(setting => {
         return {
           setting: setting.id,
@@ -47,12 +44,11 @@ function insertDefaults(knex, userIds) {
   );
   //Privacy
   defaults.push(
-    knex("Settings")
-      .where({
+    knexModule
+      .get("Settings", {
         name: "ProfilePrivacy",
         value: "Connections"
       })
-      .first()
       .then(setting => {
         return {
           setting: setting.id,
@@ -64,37 +60,30 @@ function insertDefaults(knex, userIds) {
 }
 const userMutationsResolvers = {
   Mutation: {
-    delete_user: (root, { userId }, { knex, knexModule }) => {
-      return knexModule.deleteById("Users", userId).catch(err => {
-        throw err;
+    delete_user: (root, { userId }, { knexModule }) => {
+      return knexModule.deleteById("Users", userId).catch(error => {
+        throw error;
       });
     },
-    create_user: (
-      root,
-      { name, location, phoneNumber },
-      { knex, knexModule }
-    ) => {
+    create_user: (root, { name, location, phoneNumber }, { knexModule }) => {
       return knexModule
         .insert("Users", { name, location, phoneNumber })
         .then(user => {
-          return Promise.all(insertDefaults(knex, user.id))
-            .then(defaultsres => {
-              return knexModule.insert("UserSettings", defaultsres).then(() => {
+          return Promise.all(insertDefaults(knexModule, user.id)).then(
+            defaults => {
+              return knexModule.insert("UserSettings", defaults).then(() => {
                 return user;
               });
-            })
-            .catch(error => {
-              throw error;
-            });
+            }
+          );
+        })
+        .catch(error => {
+          throw error;
         });
     },
-    delete_connection: (root, { idUser }, { knex, knexModule }) => {
-      return knex("Connections")
-        .where({
-          userTarget: idUser,
-          acceptedFlag: false
-        })
-        .del()
+    delete_connection: (root, { connectionId }, { knexModule }) => {
+      return knexModule
+        .deleteById("Connections", connectionId)
         .then(data => {
           if (data) {
             return {
@@ -107,65 +96,48 @@ const userMutationsResolvers = {
             message: "User already deleted"
           };
         })
-        .catch(err => {
-          return {
-            status: "bad",
-            message: "Error:cannot delete user"
-          };
+        .catch(error => {
+          throw error;
         });
     },
-    update_connection: (root, { idUser }, { knex }) => {
-      return knex("Connections")
-        .where("targetUser", idUser)
-        .update({
+    update_connection: (root, { connectionId }, { knexModule }) => {
+      return knexModule
+        .updateById("Connections", connectionId, {
           acceptedFlag: true
         })
         .then(data => {
-          console.log(data);
           return {
             status: "ok",
             message: "Updated successfully"
           };
         })
-        .catch(err => {
-          return {
-            status: "bad",
-            message: "Error, cannot update connection"
-          };
+        .catch(error => {
+          throw error;
         });
     },
-    update_user: (
-      root,
-      { userId, name, location, phone },
-      { knex, knexModule }
-    ) => {
+    update_user: (root, { userId, name, location, phone }, { knexModule }) => {
       return knexModule
         .updateById("Users", userId, { name, location, phone })
         .catch(error => {
           throw error;
         });
     },
-    create_connection: (obj, { origin, target }, { knex }) => {
-      return knex("Connections")
-        .insert({
+    create_connection: (obj, { origin, target }, { knexModule }) => {
+      return knexModule
+        .insert("Connections", {
           originUser: origin,
           targetUser: target,
           confirmation: false,
           blockFlag: false
         })
         .then(data => {
-          //console.log(data);
           return {
             status: "ok",
             message: "Insert successfully."
           };
         })
-        .catch(err => {
-          console.log(err);
-          return {
-            status: "bad",
-            message: "Error at insert"
-          };
+        .catch(error => {
+          throw error;
         });
     }
   }
