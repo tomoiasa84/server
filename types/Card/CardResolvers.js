@@ -1,7 +1,7 @@
 const cardResolvers = {
   Query: {
     get_cards: (root, args, { knexModule }) => {
-      return knex.getAll("Cards").catch(error => {
+      return knexModule.getAll("Cards").catch(error => {
         throw error;
       });
     },

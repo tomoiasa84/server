@@ -1,7 +1,7 @@
 const settingResolver = {
   Query: {
-    settings: (root, args, { knexModule }) => {
-      return knexModule.select("Settings");
+    get_settings: (root, args, { knexModule }) => {
+      return knexModule.getAll("Settings");
     }
   }
 };

@@ -6,7 +6,7 @@ const reviewResolvers = {
       });
     },
     get_reviews: (root, args, { knexModule }) => {
-      return knexModule.select("TagReviewsv");
+      return knexModule.getAll("TagReviewsv");
     }
   },
   Review: {

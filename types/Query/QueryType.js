@@ -8,7 +8,7 @@ const query = gql`
     get_locations: [Location]
     get_location(locationId: Int!): Location
 
-    settings: [Setting]
+    get_settings: [Setting]
 
     get_cards: [Card]
     get_card(cardId: Int!): Card
