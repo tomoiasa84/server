@@ -65,12 +65,9 @@ const userResolvers = {
     },
     location: (user, args, { knexModule }) => {
       //Resolve Location relation
-      return knexModule
-        .getById("Locations", user.location)
-        .then(data => data[0])
-        .catch(error => {
-          throw error;
-        });
+      return knexModule.getById("Locations", user.location).catch(error => {
+        throw error;
+      });
     },
     settings: (user, args, { knexModule }) => {
       return knexModule

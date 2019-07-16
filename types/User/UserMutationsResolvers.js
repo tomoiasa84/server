@@ -65,9 +65,13 @@ const userMutationsResolvers = {
         throw error;
       });
     },
-    create_user: (root, { name, location, phoneNumber }, { knexModule }) => {
+    create_user: (
+      root,
+      { id, name, location, phoneNumber },
+      { knexModule }
+    ) => {
       return knexModule
-        .insert("Users", { name, location, phoneNumber })
+        .insert("Users", { id, name, location, phoneNumber })
         .then(user => {
           return Promise.all(insertDefaults(knexModule, user.id)).then(
             defaults => {

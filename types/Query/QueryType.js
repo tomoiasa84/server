@@ -97,7 +97,12 @@ const query = gql`
     delete_card(cardId: Int!): Int!
 
     delete_user(userId: Int!): Int!
-    create_user(name: String!, location: Int!, phoneNumber: String!): User
+    create_user(
+      id: Int!
+      name: String!
+      location: Int!
+      phoneNumber: String!
+    ): User
     update_user(userId: Int!, name: String, location: Int, phone: String): User
 
     delete_connection(connectionId: Int!): Response

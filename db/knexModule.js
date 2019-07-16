@@ -7,8 +7,9 @@ module.exports = {
       .where("id", id)
       .first()
       .del()
-      .then(() => {
-        return id;
+      .then(deleted => {
+        if (deleted) return id;
+        return 0;
       })
       .catch(err => {
         throw err;

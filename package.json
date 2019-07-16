@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha ./Tests/*.test.js"
+    "test": "mocha ./Tests/testServer.test.js"
   },
   "engines": {
     "node": ">=12.5.0",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-link-http": "^1.5.15",
-    "apollo-server-testing": "^2.6.3",
+    "apollo-server-testing": "^2.6.9",
     "chai": "^4.2.0",
     "faker": "^4.1.0",
     "moch": "0.0.1",

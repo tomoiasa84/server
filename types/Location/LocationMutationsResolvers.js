@@ -1,6 +1,6 @@
 const locationMutationsResolver = {
   Mutation: {
-    update_location: (root, { locationId }, { knexModule }) => {
+    delete_location: (root, { locationId }, { knexModule }) => {
       return knexModule.deleteById("Locations", locationId).catch(error => {
         throw error;
       });
