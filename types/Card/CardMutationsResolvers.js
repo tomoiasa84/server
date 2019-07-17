@@ -42,7 +42,7 @@ const cardMutationsResolver = {
       return knexModule
         .updateById("Cards", cardId, {
           searchFor: tag,
-          message: message
+          text: message
         })
         .catch(error => {
           throw error;
@@ -50,7 +50,7 @@ const cardMutationsResolver = {
     },
     create_card(root, { postedBy, searchFor, text }, { knexModule, pubsub }) {
       return knexModule
-        .insert({
+        .insert("Cards", {
           postedBy,
           searchFor,
           text,

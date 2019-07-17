@@ -119,9 +119,13 @@ const userMutationsResolvers = {
           throw error;
         });
     },
-    update_user: (root, { userId, name, location, phone }, { knexModule }) => {
+    update_user: (
+      root,
+      { userId, name, location, phoneNumber },
+      { knexModule }
+    ) => {
       return knexModule
-        .updateById("Users", userId, { name, location, phone })
+        .updateById("Users", userId, { name, location, phoneNumber })
         .catch(error => {
           throw error;
         });

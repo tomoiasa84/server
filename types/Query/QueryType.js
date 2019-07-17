@@ -103,7 +103,12 @@ const query = gql`
       location: Int!
       phoneNumber: String!
     ): User
-    update_user(userId: Int!, name: String, location: Int, phone: String): User
+    update_user(
+      userId: Int!
+      name: String
+      location: Int
+      phoneNumber: String
+    ): User
 
     delete_connection(connectionId: Int!): Response
     update_connection(connectionId: Int!, confirmation: Boolean!): Response
