@@ -18,8 +18,8 @@ const userTagMutationsResolvers = {
           throw error;
         });
     },
-    delete_userTag: (root, { usertagId }, { knexModule }) => {
-      return knexModule.deleteById("UserTags", usertagId).catch(error => {
+    delete_userTag: (root, { userTagId }, { knexModule }) => {
+      return knexModule.deleteById("UserTags", userTagId).catch(error => {
         throw error;
       });
     }

@@ -1,16 +1,14 @@
 const recommandResolvers = {
   Query: {
-    get_recommandations: (root, args, { knexModule }) => {
+    get_recommands: (root, args, { knexModule }) => {
       return knexModule.getAll("Recommandations").catch(error => {
         throw error;
       });
     },
-    get_recommandation: (root, { recommandationId }, { knexModule }) => {
-      return knexModule
-        .getById("Recommandations", recommandationId)
-        .catch(error => {
-          throw error;
-        });
+    get_recommand: (root, { recommandId }, { knexModule }) => {
+      return knexModule.getById("Recommands", recommandId).catch(error => {
+        throw error;
+      });
     }
   },
   Recommand: {

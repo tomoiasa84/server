@@ -46,9 +46,10 @@ CREATE TABLE "Cards" (
 CREATE TABLE "Shares"(
   "id" SERIAL PRIMARY KEY,
   "card" int REFERENCES "Cards" ("id") ON DELETE CASCADE,
-  "sharedBy" int REFERENCES "Users" ("id") ON DELETE CASCADE
+  "sharedBy" int REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "sharedTo" int REFERENCES "Users" ("id") ON DELETE CASCADE
 );
-CREATE TABLE "Recommandations" (
+CREATE TABLE "Recommands" (
   "id" SERIAL PRIMARY KEY,
   "card" int REFERENCES "Cards" ("id") ON DELETE CASCADE,
   "userAsk" int REFERENCES "Users" ("id") ON DELETE CASCADE,
@@ -74,7 +75,7 @@ CREATE TABLE "TagReviews" (
 
 CREATE TABLE "MessageThreads" (
   "id" SERIAL PRIMARY KEY,
-  "recommandation" int REFERENCES "Recommandations" ("id") ON DELETE CASCADE
+  "recommandation" int REFERENCES "Recommands" ("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "Messages" (

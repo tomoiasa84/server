@@ -25,8 +25,8 @@ const query = gql`
     get_threadmessages: [ThreadMessage]
     get_threadmessage(messageThreadId: Int!): ThreadMessage
 
-    get_recommandations: [Recommand]
-    get_recommandation(recommandationId: Int!): Recommand
+    get_recommands: [Recommand]
+    get_recommand(recommandId: Int!): Recommand
 
     get_userTags: [UserTag]
     get_userTag(userTagId: Int!): UserTag
@@ -85,8 +85,8 @@ const query = gql`
     ): Review
 
     create_userTag(userId: Int!, tagId: Int!): UserTag
-    update_userTag(usertagId: Int!, defaultFlag: Boolean): UserTag
-    delete_userTag(usertagId: Int!): Int!
+    update_userTag(userTagId: Int!, defaultFlag: Boolean): UserTag
+    delete_userTag(userTagId: Int!): Int!
 
     delete_tag(tagId: Int!): Int!
     update_tag(tagId: Int!, name: String!): Tag

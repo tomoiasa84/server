@@ -1,26 +1,26 @@
 const recommandMutationsResolvers = {
   Mutation: {
     delete_recommand: (root, { recommandId }, { knexModule }) => {
-      return knexModule
-        .deleteById("Recommandations", recommandId)
-        .catch(error => {
-          throw error;
-        });
+      return knexModule.deleteById("Recommands", recommandId).catch(error => {
+        throw error;
+      });
     },
     update_recommand: (
       root,
       { recommandId, cardId, userAsk, userSend, userRec },
-      { knex }
+      { knexModule }
     ) => {
-      return knexModule("Recommandations", recommandId, {
-        cardId: cardId,
-        userAsk: userAsk,
-        userSend: userSend,
-        userRecommand: userRec,
-        acceptedFlag: false
-      }).catch(error => {
-        throw error;
-      });
+      return knexModule
+        .updateById("Recommands", recommandId, {
+          card: cardId,
+          userAsk,
+          userSend,
+          userRecommand: userRec,
+          acceptedFlag: false
+        })
+        .catch(error => {
+          throw error;
+        });
     },
     create_recommand: (
       root,
@@ -28,7 +28,7 @@ const recommandMutationsResolvers = {
       { knexModule }
     ) => {
       return knexModule
-        .insert("Recommandations", {
+        .insert("Recommands", {
           card: cardId,
           userAsk: userAsk,
           userSend: userSend,

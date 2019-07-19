@@ -6,7 +6,7 @@ DROP TABLE "UserMessageThreads" CASCADE;
 DROP TABLE "Messages" CASCADE;
 DROP TABLE "MessageThreads" CASCADE;
 DROP TABLE "Connections" CASCADE;
-DROP TABLE "Recommandations" CASCADE;
+DROP TABLE "Recommands" CASCADE;
 DROP TABLE "UserTags" CASCADE;
 DROP TABLE "TagReviews" CASCADE;
 DROP TABLE "Tags" CASCADE;
