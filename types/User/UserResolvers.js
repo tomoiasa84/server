@@ -1,6 +1,6 @@
 const userResolvers = {
   Query: {
-    get_users: (root, args, { knex, admin, idToken, knexModule }) => {
+    get_users: (root, args, { admin, idToken, knexModule }) => {
       // admin
       //   .auth()
       //   .verifyIdToken(idToken)
@@ -28,7 +28,14 @@ const userResolvers = {
             let cards = [];
             connections.forEach(conn => {
               cards.push(
-                knexModule.get("Cards", { postedBy: conn.targetUser })
+                knexModule
+                  .get("Cards", { postedBy: conn.targetUser })
+                  .then(listCards => {
+                    if (!listCards.length) {
+                      throw new Error("No card for user");
+                    }
+                    return listCards[0];
+                  })
               );
             });
             return Promise.all(cards);

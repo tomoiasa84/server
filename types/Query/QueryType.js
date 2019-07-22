@@ -8,6 +8,9 @@ const query = gql`
     get_locations: [Location]
     get_location(locationId: Int!): Location
 
+    get_shares: [Share]
+    get_share(shareId: Int!): Share
+
     get_settings: [Setting]
 
     get_cards: [Card]
@@ -33,8 +36,8 @@ const query = gql`
   }
 
   type Mutation {
-    create_sharecard(cardId: Int!, userIds: [Int]): [Int]
-    delete_sharecard(sharecardId: Int!): Int!
+    create_share(cardId: Int!, sharedBy: Int!, sharedTo: [Int]): [Int]
+    delete_share(shareIds: [Int]!): [Int]!
 
     create_threadmessage(
       userRecomCard: Int
@@ -110,9 +113,9 @@ const query = gql`
       phoneNumber: String
     ): User
 
-    delete_connection(connectionId: Int!): Response
-    update_connection(connectionId: Int!, confirmation: Boolean!): Response
-    create_connection(origin: Int!, target: Int!): Response
+    delete_connection(connectionId: Int!): Int
+    update_connection(connectionId: Int!, confirmation: Boolean!): Int
+    create_connection(origin: Int!, target: Int!): Int
   }
 
   type Subscription {

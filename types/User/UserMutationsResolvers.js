@@ -86,23 +86,9 @@ const userMutationsResolvers = {
         });
     },
     delete_connection: (root, { connectionId }, { knexModule }) => {
-      return knexModule
-        .deleteById("Connections", connectionId)
-        .then(data => {
-          if (data) {
-            return {
-              status: "ok",
-              message: "User deleted"
-            };
-          }
-          return {
-            status: "bad",
-            message: "User already deleted"
-          };
-        })
-        .catch(error => {
-          throw error;
-        });
+      return knexModule.deleteById("Connections", connectionId).catch(error => {
+        throw error;
+      });
     },
     update_connection: (root, { connectionId }, { knexModule }) => {
       return knexModule
@@ -139,10 +125,7 @@ const userMutationsResolvers = {
           blockFlag: false
         })
         .then(data => {
-          return {
-            status: "ok",
-            message: "Insert successfully."
-          };
+          return data.id;
         })
         .catch(error => {
           throw error;

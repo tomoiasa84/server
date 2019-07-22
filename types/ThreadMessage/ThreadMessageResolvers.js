@@ -16,7 +16,7 @@ const threadMessageResolvers = {
   ThreadMessage: {
     recommandCard: (threadMsg, args, { knexModule }) => {
       return knexModule
-        .getById("Recommandations", threadMsg.userrecomcard)
+        .getById("Recommands", threadMsg.userrecomcard)
         .catch(error => {
           throw error;
         });

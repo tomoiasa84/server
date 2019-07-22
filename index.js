@@ -11,8 +11,6 @@ admin.initializeApp({
 const { PubSub, ApolloServer, gql } = require("apollo-server");
 const knex = require("./db/pgAdaptop");
 const knexModule = require("./db/knexModule");
-console.log(knexModule);
-
 // The GraphQL schema
 const typeDefs = require("./schema");
 

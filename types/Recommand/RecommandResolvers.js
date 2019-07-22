@@ -1,7 +1,7 @@
 const recommandResolvers = {
   Query: {
     get_recommands: (root, args, { knexModule }) => {
-      return knexModule.getAll("Recommandations").catch(error => {
+      return knexModule.getAll("Recommands").catch(error => {
         throw error;
       });
     },
