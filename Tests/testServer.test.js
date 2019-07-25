@@ -452,7 +452,7 @@ describe("Test Share function", () => {
   it("Get Shares", async () => {
     const response = await query({
       query: sharesApi.get_shares,
-      variables: { cardId: 1, sharedBy: 2, sharedTo: [3, 4, 5] }
+      variables: {}
     });
     const result = response.data.get_shares;
     expect(result).to.be.an("array").empty;

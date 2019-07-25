@@ -13,10 +13,15 @@ const knex = require("./db/pgAdaptop");
 const knexModule = require("./db/knexModule");
 // The GraphQL schema
 const typeDefs = require("./schema");
-
+process.on("SIGINT", () => {
+  console.log("Hola");
+});
 // A map of functions which return data for the schema.
 const resolvers = require("./resolvers");
 const pubsub = new PubSub();
+if (process.NODE_ENV === "test" && process.NODE_ENV === "dev") {
+  console.log("Hello");
+}
 const server = new ApolloServer({
   typeDefs,
   resolvers,
