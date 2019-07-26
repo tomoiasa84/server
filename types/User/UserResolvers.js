@@ -1,6 +1,15 @@
 const userResolvers = {
   Query: {
-    get_users: (root, args, { admin, idToken, knexModule }) => {
+    get_users: (root, args, { knexModule, token, jwt, testUserUID }) => {
+      if (process.env.NODE_ENV === "dev") {
+        const decoded = jwt.verify(token, "secret");
+        console.log();
+        if (decoded.uid === testUserUID) {
+          return knexModule.getAll("Users");
+        } else {
+          throw new Error("No user");
+        }
+      }
       // admin
       //   .auth()
       //   .verifyIdToken(idToken)
@@ -10,7 +19,7 @@ const userResolvers = {
       //   .catch(function(error) {
       //     console.log(error.message);
       //   });
-      return knexModule.getAll("Users");
+      //return knexModule.getAll("Users");
     },
     get_user: (root, { userId }, { knex, knexModule }) => {
       return knexModule.getById("Users", userId).catch(error => {
