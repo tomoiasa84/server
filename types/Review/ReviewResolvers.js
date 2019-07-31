@@ -1,12 +1,34 @@
 const reviewResolvers = {
   Query: {
-    get_review: (root, { reviewId }, { knexModule }) => {
-      return knexModule.getById("TagReviews", reviewId).catch(error => {
-        throw error;
-      });
+    get_review: (
+      root,
+      { reviewId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getById("TagReviews", reviewId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_reviews: (root, args, { knexModule }) => {
-      return knexModule.getAll("TagReviewsv");
+    get_reviews: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("TagReviewsv");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
   Review: {

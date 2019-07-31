@@ -1,25 +1,51 @@
 const locationMutationsResolver = {
   Mutation: {
-    delete_location: (root, { locationId }, { knexModule }) => {
-      return knexModule.deleteById("Locations", locationId).catch(error => {
-        throw error;
-      });
-    },
-    update_location: (root, { locationId, city }, { knexModule }) => {
-      return knexModule
-        .updateById("Locations", locationId, {
-          city: city
+    delete_location: (
+      root,
+      { locationId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.deleteById("Locations", locationId);
         })
-        .catch(error => {
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     },
-    create_location: (root, { city }, { knexModule }) => {
-      return knexModule
-        .insert("Locations", {
-          city: city
+    update_location: (
+      root,
+      { locationId, city },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.updateById("Locations", locationId, {
+            city: city
+          });
         })
-        .catch(error => {
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
+    },
+    create_location: (
+      root,
+      { city },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.insert("Locations", {
+            city: city
+          });
+        })
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     }

@@ -1,14 +1,34 @@
 const cardResolvers = {
   Query: {
-    get_cards: (root, args, { knexModule }) => {
-      return knexModule.getAll("Cards").catch(error => {
-        throw error;
-      });
+    get_cards: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("Cards");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_card: (root, { cardId }, { knexModule }) => {
-      return knexModule.getById("Cards", cardId).catch(error => {
-        throw error;
-      });
+    get_card: (
+      root,
+      { cardId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getById("Cards", cardId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
   Card: {

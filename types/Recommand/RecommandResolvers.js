@@ -1,14 +1,34 @@
 const recommandResolvers = {
   Query: {
-    get_recommands: (root, args, { knexModule }) => {
-      return knexModule.getAll("Recommands").catch(error => {
-        throw error;
-      });
+    get_recommands: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("Recommands");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_recommand: (root, { recommandId }, { knexModule }) => {
-      return knexModule.getById("Recommands", recommandId).catch(error => {
-        throw error;
-      });
+    get_recommand: (
+      root,
+      { recommandId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getById("Recommands", recommandId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
   Recommand: {

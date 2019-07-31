@@ -1,14 +1,34 @@
 const userTagResolvers = {
   Query: {
-    get_userTags: (root, args, { knexModule }) => {
-      return knexModule.getAll("UserTags").catch(error => {
-        throw error;
-      });
+    get_userTags: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("UserTags");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_userTag: (root, { userTagId }, { knexModule }) => {
-      return knexModule.getById("UserTags", userTagId).catch(error => {
-        throw error;
-      });
+    get_userTag: (
+      root,
+      { userTagId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getById("UserTags", userTagId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
   UserTag: {

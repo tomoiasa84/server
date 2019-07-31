@@ -1,9 +1,19 @@
 module.exports = {
   Query: {
-    get_shares: (root, args, { knexModule }) => {
-      return knexModule.getAll("Shares ").catch(error => {
-        throw error;
-      });
+    get_shares: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("Shares");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
   Share: {
