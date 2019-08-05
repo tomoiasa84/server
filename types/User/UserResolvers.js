@@ -1,21 +1,33 @@
 const userResolvers = {
   Query: {
-    get_users: (root, args, { admin, idToken, knexModule }) => {
-      // admin
-      //   .auth()
-      //   .verifyIdToken(idToken)
-      //   .then(function(decodedToken) {
-      //     let userId = decodedToken.uid;
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error.message);
-      //   });
-      return knexModule.getAll("Users");
+    get_users: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: get_users`);
+          return knexModule.getAll("Users");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_user: (root, { userId }, { knex, knexModule }) => {
-      return knexModule.getById("Users", userId).catch(error => {
-        throw error;
-      });
+    get_user: (
+      root,
+      { userId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(() => {
+          return knexModule.getById("Users", userId);
+        })
+        .catch(error => {
+          logger.debug(error);
+          throw error;
+        });
     }
   },
 

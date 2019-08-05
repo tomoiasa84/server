@@ -1,14 +1,36 @@
 const locationResolvers = {
   Query: {
-    get_location: (root, { locationId }, { knexModule }) => {
-      return knexModule.getById("Locations", locationId).catch(error => {
-        throw error;
-      });
+    get_location: (
+      root,
+      { locationId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(
+            `User: ${res.uid} Operation: get_location with id: ${locationId}`
+          );
+          return knexModule.getById("Locations", locationId);
+        })
+        .catch(function(error) {
+          logger.error(error);
+          throw error;
+        });
     },
-    get_locations: (root, args, { knexModule }) => {
-      return knexModule.getAll("Locations").catch(error => {
-        throw error;
-      });
+    get_locations: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: get_locations`);
+          return knexModule.getAll("Locations");
+        })
+        .catch(function(error) {
+          logger.error(error);
+          throw error;
+        });
     }
   }
 };

@@ -1,13 +1,11 @@
-// Update with your config settings.
-
 module.exports = {
   development: {
     client: "pg",
     connection: {
-      host: "127.0.0.1",
-      user: "postgres",
+      host: "xfriendstest.postgres.database.azure.com",
+      user: "postgres@xfriendstest",
       password: "1234qwer!",
-      database: "xfriend"
+      database: "postgres"
     }
   },
 

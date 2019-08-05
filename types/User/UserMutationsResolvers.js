@@ -60,74 +60,131 @@ function insertDefaults(knexModule, userIds) {
 }
 const userMutationsResolvers = {
   Mutation: {
-    delete_user: (root, { userId }, { knexModule }) => {
-      return knexModule.deleteById("Users", userId).catch(error => {
-        throw error;
-      });
+    delete_user: (
+      root,
+      { userId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(
+            `User: ${res.uid} Operation: delete_user with id: ${userId}`
+          );
+          return knexModule.deleteById("Users", userId);
+        })
+        .catch(function(error) {
+          logger.error(error);
+          throw error;
+        });
     },
     create_user: (
       root,
       { id, name, location, phoneNumber },
-      { knexModule }
+      { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
-      return knexModule
-        .insert("Users", { id, name, location, phoneNumber })
-        .then(user => {
-          return Promise.all(insertDefaults(knexModule, user.id)).then(
-            defaults => {
-              return knexModule.insert("UserSettings", defaults).then(() => {
-                return user;
-              });
-            }
-          );
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: create_user`);
+          return knexModule
+            .insert("Users", { id, name, location, phoneNumber })
+            .then(user => {
+              return Promise.all(insertDefaults(knexModule, user.id)).then(
+                defaults => {
+                  return knexModule
+                    .insert("UserSettings", defaults)
+                    .then(() => {
+                      return user;
+                    });
+                }
+              );
+            });
         })
-        .catch(error => {
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     },
-    delete_connection: (root, { connectionId }, { knexModule }) => {
-      return knexModule.deleteById("Connections", connectionId).catch(error => {
-        throw error;
-      });
+    delete_connection: (
+      root,
+      { connectionId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_connection`);
+          return knexModule.deleteById("Connections", connectionId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    update_connection: (root, { connectionId }, { knexModule }) => {
-      return knexModule
-        .updateById("Connections", connectionId, {
-          acceptedFlag: true
+    update_connection: (
+      root,
+      { connectionId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: update_connection`);
+          return knexModule
+            .updateById("Connections", connectionId, {
+              acceptedFlag: true
+            })
+            .then(data => {
+              return {
+                status: "ok",
+                message: "Updated successfully"
+              };
+            });
         })
-        .then(data => {
-          return {
-            status: "ok",
-            message: "Updated successfully"
-          };
-        })
-        .catch(error => {
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     },
     update_user: (
       root,
       { userId, name, location, phoneNumber },
-      { knexModule }
+      { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
-      return knexModule
-        .updateById("Users", userId, { name, location, phoneNumber })
-        .catch(error => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(
+            `User: ${res.uid} Operation: update_user with id ${userId}`
+          );
+          return knexModule.updateById("Users", userId, {
+            name,
+            location,
+            phoneNumber
+          });
+        })
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     },
-    create_connection: (obj, { origin, target }, { knexModule }) => {
-      return knexModule
-        .insert("Connections", {
-          originUser: origin,
-          targetUser: target,
-          confirmation: false,
-          blockFlag: false
+    create_connection: (
+      obj,
+      { origin, target },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: create_user`);
+          return knexModule
+            .insert("Connections", {
+              originUser: origin,
+              targetUser: target,
+              confirmation: false,
+              blockFlag: false
+            })
+            .then(data => {
+              return data.id;
+            });
         })
-        .then(data => {
-          return data.id;
-        })
-        .catch(error => {
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     }

@@ -5,11 +5,25 @@ const { expect } = require("chai");
 const typeDefs = require("../schema");
 const resolvers = require("../resolvers");
 const knexModule = require("../db/knexModule");
+const verifyToken = require("./mockupVerifyToken");
+var log4js = require("log4js");
+log4js.configure({
+  appenders: { out: { type: "stdout" } },
+  categories: { default: { appenders: ["out"], level: "error" } }
+});
+const logger = log4js.getLogger("out");
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: {
-    knexModule
+  context: ({ req }) => {
+    return {
+      logger,
+      admin: null,
+      verifyToken,
+      tokenId: null,
+      knexModule
+    };
   }
 });
 const { query, mutate } = createTestClient(server);
@@ -452,7 +466,7 @@ describe("Test Share function", () => {
   it("Get Shares", async () => {
     const response = await query({
       query: sharesApi.get_shares,
-      variables: { cardId: 1, sharedBy: 2, sharedTo: [3, 4, 5] }
+      variables: {}
     });
     const result = response.data.get_shares;
     expect(result).to.be.an("array").empty;

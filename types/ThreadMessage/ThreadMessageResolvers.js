@@ -1,14 +1,32 @@
 const threadMessageResolvers = {
   Query: {
-    get_threadmessages: (root, args, { knexModule }) => {
-      return knexModule.getAll("MessageThreads").catch(error => {
-        throw error;
-      });
+    get_threadmessages: (
+      root,
+      args,
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getAll("MessageThreads");
+        })
+        .catch(function(error) {
+          logger.debug(error);
+          throw error;
+        });
     },
-    get_threadmessage: (root, { threadMessageId }, { knexModule }) => {
-      return knexModule
-        .getById("MessageThreads", threadMessageId)
-        .catch(error => {
+    get_threadmessage: (
+      root,
+      { threadMessageId },
+      { knexModule, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin)
+        .then(res => {
+          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          return knexModule.getById("MessageThreads", threadMessageId);
+        })
+        .catch(function(error) {
+          logger.debug(error);
           throw error;
         });
     }
