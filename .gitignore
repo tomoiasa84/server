@@ -1,8 +1,5 @@
 node_modules/
-<<<<<<< HEAD
 Tests/
 .env
-=======
->>>>>>> devApolloServer
 testKnex.js
 .env
