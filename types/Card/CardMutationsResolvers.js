@@ -9,11 +9,11 @@ const cardMutationsResolver = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: delete_card`);
           return knexModule.deleteById("Cards", cardId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -24,14 +24,14 @@ const cardMutationsResolver = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: update_card`);
           return knexModule.updateById("Cards", cardId, {
             searchFor: tag,
             text: message
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -42,7 +42,7 @@ const cardMutationsResolver = {
     ) {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: delete_card`);
           return knexModule.insert("Cards", {
             postedBy,
             searchFor,
@@ -51,7 +51,7 @@ const cardMutationsResolver = {
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

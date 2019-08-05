@@ -7,11 +7,13 @@ const reviewMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_review with id: ${reviewId}`
+          );
           return knexModule.deleteById("TagReviews", reviewId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -22,14 +24,16 @@ const reviewMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: update_review with id: ${reviewId}`
+          );
           return knexModule.updateById("TagReviews", reviewId, {
             stars: stars,
             text: text
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -40,7 +44,7 @@ const reviewMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: create_review`);
           return knexModule.insert("TagReviews", {
             user: userId,
             userTag: userTagId,
@@ -49,7 +53,7 @@ const reviewMutationsResolvers = {
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

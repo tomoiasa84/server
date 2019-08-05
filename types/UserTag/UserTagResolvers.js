@@ -7,7 +7,7 @@ const userTagResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: get_userTags`);
           return knexModule.getAll("UserTags");
         })
         .catch(function(error) {
@@ -22,7 +22,9 @@ const userTagResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: get_userTag with id ${userTagId}`
+          );
           return knexModule.getById("UserTags", userTagId);
         })
         .catch(function(error) {

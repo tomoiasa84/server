@@ -7,11 +7,11 @@ const locationMutationsResolver = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: delete_location`);
           return knexModule.deleteById("Locations", locationId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -22,13 +22,13 @@ const locationMutationsResolver = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: update_location`);
           return knexModule.updateById("Locations", locationId, {
             city: city
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -39,13 +39,13 @@ const locationMutationsResolver = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: create_location`);
           return knexModule.insert("Locations", {
             city: city
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

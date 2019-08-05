@@ -67,11 +67,13 @@ const userMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_user with id: ${userId}`
+          );
           return knexModule.deleteById("Users", userId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -148,7 +150,9 @@ const userMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: update_connection`);
+          logger.trace(
+            `User: ${res.uid} Operation: update_user with id ${userId}`
+          );
           return knexModule.updateById("Users", userId, {
             name,
             location,
@@ -167,7 +171,7 @@ const userMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: update_connection`);
+          logger.trace(`User: ${res.uid} Operation: create_user`);
           return knexModule
             .insert("Connections", {
               originUser: origin,

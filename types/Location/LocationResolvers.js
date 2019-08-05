@@ -7,11 +7,13 @@ const locationResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: get_location with id: ${locationId}`
+          );
           return knexModule.getById("Locations", locationId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -22,11 +24,11 @@ const locationResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: get_locations`);
           return knexModule.getAll("Locations");
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

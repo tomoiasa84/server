@@ -7,7 +7,9 @@ module.exports = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_share with id: ${shareIds}`
+          );
           let promisesArray = [];
           if (shareIds.length) {
             shareIds.forEach(id => {
@@ -15,11 +17,12 @@ module.exports = {
             });
           }
           return Promise.all(promisesArray).catch(error => {
+            logger.error(error);
             throw error;
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -30,7 +33,7 @@ module.exports = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: create_share`);
           if (sharedTo.length) {
             let promisesAwait = [];
             sharedTo.forEach(userId => {
@@ -52,13 +55,14 @@ module.exports = {
                 return sharedTos;
               })
               .catch(error => {
+                logger.error(error);
                 throw error;
               });
           }
           return [];
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

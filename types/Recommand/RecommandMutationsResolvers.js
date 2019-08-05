@@ -7,11 +7,11 @@ const recommandMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: delete_recommand`);
           return knexModule.deleteById("Recommands", recommandId);
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -22,7 +22,7 @@ const recommandMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: update_recommand`);
           return knexModule.updateById("Recommands", recommandId, {
             card: cardId,
             userAsk,
@@ -32,7 +32,7 @@ const recommandMutationsResolvers = {
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     },
@@ -43,7 +43,7 @@ const recommandMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(`User: ${res.uid} Operation: create_recommand`);
           return knexModule.insert("Recommands", {
             card: cardId,
             userAsk: userAsk,
@@ -53,7 +53,7 @@ const recommandMutationsResolvers = {
           });
         })
         .catch(function(error) {
-          logger.debug(error);
+          logger.error(error);
           throw error;
         });
     }

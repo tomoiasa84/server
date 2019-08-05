@@ -7,7 +7,9 @@ const userTagMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_userTag with id ${userId}`
+          );
           return knexModule.insert("UserTags", {
             user: userId,
             tag: tagId,
@@ -26,7 +28,9 @@ const userTagMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_userTag with id ${userTagId}`
+          );
           return knexModule.updateById("UserTags", userTagId, {
             default: defaultFlag
           });
@@ -43,7 +47,9 @@ const userTagMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_user`);
+          logger.trace(
+            `User: ${res.uid} Operation: delete_userTag with id ${userTagId}`
+          );
           return knexModule.deleteById("UserTags", userTagId);
         })
         .catch(function(error) {
