@@ -1,5 +1,4 @@
 node_modules/
 Tests/
-.env
 testKnex.js
 .env
