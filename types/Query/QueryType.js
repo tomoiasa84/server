@@ -3,7 +3,7 @@ const query = gql`
   type Query {
     "Query type"
     get_users: [User]
-    get_user(userId: Int!): User
+    get_user(userId: String!): User
 
     get_locations: [Location]
     get_location(locationId: Int!): Location
@@ -36,7 +36,7 @@ const query = gql`
   }
 
   type Mutation {
-    create_share(cardId: Int!, sharedBy: Int!, sharedTo: [Int]): [Int]
+    create_share(cardId: Int!, sharedBy: String!, sharedTo: [String]): [Int]
     delete_share(shareIds: [Int]!): [Int]!
 
     create_threadmessage(
@@ -61,16 +61,16 @@ const query = gql`
 
     create_recommand(
       cardId: Int!
-      userAsk: Int!
-      userSend: Int!
-      userRec: Int!
+      userAsk: String!
+      userSend: String!
+      userRec: String!
     ): Recommand
     update_recommand(
       recommandId: Int!
       cardId: Int
-      userAsk: Int
-      userSend: Int
-      userRec: Int
+      userAsk: String
+      userSend: String
+      userRec: String
     ): Recommand
     delete_recommand(recommandId: Int!): Int!
 
@@ -81,13 +81,13 @@ const query = gql`
     delete_review(reviewId: Int!): Int!
     update_review(reviewId: Int!, stars: Int, text: String): Review
     create_review(
-      userId: Int!
+      userId: String!
       tagReview: Int!
       stars: Int!
       text: String
     ): Review
 
-    create_userTag(userId: Int!, tagId: Int!): UserTag
+    create_userTag(userId: String!, tagId: Int!): UserTag
     update_userTag(userTagId: Int!, defaultFlag: Boolean): UserTag
     delete_userTag(userTagId: Int!): Int!
 
@@ -99,27 +99,27 @@ const query = gql`
     update_card(cardId: Int!, tag: Int, message: String): Card
     delete_card(cardId: Int!): Int!
 
-    delete_user(userId: Int!): Int!
+    delete_user(userId: String!): String!
     create_user(
-      id: Int!
+      id: String!
       name: String!
       location: Int!
       phoneNumber: String!
     ): User
     update_user(
-      userId: Int!
+      userId: String!
       name: String
       location: Int
       phoneNumber: String
     ): User
 
-    delete_connection(connectionId: Int!): Int
-    update_connection(connectionId: Int!, confirmation: Boolean!): Int
-    create_connection(origin: Int!, target: Int!): Int
+    delete_connection(connectionId: String!): Int
+    update_connection(connectionId: String!, confirmation: Boolean!): Int
+    create_connection(origin: String!, target: String!): Int
   }
 
   type Subscription {
-    cardUpdateSub(userId: Int!): Card!
+    cardUpdateSub(userId: String!): Card!
   }
 `;
 

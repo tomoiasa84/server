@@ -197,7 +197,7 @@ exports.seed = function(knex, Promise) {
       .then(() => {
         //Populate user table
         let users = [];
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < 100; i++) {
           users.push(createUser(knex, romCities.random().city));
         }
         return Promise.all(users);
