@@ -1,4 +1,4 @@
-function insertDefaults(knexModule, userIds) {
+function insertDefaults(knexModule, userId) {
   let defaults = [];
   //Notification option
   defaults.push(
@@ -10,7 +10,7 @@ function insertDefaults(knexModule, userIds) {
       .then(setting => {
         return {
           setting: setting.id,
-          user: userIds[0]
+          user: userId
         };
       })
   );
@@ -24,7 +24,7 @@ function insertDefaults(knexModule, userIds) {
       .then(setting => {
         return {
           setting: setting.id,
-          user: userIds[0]
+          user: userId
         };
       })
   );
@@ -38,7 +38,7 @@ function insertDefaults(knexModule, userIds) {
       .then(setting => {
         return {
           setting: setting.id,
-          user: userIds[0]
+          user: userId
         };
       })
   );
@@ -52,7 +52,7 @@ function insertDefaults(knexModule, userIds) {
       .then(setting => {
         return {
           setting: setting.id,
-          user: userIds[0]
+          user: userId
         };
       })
   );
@@ -88,7 +88,7 @@ const userMutationsResolvers = {
           return knexModule
             .insert("Users", { id, name, location, phoneNumber })
             .then(user => {
-              return Promise.all(insertDefaults(knexModule, user.id)).then(
+              return Promise.all(insertDefaults(knexModule, id)).then(
                 defaults => {
                   return knexModule
                     .insert("UserSettings", defaults)

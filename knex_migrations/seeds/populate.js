@@ -12,6 +12,7 @@ function createUser(knex, location) {
       return knex("Users")
         .returning("id")
         .insert({
+          id: `${faker.random.uuid()}`,
           name: userName,
           location: locationRecord.id,
           phoneNumber: `${faker.phone.phoneNumber()}`,
@@ -197,7 +198,7 @@ exports.seed = function(knex, Promise) {
       .then(() => {
         //Populate user table
         let users = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 3; i++) {
           users.push(createUser(knex, romCities.random().city));
         }
         return Promise.all(users);
