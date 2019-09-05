@@ -111,6 +111,7 @@ const query = gql`
       name: String
       location: Int
       phoneNumber: String
+      isActive: Boolean
     ): User
 
     delete_connection(connectionId: String!): Int

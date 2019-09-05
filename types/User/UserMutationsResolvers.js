@@ -85,8 +85,15 @@ const userMutationsResolvers = {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: create_user`);
+          //check if phone number if exists
           return knexModule
-            .insert("Users", { id, name, location, phoneNumber })
+            .insert("Users", {
+              id,
+              name,
+              location,
+              phoneNumber,
+              isActive: true
+            })
             .then(user => {
               return Promise.all(insertDefaults(knexModule, id)).then(
                 defaults => {
@@ -145,7 +152,7 @@ const userMutationsResolvers = {
     },
     update_user: (
       root,
-      { userId, name, location, phoneNumber },
+      { userId, name, location, phoneNumber, isActive },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
@@ -156,7 +163,8 @@ const userMutationsResolvers = {
           return knexModule.updateById("Users", userId, {
             name,
             location,
-            phoneNumber
+            phoneNumber,
+            isActive
           });
         })
         .catch(function(error) {
