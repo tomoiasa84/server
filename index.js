@@ -14,7 +14,7 @@ log4js.configure({
 const logger = log4js.getLogger("out");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://hello-world-997df.firebaseio.com"
+  databaseURL: "https://contractorsearch-eeaf7.firebaseio.com"
 });
 
 if (process.env.NODE_ENV === "dev") {
