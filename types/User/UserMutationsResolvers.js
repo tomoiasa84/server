@@ -157,25 +157,28 @@ const userMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin).then(res => {
         if (contactsList.length !== 0) {
+          let promiseArray = [];
           contactsList.forEach(phoneElement => {
-            //translate into array of promises
-            return admin
-              .auth()
-              .createUser({
-                phoneNumber: `${phoneElement}`
-              })
-              .then(function(userRecord) {
-                return knexModule.insert("Users", {
-                  id: userRecord.uid,
-                  location: 0,
-                  name: "Unknowkn",
-                  phoneNumber: userRecord.phoneNumber,
-                  isActive: false
-                });
-              })
-              .catch(function(error) {
-                console.log("Error creating new user:", error);
-              });
+            promiseArray.push(
+              admin
+                .auth()
+                .createUser({
+                  phoneNumber: `${phoneElement}`
+                })
+                .then(function(userRecord) {
+                  return knexModule.insert("Users", {
+                    id: userRecord.uid,
+                    phoneNumber: userRecord.phoneNumber,
+                    isActive: false
+                  });
+                })
+                .catch(function(error) {
+                  console.log("Error creating new user:", error);
+                })
+            );
+          });
+          return Promise.all(promiseArray).catch(error => {
+            throw new Error("Could not create accounts for list of Contacts");
           });
         }
       });

@@ -99,6 +99,7 @@ const query = gql`
     update_card(cardId: Int!, tag: Int, message: String): Card
     delete_card(cardId: Int!): Int!
 
+    load_contacts(phoneContacts: [String]): [User]
     delete_user(userId: String!): String!
     create_user(
       id: String!
