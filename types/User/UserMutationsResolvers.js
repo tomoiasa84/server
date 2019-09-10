@@ -152,13 +152,13 @@ const userMutationsResolvers = {
     },
     load_contacts: (
       root,
-      { contactsList },
+      { phoneContacts },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin).then(res => {
-        if (contactsList.length !== 0) {
+        if (phoneContacts.length !== 0) {
           let promiseArray = [];
-          contactsList.forEach(phoneElement => {
+          phoneContacts.forEach(phoneElement => {
             promiseArray.push(
               admin
                 .auth()
