@@ -73,21 +73,8 @@ CREATE TABLE "TagReviews" (
   "text" varchar
 );
 
-CREATE TABLE "MessageThreads" (
-  "id" SERIAL PRIMARY KEY,
-  "recommandation" int REFERENCES "Recommands" ("id") ON DELETE CASCADE
+CREATE TABLE "Conversations"(
+  "id" varchar PRIMARY KEY,
+  "user1" varchar varchar REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "user2" varchar REFERENCES "Users" ("id") ON DELETE CASCADE
 );
-
-CREATE TABLE "Messages" (
-  "id" SERIAL PRIMARY KEY,
-  "text" varchar,
-  "messageThread" int REFERENCES "MessageThreads" ("id") ON DELETE CASCADE,
-  "from" varchar REFERENCES "Users" ("id") ON DELETE CASCADE
-);
-
-CREATE TABLE "UserMessageThreads" (
-  "id" SERIAL PRIMARY KEY, 
-  "thread" int REFERENCES "MessageThreads" ("id") ON DELETE CASCADE,
-  "user" varchar REFERENCES "Users" ("id") ON DELETE CASCADE
-);
-ALTER TABLE "MessageThreads" ALTER COLUMN "recommandation" DROP NOT NULL;
