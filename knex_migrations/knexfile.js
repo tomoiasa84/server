@@ -2,10 +2,10 @@ module.exports = {
   development: {
     client: "pg",
     connection: {
-      host: "xfriends.postgres.database.azure.com",
-      user: "postgres@xfriends",
+      host: "localhost",
+      user: "postgres",
       password: "1234qwer!",
-      database: "postgres"
+      database: "xfriend"
     },
     pool: {
       min: 2,

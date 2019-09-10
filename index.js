@@ -18,47 +18,18 @@ admin.initializeApp({
 });
 
 if (process.env.NODE_ENV === "dev") {
-  const config = {
-    apiKey: "AIzaSyC0kRZCXNmSwc6AnTA8RLIcxILhiaIy1Po",
-    authDomain: "hello-world-997df.firebaseapp.com",
-    databaseURL: "https://hello-world-997df.firebaseio.com",
-    projectId: "hello-world-997df",
-    storageBucket: "hello-world-997df.appspot.com",
-    messagingSenderId: "739465086298",
-    appId: "1:739465086298:web:5677cc4b52754c17"
-  };
-  var firebase = require("firebase");
-  firebase.initializeApp(config);
-  const auth = firebase.auth();
-
-  let tokenId = "Bearer ";
-  auth.signInWithEmailAndPassword("tudor@adrian.ro", "1234qwer!").then(user => {
-    console.log("Login user");
-  });
-  process.on("SIGINT", () => {
-    auth.signOut().then(() => {
-      console.log("Signed out");
-    });
-  });
   const pubsub = new PubSub();
+  console.log("Im dev");
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }) => {
-      firebase
-        .auth()
-        .currentUser.getIdToken()
-        .then(function(token) {
-          tokenId = token;
-        })
-        .catch(function(error) {
-          throw error;
-        });
       return {
         logger,
         admin,
         verifyToken,
-        tokenId,
+        tokenId: "WzEu3ImkhhmVH1KtKg4iIZvezEXFQkWA",
         pubsub,
         knexModule
       };
