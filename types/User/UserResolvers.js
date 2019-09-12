@@ -111,7 +111,11 @@ const userResolvers = {
       userConversations.push(
         knexModule.get("Conversations", { user2: user.id })
       );
-      return Promise.all(userConversations.flat());
+
+      return Promise.all(userConversations).then(resuls => {
+        console.log(results.flat());
+        return resuls.flat();
+      });
     },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
