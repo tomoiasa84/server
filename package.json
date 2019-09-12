@@ -24,7 +24,9 @@
     "knex-migrate-sql-file": "^1.0.3",
     "log4js": "^4.5.1",
     "moment": "^2.24.0",
-    "pg": "^7.11.0"
+    "pg": "^7.11.0",
+    "unique-string": "^2.0.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "apollo-cache-inmemory": "^1.6.2",

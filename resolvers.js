@@ -11,27 +11,25 @@ const ReviewResolvers = require("./types/Review/ReviewResolvers");
 const ReviewMutationsResolvers = require("./types/Review/ReviewMutationsResolvers");
 const LocationMutationsResolvers = require("./types/Location/LocationMutationsResolvers");
 const RecommandMutationsResolvers = require("./types/Recommand/RecommandMutationsResolvers");
-const MessageResolvers = require("./types/Message/MessageResolvers");
-const ThreadMessageResolvers = require("./types/ThreadMessage/ThreadMessageResolvers");
+
 const RecommandResolvers = require("./types/Recommand/RecommandResolvers");
-const MessageMutationsResolvers = require("./types/Message/MessageMutationsResolvers");
-const ThreadMessageMutationsResolvers = require("./types/ThreadMessage/ThreadMessageMutationsResolvers");
 const CardSubscriptions = require("./types/Card/CardSubscriptions");
 const UserTagResolvers = require("./types/UserTag/UserTagResolvers");
 const UserTagMutationsResolvers = require("./types/UserTag/UserTagMutationsResolvers");
 const ShareResolvers = require("./types/Share/ShareResolvers");
 const ShareMutationsResolvers = require("./types/Share/ShareMutationsResolvers");
+
+const ConversationResolvers = require("./types/Conversation/ConversationResolvers");
+const ConversationMutationsResolvers = require("./types/Conversation/ConversationMutationsResolvers");
 const resolvers = [
+  ConversationMutationsResolvers,
+  ConversationResolvers,
   ShareMutationsResolvers,
   ShareResolvers,
   UserTagMutationsResolvers,
   UserTagResolvers,
   CardSubscriptions,
-  ThreadMessageMutationsResolvers,
-  MessageMutationsResolvers,
   RecommandResolvers,
-  ThreadMessageResolvers,
-  MessageResolvers,
   RecommandMutationsResolvers,
   LocationMutationsResolvers,
   TagResolvers,

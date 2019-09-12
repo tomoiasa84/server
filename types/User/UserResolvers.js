@@ -58,9 +58,6 @@ const userResolvers = {
           throw error;
         });
     },
-    thread_messages: (user, args, { knexModule }) => {
-      return null;
-    },
     tags: (user, args, { knexModule }) => {
       return knexModule
         .get("UserTags", { user: user.id })
@@ -106,6 +103,25 @@ const userResolvers = {
           throw error;
         });
     },
+    // conversations: (user, args, { knexModule }) => {
+    //   return knexModule
+    //     .get("Conversations", { `${}`})
+    //     .then(conversations => {
+    //       if (connections.length) {
+    //         let usersList = [];
+    //         connections.forEach(conn => {
+    //           usersList.push(
+    //             knexModule.getById("Conversations", conn.targetUser)
+    //           );
+    //         });
+    //         return Promise.all(usersList);
+    //       }
+    //       return [];
+    //     })
+    //     .catch(error => {
+    //       throw error;
+    //     });
+    // },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
       return knexModule

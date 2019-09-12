@@ -7,15 +7,13 @@ const Card = require("./types/Card/CardType");
 const Tag = require("./types/Tag/TagType");
 const Review = require("./types/Review/ReviewType");
 const Recommand = require("./types/Recommand/RecommandType");
-const Message = require("./types/Message/MessageType");
-const ThreadMessage = require("./types/ThreadMessage/ThreadMessageType");
 const UserTag = require("./types/UserTag/UserTagType");
 const Share = require("./types/Share/ShareType");
+const Conversation = require("./types/Conversation/ConversationType");
 const typeDefs = [
   Share,
   UserTag,
-  ThreadMessage,
-  Message,
+  Conversation,
   Recommand,
   Review,
   Tag,
