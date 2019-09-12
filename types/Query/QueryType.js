@@ -22,42 +22,27 @@ const query = gql`
     get_reviews: [Review]
     get_review(reviewId: Int!): Review
 
-    get_messages: [Message]
-    get_message(msgId: Int!): Message
-
-    get_threadmessages: [ThreadMessage]
-    get_threadmessage(messageThreadId: Int!): ThreadMessage
-
-    get_recommands: [Recommand]
-    get_recommand(recommandId: Int!): Recommand
-
     get_userTags: [UserTag]
     get_userTag(userTagId: Int!): UserTag
+
+    get_recommands: [Recommand]
+    get_recommand(recommandId: Int!): [Recommand]
+
+    get_conversations: [Conversation]
+    get_conversation(conversationId: String!): Conversation
   }
 
   type Mutation {
+    delete_conversation(conversationId: String!): Int!
+    create_conversation(user1: String!, user2: String!): Conversation
+    update_conversation(
+      conversationId: String!
+      user1: String
+      user2: String
+    ): Conversation
+
     create_share(cardId: Int!, sharedBy: String!, sharedTo: [String]): [Int]
     delete_share(shareIds: [Int]!): [Int]!
-
-    create_threadmessage(
-      userRecomCard: Int
-      originUserId: Int!
-      targetUserId: Int!
-    ): ThreadMessage
-    update_threadmessage(
-      threadMessageId: Int!
-      userRecomCard: Int!
-    ): ThreadMessage
-    delete_threadmessage(threadMessageId: Int!): Int!
-
-    create_message(text: String!, msgThread: Int!, msgFrom: Int!): Message
-    update_message(
-      messageId: Int!
-      text: String
-      msgThread: Int
-      msgFrom: Int
-    ): Message
-    delete_message(messageId: Int!): Int!
 
     create_recommand(
       cardId: Int!

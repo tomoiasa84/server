@@ -1,3 +1,4 @@
+const uniqueString = require("unique-string");
 const conversationMutationsResolvers = {
   Mutation: {
     delete_conversation: (
@@ -7,7 +8,7 @@ const conversationMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_conversation`);
+          logger.trace(`User: ${res.uid} Operation: delete_channel`);
           return knexModule.deleteById("Conversations", conversationId);
         })
         .catch(function(error) {
@@ -15,17 +16,17 @@ const conversationMutationsResolvers = {
           throw error;
         });
     },
-    update_card: (
+    update_conversation: (
       root,
-      { cardId, tag, message },
+      { conversationId, user1, user2 },
       { knexModule, pubsub, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: update_card`);
-          return knexModule.updateById("Cards", cardId, {
-            searchFor: tag,
-            text: message
+          logger.trace(`User: ${res.uid} Operation: update_channel`);
+          return knexModule.updateById("Conversations", conversationId, {
+            user1,
+            user2
           });
         })
         .catch(function(error) {
@@ -33,19 +34,18 @@ const conversationMutationsResolvers = {
           throw error;
         });
     },
-    create_card(
+    create_conversation(
       root,
-      { postedBy, searchFor, text },
+      { user1, user2 },
       { knexModule, pubsub, admin, verifyToken, tokenId, logger }
     ) {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: delete_card`);
-          return knexModule.insert("Cards", {
-            postedBy,
-            searchFor,
-            text,
-            createdAt: `${moment()}`
+          logger.trace(`User: ${res.uid} Operation: create_channel`);
+          return knexModule.insert("Conversations", {
+            id: `${uniqueString()}`,
+            user1,
+            user2
           });
         })
         .catch(function(error) {

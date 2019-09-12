@@ -75,6 +75,6 @@ CREATE TABLE "TagReviews" (
 
 CREATE TABLE "Conversations"(
   "id" varchar PRIMARY KEY,
-  "user1" varchar varchar REFERENCES "Users" ("id") ON DELETE CASCADE,
+  "user1" varchar REFERENCES "Users" ("id") ON DELETE CASCADE,
   "user2" varchar REFERENCES "Users" ("id") ON DELETE CASCADE
 );
