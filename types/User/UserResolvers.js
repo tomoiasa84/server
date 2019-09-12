@@ -103,25 +103,16 @@ const userResolvers = {
           throw error;
         });
     },
-    // conversations: (user, args, { knexModule }) => {
-    //   return knexModule
-    //     .get("Conversations", { `${}`})
-    //     .then(conversations => {
-    //       if (connections.length) {
-    //         let usersList = [];
-    //         connections.forEach(conn => {
-    //           usersList.push(
-    //             knexModule.getById("Conversations", conn.targetUser)
-    //           );
-    //         });
-    //         return Promise.all(usersList);
-    //       }
-    //       return [];
-    //     })
-    //     .catch(error => {
-    //       throw error;
-    //     });
-    // },
+    conversations: (user, args, { knexModule }) => {
+      let userConversations = [];
+      userConversations.push(
+        knexModule.get("Conversations", { user1: user.id })
+      );
+      userConversations.push(
+        knexModule.get("Conversations", { user2: user.id })
+      );
+      return Promise.all(userConversations.flat());
+    },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
       return knexModule
