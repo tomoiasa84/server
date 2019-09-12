@@ -6,7 +6,7 @@ const user = gql`
     location: Location
     phoneNumber: String
     isActive: Boolean
-
+    conversations: [Conversation]
     connections: [User]
     cards: [Card]
     tags: [Tag]
@@ -16,4 +16,3 @@ const user = gql`
 `;
 
 module.exports = user;
-//conversations: [Conversation]
