@@ -33,7 +33,7 @@ const query = gql`
   }
 
   type Mutation {
-    delete_conversation(conversationId: String!): Int!
+    delete_conversation(conversationId: String!): String!
     create_conversation(user1: String!, user2: String!): Conversation
     update_conversation(
       conversationId: String!

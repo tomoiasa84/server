@@ -105,13 +105,15 @@ const userResolvers = {
     },
     conversations: (user, args, { knexModule }) => {
       let userConversations = [];
-      userConversations.push(
-        knexModule.get("Conversations", { user1: user.id })
-      );
-      userConversations.push(
-        knexModule.get("Conversations", { user2: user.id })
-      );
-      return Promise.all(userConversations.flat());
+      userConversations.push(knexModule.get("Conversations", {}));
+
+      return Promise.all(userConversations)
+        .then(arrayData => {
+          console.log(arrayData);
+        })
+        .catch(error => {
+          throw error;
+        });
     },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user

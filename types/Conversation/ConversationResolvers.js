@@ -37,10 +37,11 @@ const conversationResolvers = {
     user1: (conversation, args, { knexModule, logger }) => {
       return knexModule
         .getById("Users", conversation.user1)
-        .then(() => {
+        .then(data => {
           logger.trace(
             `Get User with id: ${conversation.user1} from database for Card with id: ${conversation.id}.`
           );
+          return data;
         })
         .catch(error => {
           logger.error(error);
@@ -50,10 +51,11 @@ const conversationResolvers = {
     user2: (conversation, args, { knexModule, logger }) => {
       return knexModule
         .getById("Users", conversation.user2)
-        .then(() => {
+        .then(data => {
           logger.trace(
             `Get User with id: ${conversation.user2} from database for Card with id: ${conversation.id}.`
           );
+          return data;
         })
         .catch(error => {
           logger.error(error);
