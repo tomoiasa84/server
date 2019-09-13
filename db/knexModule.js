@@ -4,9 +4,10 @@ const knex = require("./pgAdaptop");
 module.exports = {
   getCustom: (tableName, id) => {
     return knex
-      .raw(`select * from ${tableName} where ${id} in (user1, user2);`)
+      .raw(`select * from "${tableName}" where '${id}' in (user1, user2);`)
       .then(result => {
-        console.log(result);
+        //console.log(result.rows);
+        return result.rows;
       });
   },
   deleteById: (tableName, id) => {
