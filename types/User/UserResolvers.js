@@ -104,20 +104,6 @@ const userResolvers = {
         });
     },
     conversations: (user, args, { knexModule }) => {
-<<<<<<< HEAD
-      let userConversations = [];
-      userConversations.push(
-        knexModule.get("Conversations", { user1: user.id })
-      );
-      userConversations.push(
-        knexModule.get("Conversations", { user2: user.id })
-      );
-
-      return Promise.all(userConversations).then(resuls => {
-        console.log(results.flat());
-        return resuls.flat();
-      });
-=======
       return knexModule
         .getCustom("Conversations", user.id)
         .then(result => {
@@ -126,7 +112,6 @@ const userResolvers = {
         .catch(error => {
           throw error;
         });
->>>>>>> origin/devApolloServer
     },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
