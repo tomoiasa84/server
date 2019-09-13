@@ -104,14 +104,9 @@ const userResolvers = {
         });
     },
     conversations: (user, args, { knexModule }) => {
-      return knexModule
-        .getCustom("Conversations", user.id)
-        .then(result => {
-          console.log(result);
-        })
-        .catch(error => {
-          throw error;
-        });
+      return knexModule.getCustom("Conversations", user.id).catch(error => {
+        throw error;
+      });
     },
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
