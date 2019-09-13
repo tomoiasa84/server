@@ -104,12 +104,10 @@ const userResolvers = {
         });
     },
     conversations: (user, args, { knexModule }) => {
-      let userConversations = [];
-      userConversations.push(knexModule.get("Conversations", {}));
-
-      return Promise.all(userConversations)
-        .then(arrayData => {
-          console.log(arrayData);
+      return knexModule
+        .getCustom("Conversations", user.id)
+        .then(result => {
+          console.log(result);
         })
         .catch(error => {
           throw error;
