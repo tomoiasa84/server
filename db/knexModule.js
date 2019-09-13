@@ -2,6 +2,13 @@ const knex = require("./pgAdaptop");
 //function KnexModule(){};
 //KnexModule.prototype.update()
 module.exports = {
+  getCustom: (tableName, id) => {
+    return knex
+      .raw(`select * from ${tableName} where ${id} in (user1, user2);`)
+      .then(result => {
+        console.log(result);
+      });
+  },
   deleteById: (tableName, id) => {
     return knex(tableName)
       .where("id", id)
