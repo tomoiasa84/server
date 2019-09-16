@@ -21,7 +21,10 @@ const ShareMutationsResolvers = require("./types/Share/ShareMutationsResolvers")
 
 const ConversationResolvers = require("./types/Conversation/ConversationResolvers");
 const ConversationMutationsResolvers = require("./types/Conversation/ConversationMutationsResolvers");
+
+const ContactResolvers = require("./types/Contact/ContactResolvers");
 const resolvers = [
+  ContactResolvers,
   ConversationMutationsResolvers,
   ConversationResolvers,
   ShareMutationsResolvers,

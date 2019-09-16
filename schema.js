@@ -10,7 +10,9 @@ const Recommand = require("./types/Recommand/RecommandType");
 const UserTag = require("./types/UserTag/UserTagType");
 const Share = require("./types/Share/ShareType");
 const Conversation = require("./types/Conversation/ConversationType");
+const Contact = require("./types/Contact/ContactType");
 const typeDefs = [
+  Contact,
   Share,
   UserTag,
   Conversation,

@@ -30,6 +30,8 @@ const query = gql`
 
     get_conversations: [Conversation]
     get_conversation(conversationId: String!): Conversation
+
+    check_contacts(contactsList: [String]!): [Contact]
   }
 
   type Mutation {
