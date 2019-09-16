@@ -2,12 +2,25 @@ const knex = require("./pgAdaptop");
 //function KnexModule(){};
 //KnexModule.prototype.update()
 module.exports = {
+  knexRaw: queryString => {
+    return knex
+      .raw(queryString)
+      .then(result => {
+        //console.log(result.rows);
+        return result.rows;
+      })
+      .catch(error => {
+        throw error;
+      });
+  },
   getCustom: (tableName, id) => {
     return knex
       .raw(`select * from "${tableName}" where '${id}' in (user1, user2);`)
       .then(result => {
-        //console.log(result.rows);
         return result.rows;
+      })
+      .catch(err => {
+        throw err;
       });
   },
   deleteById: (tableName, id) => {
