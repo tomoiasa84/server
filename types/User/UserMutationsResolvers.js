@@ -79,8 +79,8 @@ const userMutationsResolvers = {
     },
     create_user: (
       root,
-      { id, name, location, phoneNumber },
-      { knexModule, admin, verifyToken, tokenId, logger }
+      { firebaseId, name, location, phoneNumber },
+      { knexModule, uuidv1, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
@@ -88,7 +88,8 @@ const userMutationsResolvers = {
           //check if phone number if exists
           return knexModule
             .insert("Users", {
-              id,
+              id: `${uuidv1()}`,
+              firebaseId,
               name,
               location,
               phoneNumber,

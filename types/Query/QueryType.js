@@ -89,7 +89,7 @@ const query = gql`
     load_contacts(phoneContacts: [String]): [User]
     delete_user(userId: String!): String!
     create_user(
-      id: String!
+      firebaseId: String!
       name: String!
       location: Int!
       phoneNumber: String!
