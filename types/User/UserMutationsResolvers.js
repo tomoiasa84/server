@@ -154,7 +154,7 @@ const userMutationsResolvers = {
     load_contacts: (
       root,
       { phoneContacts },
-      { knexModule, admin, verifyToken, tokenId, logger }
+      { knexModule, uuidv1, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin).then(res => {
         if (phoneContacts.length !== 0) {
@@ -168,7 +168,8 @@ const userMutationsResolvers = {
                 })
                 .then(function(userRecord) {
                   return knexModule.insert("Users", {
-                    id: userRecord.uid,
+                    id: `${uuidv1()}`,
+                    firebaseId: userRecord.uid,
                     phoneNumber: userRecord.phoneNumber,
                     isActive: false
                   });
