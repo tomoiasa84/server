@@ -6,6 +6,7 @@ const knexModule = require("./db/knexModule");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const verifyToken = require("./verifyToken");
+const uuidv1 = require("uuid/v1");
 var log4js = require("log4js");
 log4js.configure({
   appenders: { out: { type: "stdout" } },
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === "dev") {
     resolvers,
     context: ({ req }) => {
       return {
+        uuidv1,
         logger,
         admin,
         verifyToken,
@@ -49,6 +51,7 @@ if (process.env.NODE_ENV === "dev") {
       const token = req.headers.authorization || "";
       const tokenId = token.replace("Bearer ", "");
       return {
+        uuidv1,
         admin,
         verifyToken,
         tokenId,

@@ -13,6 +13,7 @@ function createUser(knex, location) {
         .returning("id")
         .insert({
           id: `${faker.random.uuid()}`,
+          firebaseId: `${faker.random.uuid()}`,
           name: userName,
           location: locationRecord.id,
           phoneNumber: `${faker.phone.phoneNumber()}`,
