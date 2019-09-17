@@ -96,7 +96,7 @@ const userMutationsResolvers = {
               isActive: true
             })
             .then(user => {
-              return Promise.all(insertDefaults(knexModule, id)).then(
+              return Promise.all(insertDefaults(knexModule, user.id)).then(
                 defaults => {
                   return knexModule
                     .insert("UserSettings", defaults)
