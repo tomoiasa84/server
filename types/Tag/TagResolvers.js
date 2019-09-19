@@ -5,6 +5,10 @@ const tagResolvers = {
       args,
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
+      if (tokenId === "") {
+        logger.trace(`User: get_tags`);
+        return knexModule.getAll("Tags");
+      }
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: get_tags`);
@@ -20,6 +24,10 @@ const tagResolvers = {
       { tagId },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
+      if (tokenId === "") {
+        logger.trace(`User: operation: get_tag with id: ${tagId}`);
+        return knexModule.getById("Tags", tagId);
+      }
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: get_tag with id: ${tagId}`);

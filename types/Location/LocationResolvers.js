@@ -5,6 +5,10 @@ const locationResolvers = {
       { locationId },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
+      if (tokenId === "") {
+        logger.trace(`User: operation: get_location with id: ${locationId}`);
+        return knexModule.getById("Locations", locationId);
+      }
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(
@@ -22,6 +26,10 @@ const locationResolvers = {
       args,
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
+      if (tokenId === "") {
+        logger.trace(`User: operation: get_locations`);
+        return knexModule.getAll("Locations");
+      }
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: get_locations`);
