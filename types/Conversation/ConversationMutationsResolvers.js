@@ -42,11 +42,20 @@ const conversationMutationsResolvers = {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: create_channel`);
-          return knexModule.insert("Conversations", {
-            id: `${uniqueString()}`,
-            user1,
-            user2
-          });
+          return knexModule
+            .knexRaw(
+              `select * from "Conversations" where '${user1}' in (user1,user2) and '${user2}' in (user1,user2)`
+            )
+            .then(recordArray => {
+              if (recordArray.length === 0) {
+                return knexModule.insert("Conversations", {
+                  id: `${uniqueString()}`,
+                  user1,
+                  user2
+                });
+              }
+              return recordArray[0];
+            });
         })
         .catch(function(error) {
           logger.error(error);

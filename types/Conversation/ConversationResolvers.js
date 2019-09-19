@@ -7,8 +7,8 @@ const conversationResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: get_cards`);
-          return knexModule.getAll("Cards");
+          logger.trace(`User: ${res.uid} Operation: get_conversations`);
+          return knexModule.getAll("Conversations");
         })
         .catch(function(error) {
           logger.error(error);
@@ -23,7 +23,7 @@ const conversationResolvers = {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(
-            `User: ${res.uid} Operation: get_card with id ${conversationId}`
+            `User: ${res.uid} Operation: get_conversation with id ${conversationId}`
           );
           return knexModule.getById("Conversations", conversationId);
         })
@@ -39,7 +39,7 @@ const conversationResolvers = {
         .getById("Users", conversation.user1)
         .then(data => {
           logger.trace(
-            `Get User with id: ${conversation.user1} from database for Card with id: ${conversation.id}.`
+            `Get User with id: ${conversation.user1} from database for Conversation with id: ${conversation.id}.`
           );
           return data;
         })
@@ -53,7 +53,7 @@ const conversationResolvers = {
         .getById("Users", conversation.user2)
         .then(data => {
           logger.trace(
-            `Get User with id: ${conversation.user2} from database for Card with id: ${conversation.id}.`
+            `Get User with id: ${conversation.user2} from database for Conversation with id: ${conversation.id}.`
           );
           return data;
         })
