@@ -7,5 +7,4 @@ const userTag = gql`
     default: Boolean
   }
 `;
-
 module.exports = userTag;

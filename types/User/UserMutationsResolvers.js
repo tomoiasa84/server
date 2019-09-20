@@ -79,7 +79,7 @@ const userMutationsResolvers = {
     },
     create_user: (
       root,
-      { firebaseId, name, location, phoneNumber },
+      { firebaseId, name, location, phoneNumber, description },
       { knexModule, uuidv1, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
@@ -93,6 +93,7 @@ const userMutationsResolvers = {
               name,
               location,
               phoneNumber,
+              description,
               isActive: true
             })
             .then(user => {
@@ -187,7 +188,7 @@ const userMutationsResolvers = {
     },
     update_user: (
       root,
-      { userId, name, location, phoneNumber, isActive },
+      { userId, name, location, phoneNumber, isActive, description },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
@@ -199,6 +200,7 @@ const userMutationsResolvers = {
             name,
             location,
             phoneNumber,
+            description,
             isActive
           });
         })
