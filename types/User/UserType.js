@@ -5,12 +5,13 @@ const user = gql`
     firebaseId: String!
     name: String
     location: Location
+    description: String
     phoneNumber: String
     isActive: Boolean
     conversations: [Conversation]
     connections: [User]
     cards: [Card]
-    tags: [Tag]
+    tags: [UserTag]
     cards_feed: [Card]
     settings: [Setting]
   }

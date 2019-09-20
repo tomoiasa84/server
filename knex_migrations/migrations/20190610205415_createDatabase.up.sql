@@ -18,6 +18,7 @@ CREATE TABLE "Users" (
   "id" varchar PRIMARY KEY,
   "firebaseId" varchar UNIQUE,
   "name" varchar,
+  "description" varchar,
   "phoneNumber" varchar UNIQUE,
   "location" int REFERENCES "Locations" ("id") ON DELETE CASCADE,
   "isActive" boolean

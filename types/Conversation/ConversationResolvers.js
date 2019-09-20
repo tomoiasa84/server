@@ -53,7 +53,7 @@ const conversationResolvers = {
         .getById("Users", conversation.user2)
         .then(data => {
           logger.trace(
-            `Get User with id: ${conversation.user2} from database for Conversation with id: ${conversation.id}.`
+            `Get User with id: ${conversation.user2} from database for Conversatio with id: ${conversation.id}.`
           );
           return data;
         })
