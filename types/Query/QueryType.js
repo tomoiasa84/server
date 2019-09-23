@@ -82,7 +82,7 @@ const query = gql`
     update_tag(tagId: Int!, name: String!): Tag
     create_tag(name: String!): Tag
 
-    create_card(postedBy: Int!, searchFor: Int!, text: String): Card
+    create_card(postedBy: Int!, searchFor: String!, text: String): Card
     update_card(cardId: Int!, tag: Int, message: String): Card
     delete_card(cardId: Int!): Int!
 
