@@ -62,13 +62,8 @@ const userResolvers = {
       return knexModule
         .get("UserTags", { user: user.id })
         .then(data => {
-          let tags = [];
-          if (data.length) {
-            data.forEach(userTag => {
-              tags.push(knexModule.getById("Tags", userTag.tag));
-            });
-          }
-          return Promise.all(tags);
+          console.log(data);
+          return data;
         })
         .catch(error => {
           throw error;
@@ -89,15 +84,8 @@ const userResolvers = {
       return knexModule
         .get("UserSettings", { user: user.id })
         .then(settings => {
-          let settingsList = [];
-          settings.forEach(setting => {
-            settingsList.push(
-              knex("Settings")
-                .where("id", setting.setting)
-                .first()
-            );
-          });
-          return Promise.all(settingsList);
+          console.log(settings);
+          return settings;
         })
         .catch(error => {
           throw error;
