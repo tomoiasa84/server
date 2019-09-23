@@ -99,6 +99,7 @@ const query = gql`
       name: String
       location: Int
       phoneNumber: String
+      description: String
       isActive: Boolean
     ): User
 
