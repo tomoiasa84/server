@@ -6,9 +6,6 @@ module.exports = {
     return knex
       .raw(queryString)
       .then(result => {
-        //console.log(result.rows);
-        console.log(result.rows);
-
         return result.rows;
       })
       .catch(error => {
