@@ -25,7 +25,7 @@ const reviewResolvers = {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: get_reviews`);
-          return knexModule.getAll("TagReviewsv");
+          return knexModule.getAll("TagReviews");
         })
         .catch(function(error) {
           logger.error(error);
