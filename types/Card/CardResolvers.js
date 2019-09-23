@@ -35,12 +35,11 @@ const cardResolvers = {
     searchFor: (card, args, { knexModule, logger }) => {
       return knexModule
         .getById("Tags", card.searchFor)
-        .then(() => {
+        .then(tag => {
           logger.trace(
-            `Get Tag with id: ${
-              card.searchFor
-            } from database for Card with id: ${card.id}.`
+            `Get Tag with id: ${card.searchFor} from database for Card with id: ${card.id}.`
           );
+          return tag;
         })
         .catch(error => {
           logger.error(error);
@@ -50,12 +49,11 @@ const cardResolvers = {
     postedBy: (card, args, { knexModule, logger }) => {
       return knexModule
         .getById("Users", card.postedBy)
-        .then(() => {
+        .then(user => {
           logger.trace(
-            `Get User with id: ${
-              card.postedBy
-            } from database for Card with id: ${card.id}.`
+            `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
           );
+          return user;
         })
         .catch(error => {
           logger.error(error);
