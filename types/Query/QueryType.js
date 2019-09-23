@@ -82,11 +82,7 @@ const query = gql`
     update_tag(tagId: Int!, name: String!): Tag
     create_tag(name: String!): Tag
 
-<<<<<<< HEAD
-    create_card(postedBy: Int!, searchFor: String!, text: String): Card
-=======
     create_card(postedBy: String!, searchFor: Int!, text: String): Card
->>>>>>> origin/devApolloServer
     update_card(cardId: Int!, tag: Int, message: String): Card
     delete_card(cardId: Int!): Int!
 
