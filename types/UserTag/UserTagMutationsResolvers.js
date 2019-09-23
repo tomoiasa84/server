@@ -7,14 +7,28 @@ const userTagMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(
-            `User: ${res.uid} Operation: delete_userTag with id ${userId}`
-          );
-          return knexModule.insert("UserTags", {
-            user: userId,
-            tag: tagId,
-            default: false
-          });
+          return knexModule
+            .knexRaw(`SELECT * FROM "UserTags" WHERE "user"='${userId}';`)
+            .then(countResult => {
+              if (countResult.length === 0) {
+                logger.trace(
+                  `User: ${res.uid} Operation: delete_userTag with id ${userId}`
+                );
+                return knexModule.insert("UserTags", {
+                  user: userId,
+                  tag: tagId,
+                  default: true
+                });
+              }
+              logger.trace(
+                `User: ${res.uid} Operation: delete_userTag with id ${userId}`
+              );
+              return knexModule.insert("UserTags", {
+                user: userId,
+                tag: tagId,
+                default: false
+              });
+            });
         })
         .catch(function(error) {
           logger.debug(error);
