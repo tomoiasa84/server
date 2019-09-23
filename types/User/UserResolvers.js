@@ -113,6 +113,12 @@ const userResolvers = {
         .catch(error => {
           throw error;
         });
+    },
+    reviews: (user, args, { knexModule }) => {
+      //Find friends of current user
+      return knexModule.get("TagReviews", { user: user.id }).catch(error => {
+        throw error;
+      });
     }
   }
 };

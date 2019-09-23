@@ -13,6 +13,7 @@ const user = gql`
     cards: [Card]
     tags: [UserTag]
     cards_feed: [Card]
+    reviews: [Review]
     settings: [Setting]
   }
 `;

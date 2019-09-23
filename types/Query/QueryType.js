@@ -69,7 +69,7 @@ const query = gql`
     update_review(reviewId: Int!, stars: Int, text: String): Review
     create_review(
       userId: String!
-      tagReview: Int!
+      userTagId: Int!
       stars: Int!
       text: String
     ): Review
