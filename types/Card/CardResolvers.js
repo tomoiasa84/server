@@ -33,30 +33,21 @@ const cardResolvers = {
   },
   Card: {
     searchFor: (card, args, { knexModule, logger }) => {
-      return knexModule
-        .getById("Tags", card.searchFor)
-        .then(() => {
-          logger.trace(
-            `Get Tag with id: ${
-              card.searchFor
-            } from database for Card with id: ${card.id}.`
-          );
-        })
-        .catch(error => {
-          logger.error(error);
-          throw error;
-        });
+      logger.trace(
+        `Get Tag with id: ${card.searchFor} from database for Card with id: ${card.id}.`
+      );
+      return knexModule.getById("Tags", card.searchFor).catch(error => {
+        logger.error(error);
+        throw error;
+      });
     },
     postedBy: (card, args, { knexModule, logger }) => {
+      logger.trace(
+        `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
+      );
       return knexModule
         .getById("Users", card.postedBy)
-        .then(() => {
-          logger.trace(
-            `Get User with id: ${
-              card.postedBy
-            } from database for Card with id: ${card.id}.`
-          );
-        })
+
         .catch(error => {
           logger.error(error);
           throw error;

@@ -17,17 +17,14 @@ const recommandMutationsResolvers = {
     },
     update_recommand: (
       root,
-      { recommandId, cardId, userAsk, userSend, userRec },
+      { recommandId, userRecId, accepted },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: update_recommand`);
           return knexModule.updateById("Recommands", recommandId, {
-            card: cardId,
-            userAsk,
-            userSend,
-            userRecommand: userRec,
+            userRecommand: userRecId,
             acceptedFlag: false
           });
         })
@@ -38,7 +35,7 @@ const recommandMutationsResolvers = {
     },
     create_recommand: (
       root,
-      { cardId, userAsk, userSend, userRec },
+      { cardId, userAskId, userSendId, userRecId },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
@@ -46,9 +43,9 @@ const recommandMutationsResolvers = {
           logger.trace(`User: ${res.uid} Operation: create_recommand`);
           return knexModule.insert("Recommands", {
             card: cardId,
-            userAsk: userAsk,
-            userSend: userSend,
-            userRecommand: userRec,
+            userAsk: userAskId,
+            userSend: userSendId,
+            userRecommand: userRecId,
             acceptedFlag: false
           });
         })
