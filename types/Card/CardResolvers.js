@@ -41,6 +41,20 @@ const cardResolvers = {
         throw error;
       });
     },
+    recommands: (card, args, { knexModule, logger }) => {
+      logger.trace(
+        `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
+      );
+      return knexModule
+        .knexRaw(`SELECT COUNT(*) FROM "Recommands" WHERE "card"='${card.id}'`)
+        .then(result => {
+          return result;
+        })
+        .catch(error => {
+          logger.error(error);
+          throw error;
+        });
+    },
     postedBy: (card, args, { knexModule, logger }) => {
       logger.trace(
         `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`

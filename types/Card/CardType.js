@@ -6,6 +6,7 @@ const card = gql`
     searchFor: Tag
     createdAt: String
     text: String
+    recommands: Int
   }
 `;
 
