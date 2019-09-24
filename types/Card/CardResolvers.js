@@ -48,7 +48,9 @@ const cardResolvers = {
       return knexModule
         .knexRaw(`SELECT COUNT(*) FROM "Recommands" WHERE "card"='${card.id}'`)
         .then(result => {
-          return result;
+          console.log(result);
+
+          return result[0]["count"];
         })
         .catch(error => {
           logger.error(error);
