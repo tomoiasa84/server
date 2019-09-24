@@ -43,21 +43,19 @@ const query = gql`
       user2: String
     ): Conversation
 
-    create_share(cardId: Int!, sharedBy: String!, sharedTo: [String]): [Int]
-    delete_share(shareIds: [Int]!): [Int]!
+    create_share(cardId: Int!, sharedBy: String!, sharedTo: String!): Share
+    delete_share(shareId: Int!): Int!
 
     create_recommand(
       cardId: Int!
-      userAsk: String!
-      userSend: String!
-      userRec: String!
+      userAskId: String!
+      userSendId: String!
+      userRecId: String!
     ): Recommand
     update_recommand(
       recommandId: Int!
-      cardId: Int
-      userAsk: String
-      userSend: String
-      userRec: String
+      userRecId: String!
+      accepted: Boolean
     ): Recommand
     delete_recommand(recommandId: Int!): Int!
 

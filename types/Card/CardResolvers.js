@@ -33,13 +33,22 @@ const cardResolvers = {
   },
   Card: {
     searchFor: (card, args, { knexModule, logger }) => {
+      logger.trace(
+        `Get Tag with id: ${card.searchFor} from database for Card with id: ${card.id}.`
+      );
+      return knexModule.getById("Tags", card.searchFor).catch(error => {
+        logger.error(error);
+        throw error;
+      });
+    },
+    recommands: (card, args, { knexModule, logger }) => {
+      logger.trace(
+        `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
+      );
       return knexModule
-        .getById("Tags", card.searchFor)
-        .then(tag => {
-          logger.trace(
-            `Get Tag with id: ${card.searchFor} from database for Card with id: ${card.id}.`
-          );
-          return tag;
+        .knexRaw(`SELECT COUNT(*) FROM "Recommands" WHERE "card"='${card.id}'`)
+        .then(result => {
+          return result;
         })
         .catch(error => {
           logger.error(error);
@@ -47,18 +56,13 @@ const cardResolvers = {
         });
     },
     postedBy: (card, args, { knexModule, logger }) => {
-      return knexModule
-        .getById("Users", card.postedBy)
-        .then(user => {
-          logger.trace(
-            `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
-          );
-          return user;
-        })
-        .catch(error => {
-          logger.error(error);
-          throw error;
-        });
+      logger.trace(
+        `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
+      );
+      return knexModule.getById("Users", card.postedBy).catch(error => {
+        logger.error(error);
+        throw error;
+      });
     }
   }
 };

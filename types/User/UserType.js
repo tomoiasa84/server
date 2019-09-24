@@ -10,9 +10,9 @@ const user = gql`
     isActive: Boolean
     conversations: [Conversation]
     connections: [User]
+    cardsConnections: [Card]
     cards: [Card]
     tags: [UserTag]
-    cards_feed: [Card]
     reviews: [Review]
     settings: [Setting]
   }

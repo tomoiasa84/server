@@ -32,27 +32,13 @@ const userResolvers = {
   },
 
   User: {
-    cards_feed: (user, args, { knexModule }) => {
+    cardsConnections: (user, args, { knexModule }) => {
       return knexModule
-        .get("Connections", { originUser: user.id })
-        .then(connections => {
-          if (connections.length) {
-            let cards = [];
-            connections.forEach(conn => {
-              cards.push(
-                knexModule
-                  .get("Cards", { postedBy: conn.targetUser })
-                  .then(listCards => {
-                    if (!listCards.length) {
-                      throw new Error("No card for user");
-                    }
-                    return listCards[0];
-                  })
-              );
-            });
-            return Promise.all(cards);
-          }
-          return [];
+        .knexRaw(
+          `SELECT * FROM "Cards" WHERE "postedBy" in (SELECT "targetUser" FROM "Connections" WHERE "originUser"='${user.id}');`
+        )
+        .then(result => {
+          return result;
         })
         .catch(error => {
           throw error;
@@ -99,16 +85,11 @@ const userResolvers = {
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
       return knexModule
-        .get("Connections", { originUser: user.id })
-        .then(connections => {
-          if (connections.length) {
-            let usersList = [];
-            connections.forEach(conn => {
-              usersList.push(knexModule.getById("Users", conn.targetUser));
-            });
-            return Promise.all(usersList);
-          }
-          return [];
+        .knexRaw(
+          `SELECT * FROM "Users" WHERE "id" in (SELECT "targetUser" FROM "Connections" WHERE "originUser"='${user.id}');`
+        )
+        .then(result => {
+          return result;
         })
         .catch(error => {
           throw error;
