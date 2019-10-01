@@ -43,6 +43,26 @@ const userTagResolvers = {
       return knexModule.getById("Tags", userTag.tag).catch(error => {
         throw error;
       });
+    },
+    reviews: (userTag, args, { knexModule }) => {
+      return knexModule
+        .get("TagReviews", { userTag: userTag.id })
+        .catch(error => {
+          throw error;
+        });
+    },
+    score: (userTag, args, { knexModule }) => {
+      return knexModule
+        .knexRaw(
+          `SELECT FLOOR(AVG(stars)) FROM "TagReviews" WHERE "userTag"='${userTag.id}';`
+        )
+        .then(result => {
+          if (result[0]["floor"]) return result[0]["floor"];
+          else return 0;
+        })
+        .catch(error => {
+          throw error;
+        });
     }
   }
 };

@@ -41,7 +41,14 @@ const cardResolvers = {
         throw error;
       });
     },
-    recommands: (card, args, { knexModule, logger }) => {
+    recommandsList: (card, args, { knexModule, logger }) => {
+      logger.trace(`Fetch: list for Card with id: ${card.id}.`);
+      return knexModule.get("Recommands", { card: card.id }).catch(error => {
+        logger.error(error);
+        throw error;
+      });
+    },
+    recommandsCount: (card, args, { knexModule, logger }) => {
       logger.trace(
         `Get User with id: ${card.postedBy} from database for Card with id: ${card.id}.`
       );

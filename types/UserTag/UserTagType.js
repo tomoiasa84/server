@@ -4,6 +4,8 @@ const userTag = gql`
     id: Int!
     user: User
     tag: Tag
+    reviews: [Review]
+    score: Int
     default: Boolean
   }
 `;
