@@ -20,8 +20,6 @@ admin.initializeApp({
 
 if (process.env.NODE_ENV === "dev") {
   const pubsub = new PubSub();
-  console.log("Im dev");
-
   const server = new ApolloServer({
     typeDefs,
     resolvers,
