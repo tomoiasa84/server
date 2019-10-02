@@ -5,6 +5,7 @@ const user = gql`
     firebaseId: String!
     name: String
     location: Location
+    profileURL: String
     description: String
     phoneNumber: String
     isActive: Boolean
