@@ -7,7 +7,6 @@ module.exports = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          //Go throw each number and check if exists
           if (contactsList.length !== 0) {
             return contactsList;
           } else {
@@ -33,6 +32,7 @@ module.exports = {
         .knexRaw(`select * from "Users" where "phoneNumber"='${contact}';`)
         .then(checkedContact => {
           if (checkedContact.length === 0) return false;
+          //should connect the users that already exists
           return true;
         });
     }

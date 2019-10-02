@@ -96,6 +96,7 @@ const query = gql`
       userId: String!
       name: String
       location: Int
+      profileURL: String
       phoneNumber: String
       description: String
       isActive: Boolean

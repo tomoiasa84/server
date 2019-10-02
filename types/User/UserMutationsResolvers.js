@@ -161,6 +161,7 @@ const userMutationsResolvers = {
         if (phoneContacts.length !== 0) {
           let promiseArray = [];
           phoneContacts.forEach(phoneElement => {
+            //should add default settings and default connection
             promiseArray.push(
               admin
                 .auth()
@@ -188,7 +189,15 @@ const userMutationsResolvers = {
     },
     update_user: (
       root,
-      { userId, name, location, phoneNumber, isActive, description },
+      {
+        userId,
+        name,
+        location,
+        profileURL,
+        phoneNumber,
+        isActive,
+        description
+      },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
@@ -199,6 +208,7 @@ const userMutationsResolvers = {
           return knexModule.updateById("Users", userId, {
             name,
             location,
+            profileURL,
             phoneNumber,
             description,
             isActive
