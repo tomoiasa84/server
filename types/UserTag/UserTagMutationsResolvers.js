@@ -37,17 +37,23 @@ const userTagMutationsResolvers = {
     },
     update_userTag: (
       root,
-      { userTagId, defaultFlag },
+      { userTagId },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(
-            `User: ${res.uid} Operation: delete_userTag with id ${userTagId}`
+            `User: ${res.uid} Operation: update with id ${userTagId}`
           );
-          return knexModule.updateById("UserTags", userTagId, {
-            default: defaultFlag
-          });
+          return knexModule
+            .knexRaw(
+              `UPDATE "UserTags" SET "default"=false WHERE "id" in (SELECT "id" FROM "UserTags" WHERE "user" in (SELECT "user" FROM "UserTags" WHERE "id"='${userTagId}'));`
+            )
+            .then(result => {
+              return knexModule.updateById("UserTags", userTagId, {
+                default: true
+              });
+            });
         })
         .catch(function(error) {
           logger.debug(error);
