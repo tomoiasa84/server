@@ -172,6 +172,7 @@ const userMutationsResolvers = {
                   return knexModule.insert("Users", {
                     id: `${uuidv1()}`,
                     firebaseId: userRecord.uid,
+                    name: userRecord.phoneNumber,
                     phoneNumber: userRecord.phoneNumber,
                     isActive: false
                   });
