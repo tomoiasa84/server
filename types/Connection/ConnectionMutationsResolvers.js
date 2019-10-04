@@ -9,14 +9,28 @@ const connectionMutationsResolvers = {
         .then(res => {
           logger.trace(`User: ${res.uid} Operation: create_user`);
           return knexModule
-            .insert("Connections", {
-              originUser: origin,
-              targetUser: target,
-              confirmation: false,
-              blockFlag: false
-            })
-            .then(data => {
-              return data.id;
+            .knexRaw(
+              `SELECT COUNT(*) FROM "Connections" WHERE "originUser"='${origin}' and "targetUser"='${target}';`
+            )
+            .then(result => {
+              console.log(result[0]["count"]);
+
+              if (result[0]["count"] === "0") {
+                return knexModule.insert("Connections", {
+                  originUser: origin,
+                  targetUser: target,
+                  confirmation: false,
+                  blockFlag: false
+                });
+              }
+              return knexModule
+                .get("Connections", {
+                  originUser: origin,
+                  targetUser: target
+                })
+                .then(result => {
+                  return result[0];
+                });
             });
         })
         .catch(function(error) {

@@ -85,9 +85,7 @@ const userResolvers = {
     connections: (user, args, { knexModule }) => {
       //Find friends of current user
       return knexModule
-        .knexRaw(
-          `SELECT * FROM "Users" WHERE "id" in (SELECT "targetUser" FROM "Connections" WHERE "originUser"='${user.id}');`
-        )
+        .knexRaw(`SELECT * FROM "Connections" WHERE "originUser"='${user.id}';`)
         .then(result => {
           return result;
         })

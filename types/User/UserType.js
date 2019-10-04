@@ -10,7 +10,7 @@ const user = gql`
     phoneNumber: String
     isActive: Boolean
     conversations: [Conversation]
-    connections: [User]
+    connections: [Connection]
     cardsConnections: [Card]
     cards: [Card]
     tags: [UserTag]

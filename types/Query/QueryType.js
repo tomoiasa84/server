@@ -32,6 +32,9 @@ const query = gql`
     get_conversation(conversationId: String!): Conversation
 
     check_contacts(contactsList: [String]!): [Contact]
+
+    get_connections: [Connection]
+    get_connection(connectionId: Int!): Connection
   }
 
   type Mutation {
@@ -102,7 +105,7 @@ const query = gql`
       isActive: Boolean
     ): User
 
-    delete_connection(connectionId: Int!): Connection
+    delete_connection(connectionId: Int!): Int!
     #update_connection(connectionId: String!, confirmation: Boolean!): Int
     create_connection(origin: String!, target: String!): Connection
   }

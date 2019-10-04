@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server");
 const connection = gql`
   type Connection {
-    id: String!
+    id: Int!
     originUser: User
     targetUser: User
   }
