@@ -73,7 +73,7 @@ const query = gql`
     ): Review
 
     create_userTag(userId: String!, tagId: Int!): UserTag
-    update_userTag(userTagId: Int!, defaultFlag: Boolean): UserTag
+    update_userTag(userTagId: Int!): UserTag
     delete_userTag(userTagId: Int!): Int!
 
     delete_tag(tagId: Int!): Int!
@@ -102,8 +102,8 @@ const query = gql`
       isActive: Boolean
     ): User
 
-    delete_connection(connectionId: String!): Int
-    update_connection(connectionId: String!, confirmation: Boolean!): Int
+    delete_connection(connectionId: Int!): Int
+    #update_connection(connectionId: String!, confirmation: Boolean!): Int
     create_connection(origin: String!, target: String!): Int
   }
 
