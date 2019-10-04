@@ -102,9 +102,9 @@ const query = gql`
       isActive: Boolean
     ): User
 
-    delete_connection(connectionId: Int!): Int
+    delete_connection(connectionId: Int!): Connection
     #update_connection(connectionId: String!, confirmation: Boolean!): Int
-    create_connection(origin: String!, target: String!): Int
+    create_connection(origin: String!, target: String!): Connection
   }
 
   type Subscription {

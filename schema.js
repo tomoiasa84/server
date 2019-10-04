@@ -11,7 +11,9 @@ const UserTag = require("./types/UserTag/UserTagType");
 const Share = require("./types/Share/ShareType");
 const Conversation = require("./types/Conversation/ConversationType");
 const Contact = require("./types/Contact/ContactType");
+const Connection = require("./types/Connection/ConnectionType");
 const typeDefs = [
+  Connection,
   Contact,
   Share,
   UserTag,

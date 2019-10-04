@@ -23,7 +23,12 @@ const ConversationResolvers = require("./types/Conversation/ConversationResolver
 const ConversationMutationsResolvers = require("./types/Conversation/ConversationMutationsResolvers");
 
 const ContactResolvers = require("./types/Contact/ContactResolvers");
+
+const ConnectionResolvers = require("./types/Connection/ConnectionResolvers");
+const ConnectionMutationsResolvers = require("./types/Connection/ConnectionMutationsResolvers");
 const resolvers = [
+  ConnectionResolvers,
+  ConnectionMutationsResolvers,
   ContactResolvers,
   ConversationMutationsResolvers,
   ConversationResolvers,
