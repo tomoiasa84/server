@@ -128,30 +128,30 @@ const userMutationsResolvers = {
           throw error;
         });
     },
-    update_connection: (
-      root,
-      { connectionId },
-      { knexModule, admin, verifyToken, tokenId, logger }
-    ) => {
-      return verifyToken(tokenId, admin)
-        .then(res => {
-          logger.trace(`User: ${res.uid} Operation: update_connection`);
-          return knexModule
-            .updateById("Connections", connectionId, {
-              acceptedFlag: true
-            })
-            .then(data => {
-              return {
-                status: "ok",
-                message: "Updated successfully"
-              };
-            });
-        })
-        .catch(function(error) {
-          logger.debug(error);
-          throw error;
-        });
-    },
+    // update_connection: (
+    //   root,
+    //   { connectionId },
+    //   { knexModule, admin, verifyToken, tokenId, logger }
+    // ) => {
+    //   return verifyToken(tokenId, admin)
+    //     .then(res => {
+    //       logger.trace(`User: ${res.uid} Operation: update_connection`);
+    //       return knexModule
+    //         .updateById("Connections", connectionId, {
+    //           acceptedFlag: true
+    //         })
+    //         .then(data => {
+    //           return {
+    //             status: "ok",
+    //             message: "Updated successfully"
+    //           };
+    //         });
+    //     })
+    //     .catch(function(error) {
+    //       logger.debug(error);
+    //       throw error;
+    //     });
+    // },
     load_contacts: (
       root,
       { phoneContacts },
