@@ -1,7 +1,18 @@
 const romCities = require("romanian-cities");
+const fs = require("fs");
 const faker = require("faker");
 const moment = require("moment");
-const tags = require("../../db/jobs");
+const uuidv1 = require("uuid/v1");
+let tags = fs.readFileSync(
+  "C:\\Users\\itudo\\Desktop\\server\\db\\finalList.json",
+  "UTF-8"
+);
+let tagsArray = JSON.parse(tags);
+let usersData = fs.readFileSync(
+  "C:\\Users\\itudo\\Desktop\\server\\db\\output.json",
+  "UTF-8"
+);
+let usersDataParsed = JSON.parse(usersData);
 
 function createUser(knex, location) {
   return knex("Locations")
@@ -116,93 +127,118 @@ function createCard(knex, user) {
       });
     });
 }
+let counter = 0;
+let tagIdDictionary = {};
+let phoneNumberSet = new Set();
+function createCompanyAccount(knex, name, phoneNumber, tagId) {
+  if (!phoneNumberSet.has(phoneNumber)) {
+    phoneNumberSet.add(phoneNumber);
+    let userId = uuidv1();
+    return knex("Users")
+      .insert({
+        id: `${userId}`,
+        firebaseId: `${faker.random.uuid()}`,
+        name,
+        phoneNumber,
+        isActive: false
+      })
+      .then(() => {
+        return knex("UserTags").insert({
+          user: userId,
+          tag: tagId,
+          default: true
+        });
+      });
+  }
+  return null;
+}
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return (
-    knex("Tags")
-      .del()
-      .then(() => {
-        return knex("Locations").del();
-      })
-      .then(() => {
-        let settings = [
-          {
-            name: "PushNotification",
-            value: "true"
-          },
-          {
-            name: "PushNotification",
-            value: "false"
-          },
-          {
-            name: "MessageNotification",
-            value: "true"
-          },
-          {
-            name: "MessageNotification",
-            value: "false"
-          },
-          {
-            name: "CardNotification",
-            value: "true"
-          },
-          {
-            name: "CardNotification",
-            value: "false"
-          },
-          {
-            name: "ProfilePrivacy",
-            value: "Nobody"
-          },
-          {
-            name: "ProfilePrivacy",
-            value: "Connections"
-          },
-          {
-            name: "ProfilePrivacy",
-            value: "Anyone"
-          }
-        ];
-
-        return knex("Settings").insert(settings);
-      })
-      .then(() => {
-        //Using romanian-cities library to populate the location table
-        let locationsArray = [];
-        romCities.all.forEach(element => {
-          locationsArray.push({
-            city: element.city
-          });
-        });
-        return knex("Locations").insert(locationsArray);
-      })
-      .then(() => {
-        let tagsPromise = [];
-        tags.forEach(tag => {
-          tagsPromise.push(knex("Tags").insert({ name: tag }));
-        });
-        return Promise.all(tagsPromise);
-      })
-      // .then(() => {
-      //   //Populate tag table
-      //   let tagSet = new Set();
-      //   while (tagSet.size < 100) {
-      //     tagSet.add(faker.name.jobTitle());
-      //   }
-      //   tagSet.forEach(el => {
-      //     tags.push({
-      //       name: el
-      //     });
-      //   });
-      //   return knex("Tags").insert(tags);
-      // })
-      .then(() => {
-        //Populate user table
-        let users = [];
-        for (let i = 0; i < 3; i++) {
-          users.push(createUser(knex, romCities.random().city));
+  return knex("Tags")
+    .del()
+    .then(() => {
+      let tagsToInsert = [];
+      tagsArray.forEach(tag => {
+        tagsToInsert.push(
+          knex("Tags")
+            .insert({ name: tag })
+            .returning("id")
+            .then(tagId => {
+              if (!tagIdDictionary[tag]) tagIdDictionary[tag] = tagId[0];
+              return tagId;
+            })
+        );
+      });
+      return Promise.all(tagsToInsert);
+    })
+    .then(() => {
+      let settings = [
+        {
+          name: "PushNotification",
+          value: "true"
+        },
+        {
+          name: "PushNotification",
+          value: "false"
+        },
+        {
+          name: "MessageNotification",
+          value: "true"
+        },
+        {
+          name: "MessageNotification",
+          value: "false"
+        },
+        {
+          name: "CardNotification",
+          value: "true"
+        },
+        {
+          name: "CardNotification",
+          value: "false"
+        },
+        {
+          name: "ProfilePrivacy",
+          value: "Nobody"
+        },
+        {
+          name: "ProfilePrivacy",
+          value: "Connections"
+        },
+        {
+          name: "ProfilePrivacy",
+          value: "Anyone"
         }
-        return Promise.all(users);
-      })
-  );
+      ];
+
+      return knex("Settings").insert(settings);
+    })
+    .then(() => {
+      //Using romanian-cities library to populate the location table
+      let locationsArray = [];
+      romCities.all.forEach(element => {
+        locationsArray.push({
+          city: element.city
+        });
+      });
+      return knex("Locations").insert(locationsArray);
+    })
+    .then(() => {
+      //Populate user table
+      let users = [];
+      // for (let i = 0; i < 3; i++) {
+      //   users.push(createUser(knex, romCities.random().city));
+      // }
+      usersDataParsed.forEach(elem => {
+        users.push(
+          createCompanyAccount(
+            knex,
+            elem["Business Name"],
+            elem["Contact Phone Number"],
+            parseInt(tagIdDictionary[elem["Industry"]])
+          )
+        );
+      });
+      return Promise.all(users);
+    });
 };

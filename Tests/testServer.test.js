@@ -12,7 +12,6 @@ log4js.configure({
   categories: { default: { appenders: ["out"], level: "error" } }
 });
 const logger = log4js.getLogger("out");
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,

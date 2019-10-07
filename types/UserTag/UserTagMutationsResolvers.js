@@ -45,15 +45,19 @@ const userTagMutationsResolvers = {
           logger.trace(
             `User: ${res.uid} Operation: update with id ${userTagId}`
           );
-          return knexModule
-            .knexRaw(
-              `UPDATE "UserTags" SET "default"=false WHERE "id" in (SELECT "id" FROM "UserTags" WHERE "user" in (SELECT "user" FROM "UserTags" WHERE "id"='${userTagId}'));`
-            )
-            .then(result => {
-              return knexModule.updateById("UserTags", userTagId, {
-                default: true
-              });
-            });
+          return (
+            knexModule
+              //UPDATE "UserTags" SET "default"=false WHERE "Users".id="UserTags".user and "UserTags".id=${userTagId}
+              //UPDATE "UserTags" SET "default"=false WHERE "id" in (SELECT "id" FROM "UserTags" WHERE "user" in (SELECT "user" FROM "UserTags" WHERE "id"='${userTagId}'))
+              .knexRaw(
+                `UPDATE "UserTags" SET "default"=false WHERE "Users".id="UserTags".user and "UserTags".id=${userTagId};`
+              )
+              .then(result => {
+                return knexModule.updateById("UserTags", userTagId, {
+                  default: true
+                });
+              })
+          );
         })
         .catch(function(error) {
           logger.debug(error);

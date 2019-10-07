@@ -8,9 +8,10 @@ module.exports = {
       database: "xfriend"
     },
     pool: {
-      min: 2,
-      max: 10
-    }
+      min: 4,
+      max: 20
+    },
+    acquireConnectionTimeout: 120000
   },
 
   test: {
