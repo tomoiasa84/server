@@ -48,8 +48,8 @@ module.exports = {
         console.log(JSON.stringify(user));
 
         let insert = await knexModule.insert("Connections", {
-          origin: user[0]["id"],
-          target: checkedContacts[0]["id"]
+          originUser: user[0]["id"],
+          targetUser: checkedContacts[0]["id"]
         });
         console.log(
           `Origin: ${user[0]["id"]}, Target: ${checkedContacts[0]["id"]}`
