@@ -125,29 +125,22 @@ const userMutationsResolvers = {
           phoneContacts.forEach(phoneElement => {
             //should add default settings and default connection
             promiseArray.push(
-              admin
-                .auth()
-                .createUser({
-                  phoneNumber: `${phoneElement}`
+              knexModule
+                .insert("Users", {
+                  id: `${uuidv1()}`,
+                  firebaseId: `${uuidv1()}`,
+                  name: userRecord.phoneNumber,
+                  phoneNumber: userRecord.phoneNumber,
+                  isActive: false
                 })
-                .then(function(userRecord) {
+                .then(contactUser => {
                   return knexModule
-                    .insert("Users", {
-                      id: `${uuidv1()}`,
-                      firebaseId: userRecord.uid,
-                      name: userRecord.phoneNumber,
-                      phoneNumber: userRecord.phoneNumber,
-                      isActive: false
-                    })
-                    .then(contactUser => {
-                      return knexModule
-                        .get("Users", { firebaseId: res.uid })
-                        .then(restulArray => {
-                          return knexModule.insert("Connections", {
-                            originUser: restulArray[0]["id"],
-                            targetUser: contactUser.id
-                          });
-                        });
+                    .get("Users", { firebaseId: res.uid })
+                    .then(restulArray => {
+                      return knexModule.insert("Connections", {
+                        originUser: restulArray[0]["id"],
+                        targetUser: contactUser.id
+                      });
                     });
                 })
                 .catch(function(error) {
