@@ -32,7 +32,6 @@ module.exports = {
         .knexRaw(`select * from "Users" where "phoneNumber"='${contact}';`)
         .then(checkedContact => {
           if (checkedContact.length === 0) return false;
-
           return verifyToken(tokenId, admin).then(res => {
             return knexModule
               .get("Users", { firebaseId: res.uid })
