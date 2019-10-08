@@ -35,15 +35,26 @@ module.exports = {
       let checkedContacts = await knexModule.knexRaw(
         `select * from "Users" where "phoneNumber"='${contact}';`
       );
-      if (checkedContacts.length === 0) return false;
-      else {
+      if (checkedContacts.length === 0) {
+        console.log("No connections");
+
+        return false;
+      } else {
+        console.log("Connections");
+
         let user = await knexModule.get("Users", {
           firebaseId: contact.currentUser
         });
+        console.log(JSON.stringify(user));
+
         let insert = await knexModule.insert("Connections", {
           origin: user[0]["id"],
-          target: checkedContact[0]["id"]
+          target: checkedContacts[0]["id"]
         });
+        console.log(
+          `Origin: ${user[0]["id"]}, Target: ${checkedContacts[0]["id"]}`
+        );
+
         return true;
       }
     }
