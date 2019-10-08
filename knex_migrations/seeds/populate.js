@@ -222,23 +222,23 @@ exports.seed = function(knex, Promise) {
         });
       });
       return knex("Locations").insert(locationsArray);
-    })
-    .then(() => {
-      //Populate user table
-      let users = [];
-      // for (let i = 0; i < 3; i++) {
-      //   users.push(createUser(knex, romCities.random().city));
-      // }
-      usersDataParsed.forEach(elem => {
-        users.push(
-          createCompanyAccount(
-            knex,
-            elem["Business Name"],
-            elem["Contact Phone Number"],
-            parseInt(tagIdDictionary[elem["Industry"]])
-          )
-        );
-      });
-      return Promise.all(users);
     });
+  // .then(() => {
+  //   //Populate user table
+  //   let users = [];
+  //   // for (let i = 0; i < 3; i++) {
+  //   //   users.push(createUser(knex, romCities.random().city));
+  //   // }
+  //   usersDataParsed.forEach(elem => {
+  //     users.push(
+  //       createCompanyAccount(
+  //         knex,
+  //         elem["Business Name"],
+  //         elem["Contact Phone Number"],
+  //         parseInt(tagIdDictionary[elem["Industry"]])
+  //       )
+  //     );
+  //   });
+  //   return Promise.all(users);
+  // });
 };

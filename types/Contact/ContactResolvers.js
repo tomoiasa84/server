@@ -32,8 +32,21 @@ module.exports = {
         .knexRaw(`select * from "Users" where "phoneNumber"='${contact}';`)
         .then(checkedContact => {
           if (checkedContact.length === 0) return false;
-          //should connect the users that already exists
-          return true;
+
+          return verifyToken(tokenId, admin).then(res => {
+            return knexModule
+              .get("Users", { firebaseId: res.uid })
+              .then(user => {
+                return knexModule
+                  .insert("Connections", {
+                    origin: user[0]["id"],
+                    target: checkedContact[0]["id"]
+                  })
+                  .then(() => {
+                    return true;
+                  });
+              });
+          });
         });
     }
   }
