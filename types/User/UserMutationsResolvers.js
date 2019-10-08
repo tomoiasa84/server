@@ -144,8 +144,8 @@ const userMutationsResolvers = {
                         .get("Users", { firebaseId: res.uid })
                         .then(restulArray => {
                           return knexModule.insert("Connections", {
-                            origin: restulArray[0]["id"],
-                            target: contactUser.id
+                            originUser: restulArray[0]["id"],
+                            targetUser: contactUser.id
                           });
                         });
                     });
