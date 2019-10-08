@@ -131,13 +131,24 @@ const userMutationsResolvers = {
                   phoneNumber: `${phoneElement}`
                 })
                 .then(function(userRecord) {
-                  return knexModule.insert("Users", {
-                    id: `${uuidv1()}`,
-                    firebaseId: userRecord.uid,
-                    name: userRecord.phoneNumber,
-                    phoneNumber: userRecord.phoneNumber,
-                    isActive: false
-                  });
+                  return knexModule
+                    .insert("Users", {
+                      id: `${uuidv1()}`,
+                      firebaseId: userRecord.uid,
+                      name: userRecord.phoneNumber,
+                      phoneNumber: userRecord.phoneNumber,
+                      isActive: false
+                    })
+                    .then(contactUser => {
+                      return knexModule
+                        .get("Users", { firebaseId: res.uid })
+                        .then(restulArray => {
+                          return knexModule.insert("Connections", {
+                            origin: restulArray[0]["id"],
+                            target: contactUser.id
+                          });
+                        });
+                    });
                 })
                 .catch(function(error) {
                   console.log("Error creating new user:", error);
