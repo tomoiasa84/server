@@ -8,7 +8,11 @@ module.exports = {
       return verifyToken(tokenId, admin)
         .then(res => {
           if (contactsList.length !== 0) {
-            return contactsList;
+            let responseList = [];
+            contactsList.forEach(contact => {
+              responseList.push({ contact, currentUser: res.uid });
+            });
+            return responseList;
           } else {
             throw new Error("Empty conctacts list parameter");
           }
@@ -21,32 +25,27 @@ module.exports = {
   },
   Contact: {
     number: (contact, args, { admin, verifyToken, tokenId, logger }) => {
-      return contact;
+      return contact.contact;
     },
-    exists: (
+    exists: async (
       contact,
       args,
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
-      return knexModule
-        .knexRaw(`select * from "Users" where "phoneNumber"='${contact}';`)
-        .then(checkedContact => {
-          if (checkedContact.length === 0) return false;
-          return verifyToken(tokenId, admin).then(res => {
-            return knexModule
-              .get("Users", { firebaseId: res.uid })
-              .then(user => {
-                return knexModule
-                  .insert("Connections", {
-                    origin: user[0]["id"],
-                    target: checkedContact[0]["id"]
-                  })
-                  .then(() => {
-                    return true;
-                  });
-              });
-          });
+      let checkedContacts = await knexModule.knexRaw(
+        `select * from "Users" where "phoneNumber"='${contact}';`
+      );
+      if (checkedContacts.length === 0) return false;
+      else {
+        let user = await knexModule.get("Users", {
+          firebaseId: contact.currentUser
         });
+        let insert = await knexModule.insert("Connections", {
+          origin: user[0]["id"],
+          target: checkedContact[0]["id"]
+        });
+        return true;
+      }
     }
   }
 };
