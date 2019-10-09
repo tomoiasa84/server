@@ -163,7 +163,8 @@ const userMutationsResolvers = {
         profileURL,
         phoneNumber,
         isActive,
-        description
+        description,
+        deviceToken
       },
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
@@ -178,6 +179,7 @@ const userMutationsResolvers = {
             profileURL,
             phoneNumber,
             description,
+            deviceToken,
             isActive
           });
         })
