@@ -85,29 +85,42 @@ const userMutationsResolvers = {
       return verifyToken(tokenId, admin)
         .then(res => {
           console.log(tokenId);
-
-          logger.trace(`User: ${res.uid} Operation: create_user`);
-          //check if phone number if exists
           return knexModule
-            .insert("Users", {
-              id: `${uuidv1()}`,
-              firebaseId,
-              name,
-              location,
-              phoneNumber,
-              description,
-              isActive: true
-            })
-            .then(user => {
-              return Promise.all(insertDefaults(knexModule, user.id)).then(
-                defaults => {
-                  return knexModule
-                    .insert("UserSettings", defaults)
-                    .then(() => {
-                      return user;
+            .knexRaw(
+              `select * from "Users" where "phoneNumber"='${phoneNumber}';`
+            )
+            .then(result => {
+              if (result.length === 0) {
+                return knexModule
+                  .insert("Users", {
+                    id: `${uuidv1()}`,
+                    firebaseId,
+                    name,
+                    location,
+                    phoneNumber,
+                    description,
+                    isActive: true
+                  })
+                  .then(user => {
+                    return Promise.all(
+                      insertDefaults(knexModule, user.id)
+                    ).then(defaults => {
+                      return knexModule
+                        .insert("UserSettings", defaults)
+                        .then(() => {
+                          return user;
+                        });
                     });
-                }
-              );
+                  });
+              }
+              return knexModule.updateById("Users", result[0]["id"], {
+                firebaseId,
+                name,
+                location,
+                phoneNumber,
+                description,
+                isActive: true
+              });
             });
         })
         .catch(function(error) {
