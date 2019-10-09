@@ -88,6 +88,7 @@ const query = gql`
     delete_card(cardId: Int!): Int!
 
     load_contacts(phoneContacts: [String]): [User]
+    load_connections(existingUsers: [String]) [Connection]
     delete_user(userId: String!): String!
     create_user(
       firebaseId: String!
@@ -105,7 +106,7 @@ const query = gql`
       deviceToken: String
       isActive: Boolean
     ): User
-
+    
     delete_connection(connectionId: Int!): Int!
     #update_connection(connectionId: String!, confirmation: Boolean!): Int
     create_connection(origin: String!, target: String!): Connection

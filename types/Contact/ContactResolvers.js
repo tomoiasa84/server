@@ -8,11 +8,8 @@ module.exports = {
       return verifyToken(tokenId, admin)
         .then(res => {
           if (contactsList.length !== 0) {
-            let responseList = [];
-            contactsList.forEach(contact => {
-              responseList.push({ contact, currentUser: res.uid });
-            });
-            return responseList;
+            
+            return contactsList;
           } else {
             throw new Error("Empty conctacts list parameter");
           }
@@ -27,7 +24,7 @@ module.exports = {
     number: (contact, args, { admin, verifyToken, tokenId, logger }) => {
       return contact.contact;
     },
-    exists: async (
+    exists: (
       contact,
       args,
       { knexModule, admin, verifyToken, tokenId, logger }

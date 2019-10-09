@@ -84,6 +84,8 @@ const userMutationsResolvers = {
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
+          console.log(tokenId);
+
           logger.trace(`User: ${res.uid} Operation: create_user`);
           //check if phone number if exists
           return knexModule
@@ -113,7 +115,37 @@ const userMutationsResolvers = {
           throw error;
         });
     },
-
+    load_connections: (
+      root,
+      { existingUsers },
+      { knexModule, uuidv1, admin, verifyToken, tokenId, logger }
+    ) => {
+      return verifyToken(tokenId, admin).then(res => {
+        if (existingUsers.length !== 0) {
+          let promiseArray = [];
+          existingUsers.forEach(phoneElement => {
+            //should add default settings and default connection
+            promiseArray.push(
+              knexModule
+                .get("Users", { phoneNumber: phoneElement })
+                .then(contactUser => {
+                  return knexModule
+                    .get("Users", { firebaseId: res.uid })
+                    .then(resultArray => {
+                      return knexModule.insert("Connections", {
+                        originUser: resultArray[0]["id"],
+                        targetUser: contactUser[0]["id"]
+                      });
+                    });
+                })
+            );
+          });
+          return Promise.all(promiseArray).catch(error => {
+            throw new Error("Could not create connections");
+          });
+        }
+      });
+    },
     load_contacts: (
       root,
       { phoneContacts },
@@ -129,8 +161,8 @@ const userMutationsResolvers = {
                 .insert("Users", {
                   id: `${uuidv1()}`,
                   firebaseId: `${uuidv1()}`,
-                  name: userRecord.phoneNumber,
-                  phoneNumber: userRecord.phoneNumber,
+                  name: phoneElement,
+                  phoneNumber: phoneElement,
                   isActive: false
                 })
                 .then(contactUser => {
