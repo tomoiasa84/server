@@ -102,6 +102,7 @@ const query = gql`
       profileURL: String
       phoneNumber: String
       description: String
+      deviceToken: String
       isActive: Boolean
     ): User
 

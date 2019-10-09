@@ -36,8 +36,6 @@ module.exports = {
         `select * from "Users" where "phoneNumber"='${contact}';`
       );
       if (checkedContacts.length === 0) {
-        console.log("No connections");
-
         return false;
       } else {
         console.log("Connections");
