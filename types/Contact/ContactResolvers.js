@@ -8,7 +8,6 @@ module.exports = {
       return verifyToken(tokenId, admin)
         .then(res => {
           if (contactsList.length !== 0) {
-            
             return contactsList;
           } else {
             throw new Error("Empty conctacts list parameter");
@@ -29,11 +28,12 @@ module.exports = {
       args,
       { knexModule, admin, verifyToken, tokenId, logger }
     ) => {
-      let checkedContacts = await knexModule.knexRaw(
-        `select * from "Users" where "phoneNumber"='${contact}';`
-      );
-      if (checkedContacts.length === 0) return false;
-      return true;
+      return knexModule
+        .knexRaw(`select * from "Users" where "phoneNumber"='${contact}';`)
+        .then(checkedContacts => {
+          if (checkedContacts.length === 0) return false;
+          return true;
+        });
     }
   }
 };
