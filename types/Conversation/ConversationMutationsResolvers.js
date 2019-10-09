@@ -41,18 +41,29 @@ const conversationMutationsResolvers = {
     ) {
       return verifyToken(tokenId, admin)
         .then(res => {
-          logger.trace(`User: ${res.uid} Operation: create_channel`);
+          logger.trace(
+            `User with firebaseId: ${res.uid} Operation: create_conversation`
+          );
           return knexModule
             .knexRaw(
               `select * from "Conversations" where '${user1}' in (user1,user2) and '${user2}' in (user1,user2)`
             )
             .then(recordArray => {
               if (recordArray.length === 0) {
-                return knexModule.insert("Conversations", {
-                  id: `${uniqueString()}`,
-                  user1,
-                  user2
-                });
+                return knexModule
+                  .insert("Conversations", {
+                    id: `${uniqueString()}`,
+                    user1,
+                    user2
+                  })
+                  .then(convRec => {
+                    return knexModule
+                      .get("Users", { firebaseId: res.uid })
+                      .then(user => {
+                        const fetch = require("node-fetch");
+                        return convRec;
+                      });
+                  });
               }
               return recordArray[0];
             });
