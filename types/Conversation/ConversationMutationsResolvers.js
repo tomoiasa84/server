@@ -58,10 +58,26 @@ const conversationMutationsResolvers = {
                   })
                   .then(convRec => {
                     return knexModule
-                      .get("Users", { firebaseId: res.uid })
-                      .then(user => {
+                      .knexRaw(
+                        `select * from "Users" where "id" in ('${user1}','${user2}');`
+                      )
+                      .then(users => {
                         const fetch = require("node-fetch");
-                        return convRec;
+                        let subscriptionPromises = [];
+                        users.forEach(user => {
+                          subscriptionPromises.push(
+                            fetch(
+                              `https://ps.pndsn.com/v1/push/sub-key/${process.env.SUBSCRIPTION_KEY}/devices/${user.deviceToken}?add=${convRec.id}&type=gcm`
+                            ).then(response => {
+                              if (response.ok)
+                                console.log("Subscription success");
+                              else console.log("Subscription bad");
+                            })
+                          );
+                        });
+                        return Promise.all(subscriptionPromises).then(() => {
+                          return convRec;
+                        });
                       });
                   });
               }

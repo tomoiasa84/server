@@ -218,15 +218,39 @@ const userMutationsResolvers = {
           logger.trace(
             `User: ${res.uid} Operation: update_user with id ${userId}`
           );
-          return knexModule.updateById("Users", userId, {
-            name,
-            location,
-            profileURL,
-            phoneNumber,
-            description,
-            deviceToken,
-            isActive
-          });
+          return knexModule
+            .updateById("Users", userId, {
+              name,
+              location,
+              profileURL,
+              phoneNumber,
+              description,
+              deviceToken,
+              isActive
+            })
+            .then(userUpdated => {
+              //Check if deviceToken has been updated by checking for null
+              if (deviceToken) {
+                //Getting all conversationIds from "Conversations"
+                return knexModule
+                  .knexRaw(
+                    `SELECT "id" FROM "Conversations" WHERE '${userUpdated.id}' in (user1,user2);`
+                  )
+                  .then(convIds => {
+                    //Calling the GET link to update user subscription to conversations
+                    fetch(
+                      `https://ps.pndsn.com/v1/push/sub-key/${
+                        process.env.SUBSCRIPTION_KEY
+                      }/devices/${deviceToken}?add=${convIds.join(
+                        ","
+                      )}&type=gcm`
+                    ).then(response => {
+                      if (response.ok) console.log("Subscription success");
+                      else console.log("Subscription bad");
+                    });
+                  });
+              }
+            });
         })
         .catch(function(error) {
           logger.debug(error);
