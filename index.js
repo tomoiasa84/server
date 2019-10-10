@@ -61,9 +61,14 @@ if (process.env.NODE_ENV === "dev") {
     debug: true
   });
 
-  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
-  });
+  server
+    .listen({ port: process.env.PORT || 4000 })
+    .then(({ url }) => {
+      console.log(`🚀 Server ready at ${url}`);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 } else if (process.env.NODE_ENV === "prod") {
   const pubsub = new PubSub();
   const server = new ApolloServer({
