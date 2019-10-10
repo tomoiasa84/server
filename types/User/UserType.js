@@ -8,6 +8,7 @@ const user = gql`
     profileURL: String
     description: String
     phoneNumber: String
+    deviceToken: String
     isActive: Boolean
     conversations: [Conversation]
     connections: [Connection]
