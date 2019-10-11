@@ -24,6 +24,7 @@
     "knex-migrate-sql-file": "^1.0.3",
     "log4js": "^4.5.1",
     "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "unique-string": "^2.0.0",
     "uuid": "^3.3.3"
@@ -38,7 +39,6 @@
     "moch": "0.0.1",
     "mocha": "^6.1.4",
     "node-cmd": "^3.0.0",
-    "node-fetch": "^2.6.0",
     "professions": "^1.0.2",
     "romanian-cities": "^1.0.2"
   }
