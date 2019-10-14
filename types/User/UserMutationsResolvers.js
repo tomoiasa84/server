@@ -211,7 +211,7 @@ const userMutationsResolvers = {
         description,
         deviceToken
       },
-      { knexModule, admin, verifyToken, tokenId, logger }
+      { knexModule, admin, verifyToken, tokenId, logger, fetch }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {

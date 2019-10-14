@@ -37,7 +37,7 @@ const conversationMutationsResolvers = {
     create_conversation(
       root,
       { user1, user2 },
-      { knexModule, pubsub, admin, verifyToken, tokenId, logger }
+      { knexModule, pubsub, admin, verifyToken, tokenId, logger, fetch }
     ) {
       return verifyToken(tokenId, admin)
         .then(res => {
@@ -62,7 +62,6 @@ const conversationMutationsResolvers = {
                         `select * from "Users" where "id" in ('${user1}','${user2}');`
                       )
                       .then(users => {
-                        const fetch = require("node-fetch");
                         let subscriptionPromises = [];
                         users.forEach(user => {
                           subscriptionPromises.push(

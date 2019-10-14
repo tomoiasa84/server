@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { PubSub, ApolloServer, gql } = require("apollo-server");
+const fetch = require("node-fetch");
 const admin = require("firebase-admin");
 const serviceAccount = require("./db/adminkey");
 const knexModule = require("./db/knexModule");
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === "dev") {
     resolvers,
     context: ({ req }) => {
       return {
+        fetch,
         uuidv1,
         logger,
         admin,
@@ -49,6 +51,7 @@ if (process.env.NODE_ENV === "dev") {
       const token = req.headers.authorization || "";
       const tokenId = token.replace("Bearer ", "");
       return {
+        fetch,
         uuidv1,
         admin,
         verifyToken,
@@ -78,6 +81,7 @@ if (process.env.NODE_ENV === "dev") {
       const token = req.headers.authorization || "";
       const tokenId = token.replace("Bearer ", "");
       return {
+        fetch,
         admin,
         verifyToken,
         tokenId,
