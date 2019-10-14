@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === "dev") {
     resolvers,
     context: ({ req }) => {
       return {
+        phoneFormater:parsePhoneNumberFromString,
         fetch,
         uuidv1,
         logger,
@@ -62,6 +63,7 @@ if (process.env.NODE_ENV === "dev") {
       const token = req.headers.authorization || "";
       const tokenId = token.replace("Bearer ", "");
       return {
+        phoneFormater:parsePhoneNumberFromString,
         fetch,
         uuidv1,
         admin,
@@ -92,6 +94,7 @@ if (process.env.NODE_ENV === "dev") {
       const token = req.headers.authorization || "";
       const tokenId = token.replace("Bearer ", "");
       return {
+        phoneFormater:parsePhoneNumberFromString,
         fetch,
         admin,
         verifyToken,

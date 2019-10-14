@@ -80,11 +80,12 @@ const userMutationsResolvers = {
     create_user: (
       root,
       { firebaseId, name, location, phoneNumber, description },
-      { knexModule, uuidv1, admin, verifyToken, tokenId, logger }
+      { knexModule, uuidv1, admin, verifyToken, tokenId, logger, phoneFormater }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
-          console.log(tokenId);
+          const number = phoneFormater(phoneNumber);
+          phoneNumber = number.formatInternational();
           return knexModule
             .knexRaw(
               `select * from "Users" where "phoneNumber"='${phoneNumber}';`
@@ -169,6 +170,8 @@ const userMutationsResolvers = {
           let promiseArray = [];
           phoneContacts.forEach(phoneElement => {
             //should add default settings and default connection
+            const number = phoneFormater(phoneElement);
+            phoneElement = number.formatInternational();
             promiseArray.push(
               knexModule
                 .insert("Users", {
@@ -211,13 +214,17 @@ const userMutationsResolvers = {
         description,
         deviceToken
       },
-      { knexModule, admin, verifyToken, tokenId, logger, fetch }
+      { knexModule, admin, verifyToken, tokenId, logger, fetch, phoneFormater }
     ) => {
       return verifyToken(tokenId, admin)
         .then(res => {
           logger.trace(
             `User: ${res.uid} Operation: update_user with id ${userId}`
           );
+          if (phoneNumber) {
+            const number = phoneFormater(phoneNumber);
+            phoneNumber = number.formatInternational();
+          }
           return knexModule
             .updateById("Users", userId, {
               name,
@@ -234,16 +241,13 @@ const userMutationsResolvers = {
                 //Getting all conversationIds from "Conversations"
                 return knexModule
                   .knexRaw(
-                    `SELECT "id" FROM "Conversations" WHERE '${userUpdated.id}' in (user1,user2);`
+                    `SELECT "id" FROM "Conversations" WHERE '${userUpdated.id}' = "user1" or '${userUpdated.id}' = "user2";`
                   )
                   .then(convIds => {
                     //Calling the GET link to update user subscription to conversations
+                    const convString = convIds.join(",");
                     return fetch(
-                      `https://ps.pndsn.com/v1/push/sub-key/${
-                        process.env.SUBSCRIPTION_KEY
-                      }/devices/${deviceToken}?add=${convIds.join(
-                        ","
-                      )}&type=gcm`
+                      `https://ps.pndsn.com/v1/push/sub-key/${process.env.SUBSCRIPTION_KEY}/devices/${deviceToken}?add=${convString}&type=gcm`
                     ).then(response => {
                       if (response.ok) console.log("Subscription success");
                       else console.log("Subscription bad");
