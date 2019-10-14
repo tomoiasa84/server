@@ -238,7 +238,7 @@ const userMutationsResolvers = {
                   )
                   .then(convIds => {
                     //Calling the GET link to update user subscription to conversations
-                    fetch(
+                    return fetch(
                       `https://ps.pndsn.com/v1/push/sub-key/${
                         process.env.SUBSCRIPTION_KEY
                       }/devices/${deviceToken}?add=${convIds.join(
@@ -247,6 +247,7 @@ const userMutationsResolvers = {
                     ).then(response => {
                       if (response.ok) console.log("Subscription success");
                       else console.log("Subscription bad");
+                      return userUpdated;
                     });
                   });
               }
