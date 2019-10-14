@@ -1,12 +1,22 @@
-require("dotenv").config();
+require("dotenv").config();//deployment enviroment
+
+//Apollo and Graphql frameworks
 const { PubSub, ApolloServer, gql } = require("apollo-server");
-const fetch = require("node-fetch");
-const admin = require("firebase-admin");
-const serviceAccount = require("./db/adminkey");
-const knexModule = require("./db/knexModule");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
+
+//Firebase modules
+const admin = require("firebase-admin");
+const serviceAccount = require("./db/adminkey");
 const verifyToken = require("./verifyToken");
+
+//Database modules
+const knexModule = require("./db/knexModule");
+
+
+//Tools for application
+const { parsePhoneNumberFromString } = require('libphonenumber-js');
+const fetch = require("node-fetch");
 const uuidv1 = require("uuid/v1");
 var log4js = require("log4js");
 log4js.configure({
@@ -19,6 +29,7 @@ admin.initializeApp({
   databaseURL: "https://contractorsearch-eeaf7.firebaseio.com"
 });
 
+//setting up enviroment
 if (process.env.NODE_ENV === "dev") {
   const pubsub = new PubSub();
   const server = new ApolloServer({
