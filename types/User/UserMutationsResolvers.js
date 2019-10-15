@@ -70,7 +70,15 @@ const userMutationsResolvers = {
           logger.trace(
             `User: ${res.uid} Operation: delete_user with id: ${userId}`
           );
-          return knexModule.deleteById("Users", userId);
+          return knexModule.getById("Users", userId).then(userRecord => {
+            return admin
+              .auth()
+              .deleteUser(userRecord.firebaseId)
+              .then(function() {
+                console.log("Successfully deleted user from firebase");
+                return knexModule.deleteById("Users", userId);
+              });
+          });
         })
         .catch(function(error) {
           logger.error(error);

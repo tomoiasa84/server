@@ -8,11 +8,11 @@ let tags = fs.readFileSync(
   "UTF-8"
 );
 let tagsArray = JSON.parse(tags);
-let usersData = fs.readFileSync(
-  "C:\\Users\\itudo\\Desktop\\server\\db\\output.json",
-  "UTF-8"
-);
-let usersDataParsed = JSON.parse(usersData);
+// let usersData = fs.readFileSync(
+//   "‪C:\\Users\\itudo\\Desktop\\project cleanup\\output.json",
+//   "UTF-8"
+// );
+// let usersDataParsed = JSON.parse(usersData);
 
 function createUser(knex, location) {
   return knex("Locations")

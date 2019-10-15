@@ -1,6 +1,4 @@
 const knex = require("./pgAdaptop");
-//function KnexModule(){};
-//KnexModule.prototype.update()
 module.exports = {
   knexRaw: queryString => {
     return knex
